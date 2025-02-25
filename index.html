@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Игра "Угадай число"</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #181818;
+  color: #eee;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+h1 {
+  color: #bb86fc;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+p {
+  margin-bottom: 15px;
+}
+
+#message {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #bb86fc;
+  margin-top: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+#attempts {
+  font-size: 1em;
+  margin-top: 10px;
+}
+
+input[type="number"] {
+  padding: 12px 16px;
+  font-size: 18px;
+  border: 2px solid #3700b3;
+  border-radius: 8px;
+  background-color: #212121;
+  color: #fff;
+  width: 200px;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #bb86fc;
+}
+
+button {
+  padding: 14px 32px;
+  font-size: 18px;
+  background-color: #3700b3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: #6200ea;
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Difficulty selection */
+#difficulty-selection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#difficulty-selection button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+/* Last guesses display */
+#last-guesses {
+  margin-top: 20px;
+  font-size: 1em;
+  color: #9fa8da;
+}
+
+/* Additional controls */
+#additional-controls {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+#additional-controls button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* Achievements */
+#achievements {
+    margin-top: 20px;
+    font-size: 1em;
+    color: #a5d6a7;
+    display: none;
+}
+
+#achievements p {
+    margin: 5px 0;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Угадай число</h1>
+<p>Выберите уровень сложности:</p>
+
+<div id="difficulty-selection">
+  <button onclick="setDifficulty('easy')">Легко (1-10, 5 попыток)</button>
+  <button onclick="setDifficulty('medium')">Средне (1-50, 7 попыток)</button>
+  <button onclick="setDifficulty('hard')">Сложно (1-100, 10 попыток)</button>
+</div>
+
+<p>Я загадал число. Угадай его!</p>
+
+<input type="number" id="guess" min="1" max="100" placeholder="Введите число">
+<button onclick="checkGuess()">Проверить</button>
+
+<button onclick="newGame()" id="new-game-button" disabled>Новая игра</button>
+
+<p id="message"></p>
+<p id="attempts">Попыток: -</p>
+
+<div id="last-guesses"></div>
+
+<div id="additional-controls">
+  <button onclick="giveHint()">Подсказка</button>
+  <button onclick="showAnswer()">Показать ответ</button>
+</div>
+
+<div id="achievements">
+    <p id="achievement-first-win" style="display: none;">🎉 Первая победа! 🎉</p>
+    <p id="achievement-easy-win" style="display: none;">🏆 Победил на легком уровне! 🏆</p>
+    <p id="achievement-perfect-win" style="display: none;">💯 Угадал с первой попытки! 💯</p>
+</div>
+
+
+<script>
+  let randomNumber = 0;
+  let attemptsLeft = 0;
+  let maxNumber = 100;
+  let lastGuesses = [];
+  let wins = 0;
+  let difficulty = null;
+  let firstWinAchieved = false;
+  let perfectWinAchieved = false;
+  let proximityThreshold = 5; // Порог близости
+
+  let guessInput = document.getElementById("guess");
+  let messageArea = document.getElementById("message");
+  let attemptsDisplay = document.getElementById("attempts");
+  let checkButton = document.querySelector("button");
+  let newGameButton = document.getElementById("new-game-button");
+  let lastGuessesDisplay = document.getElementById("last-guesses");
+  let hintUsed = false;
+  let answerShown = false;
+  let achievementsDiv = document.getElementById("achievements");
+  let achievementFirstWin = document.getElementById("achievement-first-win");
+  let achievementEasyWin = document.getElementById("achievement-easy-win");
+  let achievementPerfectWin = document.getElementById("achievement-perfect-win");
+
+
+  // Функция для установки сложности
+  function setDifficulty(selectedDifficulty) {
+    difficulty = selectedDifficulty;
+    if (difficulty === 'easy') {
+      maxNumber = 10;
+      attemptsLeft = 5;
+      proximityThreshold = 2;
+    } else if (difficulty === 'medium') {
+      maxNumber = 50;
+      attemptsLeft = 7;
+      proximityThreshold = 5;
+    } else {
+      maxNumber = 100;
+      attemptsLeft = 10;
+      proximityThreshold = 10;
+    }
+
+    randomNumber = Math.floor(Math.random() * maxNumber) + 1;
+    guessInput.max = maxNumber;
+    guessInput.min = 1;
+    messageArea.textContent = "";
+    attemptsDisplay.textContent = "Попыток: " + attemptsLeft;
+    guessInput.disabled = false;
+    checkButton.disabled = false;
+    newGameButton.disabled = true;
+    guessInput.value = "";
+    lastGuesses = [];
+    updateLastGuessesDisplay();
+    hintUsed = false;
+    answerShown = false;
+    document.getElementById("additional-controls").style.display = "flex";
+    achievementsDiv.style.display = "none";
+    achievementFirstWin.style.display = 'none';
+
+    console.log("Сложность установлена: " + difficulty + ", Число: " + randomNumber + ", Попыток: " + attemptsLeft);
+  }
+
+
+  function checkGuess() {
+    let guess = guessInput.value;
+
+    if (isNaN(guess) || guess < 1 || guess > maxNumber || guess === "") {
+      messageArea.textContent = "Введите корректное число от 1 до " + maxNumber + "!";
+      return;
+    }
+
+    guess = parseInt(guess);
+
+    lastGuesses.push(guess);
+    if (lastGuesses.length > 5) {
+        lastGuesses.shift();
+    }
+    updateLastGuessesDisplay();
+
+    attemptsLeft--;
+    attemptsDisplay.textContent = "Попыток: " + attemptsLeft;
+
+    if (guess === randomNumber) {
+      messageArea.textContent = "Ура! Вы угадали! Это было число " + randomNumber;
+      disableInput();
+      wins++;
+      checkAchievements();
+    } else {
+        let difference = Math.abs(guess - randomNumber);
+        if (difference <= proximityThreshold) {
+            messageArea.textContent = "Очень близко!";
+        } else if (guess < randomNumber) {
+            messageArea.textContent = "Слишком мало. Попробуйте еще раз!";
+        } else {
+            messageArea.textContent = "Слишком много. Попробуйте еще раз!";
+        }
+    }
+
+    if (attemptsLeft === 0) {
+        messageArea.textContent = "Вы проиграли! Загаданное число было " + randomNumber;
+        disableInput();
+    }
+
+    guessInput.value = "";
+    guessInput.focus();
+  }
+
+
+  function disableInput() {
+    guessInput.disabled = true;
+    checkButton.disabled = true;
+    newGameButton.disabled = false;
+    document.getElementById("additional-controls").style.display = "none";
+  }
+
+  function newGame() {
+      messageArea.textContent = "Выберите уровень сложности, чтобы начать новую игру.";
+      attemptsDisplay.textContent = "Попыток: -";
+      guessInput.disabled = true;
+      checkButton.disabled = true;
+      newGameButton.disabled = true;
+      guessInput.value = "";
+      lastGuesses = [];
+      updateLastGuessesDisplay();
+      hintUsed = false;
+      answerShown = false;
+      document.getElementById("additional-controls").style.display = "none";
+      achievementsDiv.style.display = "none";
+      achievementFirstWin.style.display = 'none';
+  }
+
+  function updateLastGuessesDisplay() {
+      let guessesText = "Последние попытки: " + lastGuesses.join(", ");
+      lastGuessesDisplay.textContent = guessesText;
+  }
+
+  function giveHint() {
+    if (hintUsed) {
+      messageArea.textContent = "Подсказка уже использована!";
+      return;
+    }
+    hintUsed = true;
+    let hint;
+    if (randomNumber % 2 === 0) {
+      hint = "Загаданное число четное.";
+    } else {
+      hint = "Загаданное число нечетное.";
+    }
+    messageArea.textContent = hint + " (Подсказка использована)";
+  }
+
+  function showAnswer() {
+    if (answerShown) {
+      messageArea.textContent = "Ответ уже показан!";
+      return;
+    }
+    answerShown = true;
+    messageArea.textContent = "Ответ: " + randomNumber + " (Ответ показан)";
+    disableInput();
+  }
+
+  function checkAchievements() {
+      achievementsDiv.style.display = "block";
+
+      if (!firstWinAchieved && attemptsLeft >= 0) {
+          achievementFirstWin.style.display = "block";
+          firstWinAchieved = true;
+      }
+      if (difficulty === 'easy' && achievementEasyWin.style.display === "none") {
+          achievementEasyWin.style.display = "block";
+      }
+      if (attemptsLeft === 10 && maxNumber === 100 && !perfectWinAchieved) {
+        perfectWinAchieved = true;
+          achievementPerfectWin.style.display = "block";
+      }
+  }
+
+
+  // Обработка нажатия Enter в поле ввода
+  guessInput.addEventListener("keyup", function(event) {
+    if (event.key === "Enter" && !checkButton.disabled) {
+      checkGuess();
+    }
+  });
+
+  // Фокус на инпуте при загрузке страницы (если сложность уже выбрана)
+  window.onload = function() {
+      guessInput.disabled = true;
+      checkButton.disabled = true;
+      newGameButton.disabled = true;
+      messageArea.textContent = "Выберите уровень сложности, чтобы начать новую игру.";
+      document.getElementById("additional-controls").style.display = "none";
+      achievementsDiv.style.display = "none";
+  }
+
+</script>
+
+</body>
+</html>
