@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dark Click TOP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .gradient-text {
+            font-size: 2.5em;
+            background: linear-gradient(to right, #000, #cc99ff, #000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientAnimation 5s linear infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #111;
+            color: #cc99ff;
+            border: 2px solid #cc99ff;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 0 10px #cc99ff;
+            transition: all 0.3s ease, transform 0.1s ease-in-out;
+            width: 280px;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #333;
+            box-shadow: 0 0 20px #cc99ff;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #clickButton {
+            background: none;
+            border: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 150px;
+            margin: 10px auto; /* Отступы */
+            border-radius: 50%; /* Круглая кнопка */
+        }
+
+        #clickStar {
+            font-size: 5em;
+            color: #cc99ff;
+            text-shadow: 0 0 20px #cc99ff; /* Тень для звезды */
+            transition: transform 0.1s ease-in-out; /* Плавное изменение масштаба при клике */
+        }
+
+        #clickButton:active #clickStar {
+            transform: scale(0.9); /* уменьшаем звезду, чтобы показать, что кнопка нажата */
+        }
+
+        #score {
+            font-size: 2em;
+            margin-top: 10px;
+        }
+
+        #energy {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        #upgrades {
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .upgrade {
+            border: 1px solid #cc99ff;
+            padding: 10px;
+            margin: 5px 0;
+            display: block;
+            width: 300px;
+            text-align: center;
+        }
+
+        .upgrade-level {
+            font-size: 0.8em;
+            color: #aaa;
+        }
+
+        .active-skill {
+            border: 2px solid green;
+            background-color: #222;
+            color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+<h1 class="gradient-text">Dark Click TOP</h1>
+<p id="score">0</p>
+<button id="clickButton">
+    <i id="clickStar" class="fas fa-star"></i>
+</button>
+<p id="energy">⚡️ 100</p>
+
+<div id="dailyBonus"></div>
+<div id="activeSkills">
+</div>
+
+<div id="upgrades">
+    <h2>Улучшения</h2>
+    <div class="upgrade">
+        <button id="upgradeClickValue">Увеличение за клик</button>
+        <p id="clickValueCost">Стоимость: 10</p>
+        <p id="clickValueLevel" class="upgrade-level">Уровень: 1</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeAutoClick">Автоклик</button>
+        <p id="autoClickCost">Стоимость: 50</p>
+        <p id="autoClickLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeAutoClickEfficiency">Эффективность автокликов</button>
+        <p id="autoClickEfficiencyCost">Стоимость: 1000</p>
+        <p id="autoClickEfficiencyLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeEnergyRegen">Увеличить восстановление ⚡️</button>
+        <p id="energyRegenCost">Стоимость: 75</p>
+        <p id="energyRegenLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeEnergy">Увеличить макс. ⚡️</button>
+        <p id="energyCost">Стоимость: 100</p>
+        <p id="energyLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeCritChance">Шанс критического клика</button>
+        <p id="critChanceCost">Стоимость: 500</p>
+        <p id="critChanceLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeCritDamage">Критический урон</button>
+        <p id="critDamageCost">Стоимость: 750</p>
+        <p id="critDamageLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeClickEfficiency">Эффективность клика</button>
+        <p id="clickEfficiencyCost">Стоимость: 1250</p>
+        <p id="clickEfficiencyLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeOfflineProgress">Оффлайн прогресс</button>
+        <p id="offlineProgressCost">Стоимость: 2000</p>
+        <p id="offlineProgressLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+    <div class="upgrade">
+        <button id="upgradeEnergyCap">Максимальное восстановление ⚡️</button>
+        <p id="energyCapCost">Стоимость: 1500</p>
+        <p id="energyCapLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+     <div class="upgrade">
+        <button id="upgradeLuckyClicks">Удача</button>
+        <p id="luckyClicksCost">Стоимость: 3000</p>
+        <p id="luckyClicksLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+     <div class="upgrade">
+        <button id="upgradeComboClicks">Комбо клики</button>
+        <p id="comboClicksCost">Стоимость: 5000</p>
+        <p id="comboClicksLevel" class="upgrade-level">Уровень: 0</p>
+    </div>
+</div>
+
+<script>
+    let score = parseInt(localStorage.getItem('score')) || 0;
+    let clickValue = parseInt(localStorage.getItem('clickValue')) || 1;
+    let autoClickRate = parseInt(localStorage.getItem('autoClickRate')) || 0;
+    let maxEnergy = parseInt(localStorage.getItem('maxEnergy')) || 100;
+    let energy = parseInt(localStorage.getItem('energy')) || 100;
+    const energyPerScore = 1;
+    let energyRegenRate = parseFloat(localStorage.getItem('energyRegenRate')) || 1;
+    let autoClickEfficiency = parseFloat(localStorage.getItem('autoClickEfficiency')) || 1;
+
+    let critChance = parseFloat(localStorage.getItem('critChance')) || 0.05; // 5% chance
+    let critDamageMultiplier = parseFloat(localStorage.getItem('critDamageMultiplier')) || 2; // Multiplier
+    let clickEfficiency = parseFloat(localStorage.getItem('clickEfficiency')) || 1.00; //Multipler efficiency.
+    let offlineProgressBonus = parseFloat(localStorage.getItem('offlineProgressBonus')) || 0; // how much can they recover
+    let energyCapBonus = parseFloat(localStorage.getItem('energyCapBonus')) || 1; //Energycap
+
+         let luckyClicksChance = parseFloat(localStorage.getItem('luckyClicksChance')) || 0.01; // 1% chance
+    let comboClicksMultiplier = parseFloat(localStorage.getItem('comboClicksMultiplier')) || 1.5; // Combo multiplier
+
+    // Active Skills
+    const activeSkills = [
+        { id: "doubleScore", name: "Двойной счёт", duration: 30, cost: parseFloat(localStorage.getItem('doubleScoreCost')) || 500, description: "Удваивает получаемый счёт в течении 30 секунд", effect: () => { scoreMultiplier = 2; }, endEffect: () => { scoreMultiplier = 1; }, icon: "<i class='fas fa-star'></i>", costIncreaseRate: 1.1 },
+        { id: "infiniteEnergy", name: "Бесконечная ⚡️", duration: 15, cost: parseFloat(localStorage.getItem('infiniteEnergyCost')) || 750, description: "Не тратит ⚡️ в течении 15 секунд", effect: () => { infiniteEnergy = true; }, endEffect: () => { infiniteEnergy = false; }, icon: "<i class='fas fa-infinity'></i>", costIncreaseRate: 1.2 }
+    ];
+    let infiniteEnergy = false; // no energy loss
+    let scoreMultiplier = 1; // Score increase or decrease multiplier
+
+    // Daily Bonus
+    let lastBonusTime = localStorage.getItem('lastBonusTime') || 0;
+    const dailyBonusAmount = 250; // Amount to give to user in daily bonus
+    const dailyBonusElement = document.getElementById('dailyBonus');
+
+    // Улучшения (объекты)
+    let upgrades = {
+        clickValue: {
+            cost: parseFloat(localStorage.getItem('clickValueCost')) || 10,
+            level: parseInt(localStorage.getItem('clickValueLevel')) || 1,
+            increase: 1,
+            costIncreaseRate: 1.2,
+            elementCost: document.getElementById('clickValueCost'),
+            elementLevel: document.getElementById('clickValueLevel')
+        },
+        autoClick: {
+            cost: parseFloat(localStorage.getItem('autoClickCost')) || 50,
+            level: parseInt(localStorage.getItem('autoClickLevel')) || 0,
+            increase: 1,
+            costIncreaseRate: 1.2,
+            elementCost: document.getElementById('autoClickCost'),
+            elementLevel: document.getElementById('autoClickLevel')
+        },
+        autoClickEfficiency: {
+            cost: parseFloat(localStorage.getItem('autoClickEfficiencyCost')) || 1000,
+            level: parseInt(localStorage.getItem('autoClickEfficiencyLevel')) || 0,
+            increase: 0.1, // +10% за уровень
+            costIncreaseRate: 1.3,
+            elementCost: document.getElementById('autoClickEfficiencyCost'),
+            elementLevel: document.getElementById('autoClickEfficiencyLevel')
+        },
+        energyRegen: {
+            cost: parseFloat(localStorage.getItem('energyRegenCost')) || 75,
+            level: parseInt(localStorage.getItem('energyRegenLevel')) || 0,
+            increase: 0.5,
+            costIncreaseRate: 1.3,
+            elementCost: document.getElementById('energyRegenCost'),
+            elementLevel: document.getElementById('energyRegenLevel')
+        },
+        energy: {
+            cost: parseFloat(localStorage.getItem('energyCost')) || 100,
+            level: parseInt(localStorage.getItem('energyLevel')) || 0,
+            increase: 10,
+            costIncreaseRate: 1.2,
+            elementCost: document.getElementById('energyCost'),
+            elementLevel: document.getElementById('energyLevel')
+        },
+        critChance: {
+            cost: parseFloat(localStorage.getItem('critChanceCost')) || 500,
+            level: parseInt(localStorage.getItem('critChanceLevel')) || 0,
+            increase: 0.01,
+            costIncreaseRate: 1.4,
+            elementCost: document.getElementById('critChanceCost'),
+            elementLevel: document.getElementById('critChanceLevel')
+        },
+        critDamage: {
+            cost: parseFloat(localStorage.getItem('critDamageCost')) || 750,
+            level: parseInt(localStorage.getItem('critDamageLevel')) || 0,
+            increase: 0.25,
+            costIncreaseRate: 1.5,
+            elementCost: document.getElementById('critDamageCost'),
+            elementLevel: document.getElementById('critDamageLevel')
+        },
+        clickEfficiency: {
+            cost: parseFloat(localStorage.getItem('clickEfficiencyCost')) || 1250,
+            level: parseInt(localStorage.getItem('clickEfficiencyLevel')) || 0,
+            increase: 0.1,
+            costIncreaseRate: 1.6,
+            elementCost: document.getElementById('clickEfficiencyCost'),
+            elementLevel: document.getElementById('clickEfficiencyLevel')
+        },
+        offlineProgress: {
+            cost: parseFloat(localStorage.getItem('offlineProgressCost')) || 2000,
+            level: parseInt(localStorage.getItem('offlineProgressLevel')) || 0,
+            increase: 0.05,
+            costIncreaseRate: 1.7,
+            elementCost: document.getElementById('offlineProgressCost'),
+            elementLevel: document.getElementById('offlineProgressLevel')
+        },
+        energyCap: {
+            cost: parseFloat(localStorage.getItem('energyCapCost')) || 1500,
+            level: parseInt(localStorage.getItem('energyCapLevel')) || 0,
+            increase: 5,
+            costIncreaseRate: 1.5,
+            elementCost: document.getElementById('energyCapCost'),
+            elementLevel: document.getElementById('energyCapLevel')
+        },
+           luckyClicks: {
+            cost: parseFloat(localStorage.getItem('luckyClicksCost')) || 3000,
+            level: parseInt(localStorage.getItem('luckyClicksLevel')) || 0,
+            increase: 0.005, // 0.5% increase per level
+            costIncreaseRate: 1.8,
+            elementCost: document.getElementById('luckyClicksCost'),
+            elementLevel: document.getElementById('luckyClicksLevel')
+        },
+        comboClicks: {
+            cost: parseFloat(localStorage.getItem('comboClicksCost')) || 5000,
+            level: parseInt(localStorage.getItem('comboClicksLevel')) || 0,
+            increase: 0.1, // 10% increase per level
+            costIncreaseRate: 2.0,
+            elementCost: document.getElementById('comboClicksCost'),
+            elementLevel: document.getElementById('comboClicksLevel')
+        }
+    };
+
+    const scoreElement = document.getElementById('score');
+    const energyElement = document.getElementById('energy');
+    const clickButton = document.getElementById('clickButton');
+    const clickStar = document.getElementById('clickStar');
+    const upgradeClickValueButton = document.getElementById('upgradeClickValue');
+    const upgradeAutoClickButton = document.getElementById('upgradeAutoClick');
+    const upgradeAutoClickEfficiencyButton = document.getElementById('upgradeAutoClickEfficiency');
+    const upgradeEnergyButton = document.getElementById('upgradeEnergy');
+    const upgradeEnergyRegenButton = document.getElementById('upgradeEnergyRegen');
+    const upgradeCritChanceButton = document.getElementById('upgradeCritChance');
+    const upgradeCritDamageButton = document.getElementById('upgradeCritDamage');
+    const upgradeClickEfficiencyButton = document.getElementById('upgradeClickEfficiency');
+    const upgradeOfflineProgressButton = document.getElementById('upgradeOfflineProgress');
+    const upgradeEnergyCapButton = document.getElementById('upgradeEnergyCap');
+
+       const upgradeLuckyClicksButton = document.getElementById('upgradeLuckyClicks');
+    const upgradeComboClicksButton = document.getElementById('upgradeComboClicks');
+
+
+    function formatNumber(number) {
+        return numeral(number).format('0.0a');
+    }
+
+    function updateScore() {
+        scoreElement.textContent = formatNumber(score);
+        localStorage.setItem('score', score);
+    }
+
+    function updateEnergy() {
+        energyElement.textContent = `⚡️ ${Math.floor(energy)}`;
+        localStorage.setItem('energy', energy);
+    }
+
+    function updateCost(upgrade) {
+        upgrade.elementCost.textContent = `Стоимость: ${formatNumber(Math.floor(upgrade.cost))}`;
+        localStorage.setItem(upgrade.elementCost.id + 'Cost', upgrade.cost);
+    }
+
+    function updateLevel(upgrade) {
+        upgrade.elementLevel.textContent = `Уровень: ${upgrade.level}`;
+        localStorage.setItem(upgrade.elementLevel.id.replace('Level', '') + 'Level', upgrade.level);
+    }
+
+    clickButton.addEventListener('click', () => {
+        const energyCost = (clickValue * energyPerScore);
+        let damage = clickValue * scoreMultiplier;
+
+        if (energy >= energyCost || infiniteEnergy) {
+            if (!infiniteEnergy)
+                energy -= energyCost;
+
+            if (Math.random() < critChance) {
+                damage *= critDamageMultiplier;
+            }
+                if (Math.random() < luckyClicksChance) {
+                damage *= 5; // 5x damage for lucky clicks
+                   }
+        damage *= clickEfficiency;
+
+            score += damage;
+            updateScore();
+            updateEnergy();
+            clickStar.classList.remove('animate__animated', 'animate__pulse'); // сброс
+            void clickStar.offsetWidth; // trigger reflow
+            clickStar.classList.add('animate__animated', 'animate__pulse'); // старт анимации
+        } else {
+            alert("Недостаточно ⚡️!");
+        }
+    });
+
+
+    upgradeClickValueButton.addEventListener('click', () => {
+        const upgrade = upgrades.clickValue;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            clickValue += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('clickValue', clickValue);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+
+    upgradeAutoClickButton.addEventListener('click', () => {
+        const upgrade = upgrades.autoClick;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            autoClickRate += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('autoClickRate', autoClickRate);
+
+            clearInterval(autoClickInterval);
+            autoClickInterval = setInterval(() => {
+                score += (autoClickRate * scoreMultiplier * autoClickEfficiency);
+                updateScore();
+            }, 1000);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeAutoClickEfficiencyButton.addEventListener('click', () => {
+        const upgrade = upgrades.autoClickEfficiency;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            autoClickEfficiency += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('autoClickEfficiency', autoClickEfficiency);
+            localStorage.setItem('autoClickEfficiencyCost', upgrade.cost);
+            localStorage.setItem('autoClickEfficiencyLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+    upgradeCritChanceButton.addEventListener('click', () => {
+        const upgrade = upgrades.critChance;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            critChance += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('critChance', critChance);
+            localStorage.setItem('critChanceCost', upgrade.cost);
+            localStorage.setItem('critChanceLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeCritDamageButton.addEventListener('click', () => {
+        const upgrade = upgrades.critDamage;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            critDamageMultiplier += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('critDamageMultiplier', critDamageMultiplier);
+            localStorage.setItem('critDamageCost', upgrade.cost);
+            localStorage.setItem('critDamageLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+    upgradeClickEfficiencyButton.addEventListener('click', () => {
+        const upgrade = upgrades.clickEfficiency;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            clickEfficiency += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('clickEfficiency', clickEfficiency);
+            localStorage.setItem('clickEfficiencyCost', upgrade.cost);
+            localStorage.setItem('clickEfficiencyLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeOfflineProgressButton.addEventListener('click', () => {
+        const upgrade = upgrades.offlineProgress;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            offlineProgressBonus += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('offlineProgressBonus', offlineProgressBonus);
+            localStorage.setItem('offlineProgressCost', upgrade.cost);
+            localStorage.setItem('offlineProgressLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeEnergyCapButton.addEventListener('click', () => {
+        const upgrade = upgrades.energyCap;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            energyCapBonus += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            maxEnergy += upgrade.increase;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('energyCapBonus', energyCapBonus);
+            localStorage.setItem('energyCapCost', upgrade.cost);
+            localStorage.setItem('energyCapLevel', upgrade.level);
+            localStorage.setItem('maxEnergy', maxEnergy);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+   upgradeLuckyClicksButton.addEventListener('click', () => {
+        const upgrade = upgrades.luckyClicks;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+           luckyClicksChance += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+             localStorage.setItem('luckyClicksChance', luckyClicksChance);
+            localStorage.setItem('luckyClicksCost', upgrade.cost);
+            localStorage.setItem('luckyClicksLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeComboClicksButton.addEventListener('click', () => {
+        const upgrade = upgrades.comboClicks;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            comboClicksMultiplier += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+              localStorage.setItem('comboClicksMultiplier',  comboClicksMultiplier);
+            localStorage.setItem('comboClicksCost', upgrade.cost);
+            localStorage.setItem('comboClicksLevel', upgrade.level);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeEnergyRegenButton.addEventListener('click', () => {
+        const upgrade = upgrades.energyRegen;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            energyRegenRate += upgrade.increase;
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('energyRegenRate', energyRegenRate);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    upgradeEnergyButton.addEventListener('click', () => {
+        const upgrade = upgrades.energy;
+        if (score >= upgrade.cost) {
+            score -= upgrade.cost;
+            maxEnergy += upgrade.increase;
+            energy = Math.min(energy + upgrade.increase, maxEnergy);
+            upgrade.cost *= upgrade.costIncreaseRate;
+            upgrade.level++;
+            updateScore();
+            updateEnergy();
+            updateCost(upgrade);
+            updateLevel(upgrade);
+            localStorage.setItem('maxEnergy', maxEnergy);
+        } else {
+            alert("Недостаточно средств!");
+        }
+    });
+
+    function claimDailyBonus() {
+        const now = Date.now();
+        score += dailyBonusAmount;
+        updateScore();
+        lastBonusTime = now;
+        localStorage.setItem('lastBonusTime', lastBonusTime);
+        updateDailyBonusUI();
+    }
+
+    function updateDailyBonusUI() {
+        const timeLeft = timeTillBonus();
+        if (timeLeft <= 0) {
+            dailyBonusElement.innerHTML = '<button onclick="claimDailyBonus()">Забрать ежедневный бонус (+ ' + formatNumber(dailyBonusAmount) + ')</button>';
+        } else {
+            dailyBonusElement.textContent = `Ежедневный бонус будет доступен через: ${formatTime(timeLeft)}`;
+        }
+    }
+
+    function timeTillBonus() {
+        const now = Date.now();
+        const nextBonusTime = parseInt(lastBonusTime) + (24 * 60 * 60 * 1000);
+        return nextBonusTime - now;
+    }
+
+    function formatTime(ms) {
+        const seconds = Math.floor((ms / 1000) % 60);
+        const minutes = Math.floor((ms / (1000 * 60)) % 60);
+        const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+        return `${hours}ч ${minutes}м ${seconds}с`;
+    }
+
+    function createActiveSkillButton(skill) {
+        const button = document.createElement('button');
+        button.id = skill.id;
+        button.classList.add('active-skill');
+        button.innerHTML = `${skill.icon} ${skill.name} <br> ${formatNumber(skill.cost)}`;
+        button.title = skill.description;
+        button.addEventListener('click', () => activateSkill(skill));
+        return button;
+    }
+
+    function activateSkill(skill) {
+        if (score >= skill.cost) {
+            score -= skill.cost;
+            updateScore();
+            skill.effect();
+            const button = document.getElementById(skill.id);
+            button.disabled = true;
+            button.classList.add('animate__animated', 'animate__pulse');
+
+            setTimeout(() => {
+                skill.endEffect();
+                button.disabled = false;
+                button.classList.remove('animate__animated', 'animate__pulse');
+            }, skill.duration * 1000);
+            skill.cost *= skill.costIncreaseRate;
+            localStorage.setItem(skill.id + 'Cost', skill.cost);
+            button.innerHTML = `${skill.icon} ${skill.name} <br> ${formatNumber(skill.cost)}`;
+
+        } else {
+            alert("Недостаточно средств для активации " + skill.name + "!");
+        }
+    }
+
+    let autoClickInterval;
+
+    // Восстановление энергии
+    setInterval(() => {
+        if (energy < maxEnergy) {
+            energy = Math.min(energy + energyRegenRate, maxEnergy);
+            updateEnergy();
+        }
+    }, 1000);
+
+    function startBonusTimer() {
+        setInterval(updateDailyBonusUI, 1000); // Обновляем таймер каждую секунду
+    }
+
+    function checkOfflineProgress() {
+        const lastTime = localStorage.getItem('lastTime');
+        if (lastTime) {
+            const timeDiff = Date.now() - parseInt(lastTime);
+            const offlineProgress = (timeDiff / 1000) * (autoClickRate * scoreMultiplier * autoClickEfficiency) * offlineProgressBonus;
+            score += offlineProgress;
+            updateScore();
+        }
+        localStorage.setItem('lastTime', Date.now());
+    }
+
+    updateScore();
+    updateEnergy();
+
+    // Инициализация цен и уровней
+    for (const upgradeKey in upgrades) {
+        const upgrade = upgrades[upgradeKey];
+        updateCost(upgrade);
+        updateLevel(upgrade);
+    }
+
+    const activeSkillsContainer = document.getElementById('activeSkills'); // get main container
+    activeSkills.forEach(skill => { // run each skill in array
+        const button = createActiveSkillButton(skill); // create new html code to display button
+        activeSkillsContainer.appendChild(button); // add button to container
+    });
+    checkOfflineProgress() // check if the user was offline
+    startBonusTimer()
+    updateDailyBonusUI(); // Init
+
+    // Восстановление состояния автоклика
+    if (autoClickRate > 0) {
+        autoClickInterval = setInterval(() => {
+            score += (autoClickRate * scoreMultiplier * autoClickEfficiency);
+            updateScore();
+        }, 1000);
+    }
+
+    localStorage.setItem('lastTime', Date.now());// record the timer
+</script>
+</body>
+</html>
