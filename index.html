@@ -1,188 +1,347 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-<title>Игра "Угадай число"</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #181818;
-  color: #eee;
-  text-align: center;
-  padding: 20px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>УГАДАЙ ЧИСЛО — by haker_one</title>
+  <style>
+    :root {
+      --bg-dark: #000;
+      --primary: #4a00e0;
+      --secondary: #00d1ff;
+      --neon-pink: #ff00c8;
+      --neon-green: #00ff9d;
+      --text-light: #e0e0ff;
+      --glow: rgba(0, 209, 255, 0.6);
+    }
 
-h1 {
-  color: #bb86fc;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-p {
-  margin-bottom: 15px;
-}
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
+    }
 
-#message {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #bb86fc;
-  margin-top: 20px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
+    /* АНИМАЦИЯ ФОНА — ПЕРЕЛИВАНИЕ ФИОЛЕТОВОГО В НЕОН ЗЕЛЕНЫЙ */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      opacity: 0.15;
+      z-index: -1;
+      animation: gradientShift 12s ease infinite alternate;
+    }
 
-#attempts {
-  font-size: 1em;
-  margin-top: 10px;
-}
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
 
-input[type="number"] {
-  padding: 12px 16px;
-  font-size: 18px;
-  border: 2px solid #3700b3;
-  border-radius: 8px;
-  background-color: #212121;
-  color: #fff;
-  width: 200px;
-  margin-bottom: 20px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
+    h1 {
+      font-size: 4em;
+      font-weight: 900;
+      letter-spacing: -4px;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow);
+      animation: neonPulse 1.5s ease-in-out infinite;
+    }
 
-input[type="number"]:focus {
-  border-color: #bb86fc;
-}
+    @keyframes neonPulse {
+      0%, 100% { text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow); }
+      50% { text-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow), 0 0 80px var(--glow); }
+    }
 
-button {
-  padding: 14px 32px;
-  font-size: 18px;
-  background-color: #3700b3;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-  margin-top: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
+    .subtitle {
+      font-size: 1.3em;
+      color: var(--secondary);
+      margin-bottom: 40px;
+      font-weight: 300;
+      text-shadow: 0 0 10px var(--glow);
+      letter-spacing: 1px;
+    }
 
-button:hover {
-  background-color: #6200ea;
-}
+    #difficulty-selection {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+    #difficulty-selection button {
+      padding: 18px 30px;
+      font-size: 1.2em;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: transparent;
+      color: var(--text-light);
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 15px rgba(74, 0, 224, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      min-width: 180px;
+    }
 
-button:disabled {
-  background-color: #555;
-  cursor: not-allowed;
-  box-shadow: none;
-}
+    #difficulty-selection button:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 0 30px rgba(74, 0, 224, 0.8), 0 0 50px var(--glow);
+      border-color: var(--secondary);
+      animation: buttonPulse 0.5s ease-out;
+    }
 
-/* Difficulty selection */
-#difficulty-selection {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
+    @keyframes buttonPulse {
+      0% { box-shadow: 0 0 15px rgba(74, 0, 224, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(74, 0, 224, 0.8), 0 0 70px var(--glow); }
+      100% { box-shadow: 0 0 15px rgba(74, 0, 224, 0.3); }
+    }
 
-#difficulty-selection button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-}
+    input[type="number"] {
+      padding: 20px;
+      font-size: 2em;
+      font-family: 'Courier New', monospace;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      background-color: rgba(10, 10, 10, 0.8);
+      color: var(--text-light);
+      width: 250px;
+      text-align: center;
+      margin: 25px auto;
+      outline: none;
+      box-shadow: 0 0 15px rgba(74, 0, 224, 0.3);
+      letter-spacing: 3px;
+      transition: all 0.3s ease;
+    }
 
-/* Last guesses display */
-#last-guesses {
-  margin-top: 20px;
-  font-size: 1em;
-  color: #9fa8da;
-}
+    input[type="number"]:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 25px var(--glow), 0 0 40px rgba(0, 209, 255, 0.7);
+      background-color: rgba(15, 15, 15, 0.9);
+      animation: inputGlow 0.8s ease-out;
+    }
 
-/* Additional controls */
-#additional-controls {
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-}
+    @keyframes inputGlow {
+      0% { box-shadow: 0 0 15px rgba(74, 0, 224, 0.3); }
+      50% { box-shadow: 0 0 30px var(--glow), 0 0 50px rgba(0, 209, 255, 0.7); }
+      100% { box-shadow: 0 0 15px rgba(74, 0, 224, 0.3); }
+    }
 
-#additional-controls button {
-  margin: 0 5px;
-  padding: 8px 16px;
-  font-size: 14px;
-}
+    .btn {
+      padding: 18px 40px;
+      font-size: 1.4em;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 15px 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: transparent;
+      color: var(--text-light);
+      border: 2px solid var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 15px rgba(74, 0, 224, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
 
-/* Achievements */
-#achievements {
-    margin-top: 20px;
-    font-size: 1em;
-    color: #a5d6a7;
-    display: none;
-}
+    .btn:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 0 30px rgba(74, 0, 224, 0.8), 0 0 50px var(--glow);
+      border-color: var(--secondary);
+      animation: buttonPulse 0.5s ease-out;
+    }
 
-#achievements p {
-    margin: 5px 0;
-}
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      border-color: #333;
+    }
 
-</style>
+    #message {
+      font-size: 2em;
+      font-weight: 800;
+      margin: 30px 0;
+      min-height: 70px;
+      color: var(--primary);
+      text-shadow: 0 0 15px var(--glow);
+      animation: messageGlow 1.5s ease-in-out infinite;
+    }
+
+    @keyframes messageGlow {
+      0%, 100% { text-shadow: 0 0 15px var(--glow); }
+      50% { text-shadow: 0 0 25px var(--glow), 0 0 40px var(--glow); }
+    }
+
+    #attempts {
+      font-size: 1.4em;
+      color: var(--secondary);
+      margin: 15px 0;
+      font-weight: 600;
+      text-shadow: 0 0 10px var(--glow);
+    }
+
+    #last-guesses {
+      margin: 25px 0;
+      font-size: 1.1em;
+      color: #aaa;
+      font-style: italic;
+      min-height: 28px;
+    }
+
+    #additional-controls {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    #achievements {
+      margin-top: 40px;
+      font-size: 1.3em;
+      color: var(--secondary);
+      display: none;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    #achievements p {
+      margin: 12px 0;
+      padding: 12px 25px;
+      background: rgba(0, 209, 255, 0.1);
+      border: 1px solid var(--secondary);
+      border-radius: 8px;
+      display: inline-block;
+      box-shadow: 0 0 20px rgba(0, 209, 255, 0.3);
+      animation: achievementPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes achievementPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 1em;
+      color: var(--secondary);
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px var(--glow);
+      animation: footerGlow 3s ease-in-out infinite;
+      font-weight: 500;
+    }
+
+    @keyframes footerGlow {
+      0%, 100% { text-shadow: 0 0 10px var(--glow); }
+      50% { text-shadow: 0 0 20px var(--glow), 0 0 30px var(--glow); }
+    }
+
+    /* Анимация появления */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Эффект "дрожания" при ошибке */
+    .shake {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Мобильная адаптация */
+    @media (max-width: 500px) {
+      h1 { font-size: 2.8em; letter-spacing: -2px; }
+      .btn, #difficulty-selection button, input[type="number"] {
+        font-size: 1.1em !important;
+        padding: 14px 24px !important;
+        min-width: 140px !important;
+      }
+      #difficulty-selection { gap: 10px; }
+    }
+
+  </style>
 </head>
 <body>
 
-<h1>Угадай число</h1>
-<p>Выберите уровень сложности:</p>
+<h1>УГАДАЙ ЧИСЛО</h1>
+<p class="subtitle">— Ты готов? —</p>
 
 <div id="difficulty-selection">
-  <button onclick="setDifficulty('easy')">Легко (1-10, 5 попыток)</button>
-  <button onclick="setDifficulty('medium')">Средне (1-50, 7 попыток)</button>
-  <button onclick="setDifficulty('hard')">Сложно (1-100, 10 попыток)</button>
+  <button onclick="setDifficulty('easy')">ЛЕГКО</button>
+  <button onclick="setDifficulty('medium')">СРЕДНЕ</button>
+  <button onclick="setDifficulty('hard')">СЛОЖНО</button>
 </div>
 
-<p>Я загадал число. Угадай его!</p>
+<input type="number" id="guess" min="1" max="100" placeholder="ВВЕДИ ЧИСЛО" autocomplete="off">
 
-<input type="number" id="guess" min="1" max="100" placeholder="Введите число">
-<button onclick="checkGuess()">Проверить</button>
+<button class="btn" onclick="checkGuess()">ПРОВЕРИТЬ</button>
+<button class="btn" onclick="newGame()" id="new-game-button" disabled>НОВАЯ ИГРА</button>
 
-<button onclick="newGame()" id="new-game-button" disabled>Новая игра</button>
-
-<p id="message"></p>
+<p id="message">Я загадал число... Угадай его!</p>
 <p id="attempts">Попыток: -</p>
-
 <div id="last-guesses"></div>
 
 <div id="additional-controls">
-  <button onclick="giveHint()">Подсказка</button>
-  <button onclick="showAnswer()">Показать ответ</button>
+  <button class="btn" onclick="giveHint()">ПОДСКАЗКА</button>
+  <button class="btn" onclick="showAnswer()">ПОКАЗАТЬ</button>
 </div>
 
 <div id="achievements">
-    <p id="achievement-first-win" style="display: none;">🎉 Первая победа! 🎉</p>
-    <p id="achievement-easy-win" style="display: none;">🏆 Победил на легком уровне! 🏆</p>
-    <p id="achievement-perfect-win" style="display: none;">💯 Угадал с первой попытки! 💯</p>
+  <p id="achievement-first-win">🎉 ПЕРВАЯ ПОБЕДА</p>
+  <p id="achievement-easy-win">🏆 ЛЕГКО ПОБЕЖДЁН</p>
+  <p id="achievement-perfect-win">💯 С ПЕРВОЙ ПОПЫТКИ</p>
 </div>
 
+<footer>by haker_one</footer>
 
 <script>
   let randomNumber = 0;
   let attemptsLeft = 0;
   let maxNumber = 100;
   let lastGuesses = [];
-  let wins = 0;
   let difficulty = null;
   let firstWinAchieved = false;
   let perfectWinAchieved = false;
-  let proximityThreshold = 5; // Порог близости
+  let proximityThreshold = 5;
 
   let guessInput = document.getElementById("guess");
   let messageArea = document.getElementById("message");
   let attemptsDisplay = document.getElementById("attempts");
-  let checkButton = document.querySelector("button");
+  let checkButton = document.querySelector(".btn");
   let newGameButton = document.getElementById("new-game-button");
   let lastGuessesDisplay = document.getElementById("last-guesses");
   let hintUsed = false;
@@ -192,8 +351,6 @@ button:disabled {
   let achievementEasyWin = document.getElementById("achievement-easy-win");
   let achievementPerfectWin = document.getElementById("achievement-perfect-win");
 
-
-  // Функция для установки сложности
   function setDifficulty(selectedDifficulty) {
     difficulty = selectedDifficulty;
     if (difficulty === 'easy') {
@@ -213,7 +370,7 @@ button:disabled {
     randomNumber = Math.floor(Math.random() * maxNumber) + 1;
     guessInput.max = maxNumber;
     guessInput.min = 1;
-    messageArea.textContent = "";
+    messageArea.textContent = "Я загадал число... Угадай его!";
     attemptsDisplay.textContent = "Попыток: " + attemptsLeft;
     guessInput.disabled = false;
     checkButton.disabled = false;
@@ -223,58 +380,62 @@ button:disabled {
     updateLastGuessesDisplay();
     hintUsed = false;
     answerShown = false;
-    document.getElementById("additional-controls").style.display = "flex";
     achievementsDiv.style.display = "none";
-    achievementFirstWin.style.display = 'none';
 
-    console.log("Сложность установлена: " + difficulty + ", Число: " + randomNumber + ", Попыток: " + attemptsLeft);
+    // Кратковременный эффект при выборе
+    messageArea.classList.add("shake");
+    setTimeout(() => messageArea.classList.remove("shake"), 500);
   }
 
-
   function checkGuess() {
-    let guess = guessInput.value;
+    let guess = guessInput.value.trim();
 
-    if (isNaN(guess) || guess < 1 || guess > maxNumber || guess === "") {
-      messageArea.textContent = "Введите корректное число от 1 до " + maxNumber + "!";
+    if (!guess || isNaN(guess) || guess < 1 || guess > maxNumber) {
+      messageArea.textContent = "Введите число от 1 до " + maxNumber + "!";
+      messageArea.classList.add("shake");
+      setTimeout(() => messageArea.classList.remove("shake"), 500);
       return;
     }
 
     guess = parseInt(guess);
 
     lastGuesses.push(guess);
-    if (lastGuesses.length > 5) {
-        lastGuesses.shift();
-    }
+    if (lastGuesses.length > 5) lastGuesses.shift();
     updateLastGuessesDisplay();
 
     attemptsLeft--;
     attemptsDisplay.textContent = "Попыток: " + attemptsLeft;
 
     if (guess === randomNumber) {
-      messageArea.textContent = "Ура! Вы угадали! Это было число " + randomNumber;
+      messageArea.textContent = "🎯 ТЫ УГАДАЛ!";
+      messageArea.style.color = "#00d1ff";
       disableInput();
-      wins++;
       checkAchievements();
     } else {
-        let difference = Math.abs(guess - randomNumber);
-        if (difference <= proximityThreshold) {
-            messageArea.textContent = "Очень близко!";
-        } else if (guess < randomNumber) {
-            messageArea.textContent = "Слишком мало. Попробуйте еще раз!";
-        } else {
-            messageArea.textContent = "Слишком много. Попробуйте еще раз!";
-        }
+      let difference = Math.abs(guess - randomNumber);
+      if (difference <= proximityThreshold) {
+        messageArea.textContent = "🔥 БЛИЗКО!";
+        messageArea.style.color = "#ff00c8";
+      } else if (guess < randomNumber) {
+        messageArea.textContent = "📉 СЛИШКОМ МАЛО";
+        messageArea.style.color = "#ff4081";
+      } else {
+        messageArea.textContent = "📈 СЛИШКОМ МНОГО";
+        messageArea.style.color = "#ff4081";
+      }
+      messageArea.classList.add("shake");
+      setTimeout(() => messageArea.classList.remove("shake"), 500);
     }
 
-    if (attemptsLeft === 0) {
-        messageArea.textContent = "Вы проиграли! Загаданное число было " + randomNumber;
-        disableInput();
+    if (attemptsLeft === 0 && guess !== randomNumber) {
+      messageArea.textContent = "💀 ПРОИГРАЛ. ЧИСЛО: " + randomNumber;
+      messageArea.style.color = "#ff008f";
+      disableInput();
     }
 
     guessInput.value = "";
     guessInput.focus();
   }
-
 
   function disableInput() {
     guessInput.disabled = true;
@@ -284,85 +445,82 @@ button:disabled {
   }
 
   function newGame() {
-      messageArea.textContent = "Выберите уровень сложности, чтобы начать новую игру.";
-      attemptsDisplay.textContent = "Попыток: -";
-      guessInput.disabled = true;
-      checkButton.disabled = true;
-      newGameButton.disabled = true;
-      guessInput.value = "";
-      lastGuesses = [];
-      updateLastGuessesDisplay();
-      hintUsed = false;
-      answerShown = false;
-      document.getElementById("additional-controls").style.display = "none";
-      achievementsDiv.style.display = "none";
-      achievementFirstWin.style.display = 'none';
+    messageArea.textContent = "Выбери уровень сложности.";
+    attemptsDisplay.textContent = "Попыток: -";
+    guessInput.disabled = true;
+    checkButton.disabled = true;
+    newGameButton.disabled = true;
+    guessInput.value = "";
+    lastGuesses = [];
+    updateLastGuessesDisplay();
+    hintUsed = false;
+    answerShown = false;
+    document.getElementById("additional-controls").style.display = "none";
+    achievementsDiv.style.display = "none";
   }
 
   function updateLastGuessesDisplay() {
-      let guessesText = "Последние попытки: " + lastGuesses.join(", ");
-      lastGuessesDisplay.textContent = guessesText;
+    let guessesText = "Последние: " + (lastGuesses.length ? lastGuesses.join(", ") : "—");
+    lastGuessesDisplay.textContent = guessesText;
   }
 
   function giveHint() {
     if (hintUsed) {
       messageArea.textContent = "Подсказка уже использована!";
+      messageArea.classList.add("shake");
+      setTimeout(() => messageArea.classList.remove("shake"), 500);
       return;
     }
     hintUsed = true;
-    let hint;
-    if (randomNumber % 2 === 0) {
-      hint = "Загаданное число четное.";
-    } else {
-      hint = "Загаданное число нечетное.";
-    }
-    messageArea.textContent = hint + " (Подсказка использована)";
+    messageArea.textContent = "Число " + (randomNumber % 2 === 0 ? "чётное." : "нечётное.");
+    messageArea.style.color = "#00d1ff";
   }
 
   function showAnswer() {
     if (answerShown) {
       messageArea.textContent = "Ответ уже показан!";
+      messageArea.classList.add("shake");
+      setTimeout(() => messageArea.classList.remove("shake"), 500);
       return;
     }
     answerShown = true;
-    messageArea.textContent = "Ответ: " + randomNumber + " (Ответ показан)";
+    messageArea.textContent = "ЧИСЛО: " + randomNumber;
+    messageArea.style.color = "#00d1ff";
     disableInput();
   }
 
   function checkAchievements() {
-      achievementsDiv.style.display = "block";
+    achievementsDiv.style.display = "block";
 
-      if (!firstWinAchieved && attemptsLeft >= 0) {
-          achievementFirstWin.style.display = "block";
-          firstWinAchieved = true;
-      }
-      if (difficulty === 'easy' && achievementEasyWin.style.display === "none") {
-          achievementEasyWin.style.display = "block";
-      }
-      if (attemptsLeft === 10 && maxNumber === 100 && !perfectWinAchieved) {
-        perfectWinAchieved = true;
-          achievementPerfectWin.style.display = "block";
-      }
+    if (!firstWinAchieved) {
+      achievementFirstWin.style.display = "block";
+      firstWinAchieved = true;
+    }
+
+    if (difficulty === 'easy' && achievementEasyWin.style.display === "none") {
+      achievementEasyWin.style.display = "block";
+    }
+
+    if (attemptsLeft === 10 && maxNumber === 100 && !perfectWinAchieved) {
+      perfectWinAchieved = true;
+      achievementPerfectWin.style.display = "block";
+    }
   }
 
-
-  // Обработка нажатия Enter в поле ввода
   guessInput.addEventListener("keyup", function(event) {
     if (event.key === "Enter" && !checkButton.disabled) {
       checkGuess();
     }
   });
 
-  // Фокус на инпуте при загрузке страницы (если сложность уже выбрана)
   window.onload = function() {
-      guessInput.disabled = true;
-      checkButton.disabled = true;
-      newGameButton.disabled = true;
-      messageArea.textContent = "Выберите уровень сложности, чтобы начать новую игру.";
-      document.getElementById("additional-controls").style.display = "none";
-      achievementsDiv.style.display = "none";
-  }
-
+    guessInput.disabled = true;
+    checkButton.disabled = true;
+    newGameButton.disabled = true;
+    messageArea.textContent = "Выбери уровень сложности.";
+    document.getElementById("additional-controls").style.display = "none";
+    achievementsDiv.style.display = "none";
+  };
 </script>
 
 </body>
