@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>DH Шахта MEGA</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary-color: #bb86fc;
+            --secondary-color: #64ffda;
+            --accent-color: #ff4081;
+            --accent-orange: #ffab40;
+            --accent-purple: #e040fb;
+            --accent-blue: #448aff;
+            --accent-yellow: #ffd740;
+            --accent-pink: #ff80ab;
+            --dark-bg: #0f0f1a;
+            --darker-bg: #0a0a12;
+            --card-bg: #1a1a2e;
+            --card-hover: #252544;
+            --text-color: #e0e0ff;
+            --text-muted: #9e9ed0;
+            --accent-red: #ff5252;
+            --accent-green: #69f0ae;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), var(--darker-bg));
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .phone-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(187, 134, 252, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.8)); }
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 18px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.1), transparent);
+            transition: 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(187, 134, 252, 0.3);
+        }
+
+        button {
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 8px 6px;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-purple));
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite, buttonPulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: gradientShift 2s ease infinite, buttonPulse 1s ease-in-out infinite;
+        }
+
+        button:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            animation: none;
+            transform: none;
+        }
+
+        button:disabled:hover::before {
+            display: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 6px 20px rgba(187, 134, 252, 0.4); }
+            50% { box-shadow: 0 6px 30px rgba(100, 255, 218, 0.6); }
+        }
+
+        .balance-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.6));
+            border-radius: 20px;
+            border: 2px solid rgba(187, 134, 252, 0.4);
+            box-shadow: 0 0 30px rgba(187, 134, 252, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(187, 134, 252, 0.1), transparent 30%);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .balance-amount {
+            color: var(--secondary-color);
+            text-shadow: 0 0 15px rgba(100, 255, 218, 0.8);
+            font-size: 2.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .notification {
+            background: rgba(100, 255, 218, 0.2);
+            border: 1px solid var(--secondary-color);
+            color: var(--text-color);
+            padding: 18px;
+            margin: 18px 0;
+            border-radius: 15px;
+            display: none;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.4);
+            animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .clicker-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        #clickButton {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-purple));
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite, pulse 2s infinite, rotate 10s linear infinite;
+            color: white;
+            font-size: 32px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        #clickButton::after {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: ripple 3s infinite;
+            opacity: 0.6;
+        }
+
+        #clickButton::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: ripple 4s infinite 1.5s;
+            opacity: 0.4;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(187, 134, 252, 0.8), 0 0 0 0 rgba(100, 255, 218, 0.6); }
+            70% { box-shadow: 0 0 0 30px rgba(187, 134, 252, 0), 0 0 0 20px rgba(100, 255, 218, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(187, 134, 252, 0), 0 0 0 0 rgba(100, 255, 218, 0); }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        .tabs {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            background: rgba(30, 30, 50, 0.8);
+            padding: 12px;
+            border-radius: 20px;
+            flex-wrap: wrap;
+            backdrop-filter: blur(20px);
+            gap: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab {
+            padding: 14px 18px;
+            border-radius: 15px;
+            cursor: pointer;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+            min-width: 85px;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .tab:hover::before {
+            left: 100%;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: #121212;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(187, 134, 252, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            width: 100%;
+            animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .location {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 18px;
+            background: rgba(30, 30, 50, 0.7);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.15), transparent);
+            transition: 0.6s;
+        }
+
+        .location:hover::before {
+            left: 100%;
+        }
+
+        .location:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(187, 134, 252, 0.4);
+        }
+
+        .location h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+        }
+
+        .mining-timer {
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-purple));
+            border-radius: 8px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 18px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(187, 134, 252, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .inventory-item {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inventory-item.owned {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(105, 240, 174, 0.3);
+        }
+
+        .inventory-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.15), transparent);
+            transition: 0.6s;
+        }
+
+        .inventory-item:hover::before {
+            left: 100%;
+        }
+
+        .inventory-item:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(187, 134, 252, 0.4);
+        }
+
+        .item-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 10px rgba(187, 134, 252, 0.5));
+        }
+
+        .item-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .item-description {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .betting-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .bet-option {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 18px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bet-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.15), transparent);
+            transition: 0.5s;
+        }
+
+        .bet-option:hover::before {
+            left: 100%;
+        }
+
+        .bet-option:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: rgba(187, 134, 252, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .bet-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 6px;
+            text-shadow: 0 0 8px rgba(100, 255, 218, 0.5);
+        }
+
+        .bet-chance {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .credit-section {
+            margin-top: 25px;
+        }
+
+        .credit-input {
+            display: flex;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .credit-input input {
+            flex: 1;
+            padding: 18px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-color);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .credit-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(187, 134, 252, 0.4);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .credit-list {
+            margin-top: 25px;
+        }
+
+        .credit-item {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .credit-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .auto-miner {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 25px;
+            border-radius: 18px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .auto-miner:hover {
+            border-color: rgba(187, 134, 252, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .miner-level {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .miner-info {
+            flex: 1;
+        }
+
+        .miner-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .miner-stat {
+            text-align: center;
+        }
+
+        .miner-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            text-shadow: 0 0 8px rgba(100, 255, 218, 0.5);
+        }
+
+        .miner-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .upgrade-cost {
+            color: var(--accent-orange);
+            font-weight: bold;
+            margin-top: 12px;
+            font-size: 1.1rem;
+        }
+
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: float 8s infinite linear;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .particle:nth-child(2n) {
+            background: var(--secondary-color);
+            animation-duration: 10s;
+        }
+
+        .particle:nth-child(3n) {
+            background: var(--accent-purple);
+            animation-duration: 12s;
+        }
+
+        @keyframes float {
+            0% { 
+                transform: translateY(100vh) rotate(0deg) scale(0.5); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            90% { 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-100vh) rotate(360deg) scale(0.5); 
+                opacity: 0; 
+            }
+        }
+
+        .floating-crystal {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatCrystal 6s ease-in-out infinite;
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        @keyframes floatCrystal {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .achievement-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, var(--card-bg), var(--darker-bg));
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(187, 134, 252, 0.5);
+            text-align: center;
+            z-index: 1000;
+            animation: achievementPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border: 2px solid var(--primary-color);
+        }
+
+        @keyframes achievementPop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .mining-complete {
+            animation: miningComplete 0.6s ease;
+        }
+
+        @keyframes miningComplete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .secret-feature {
+            background: linear-gradient(45deg, var(--accent-pink), var(--accent-orange));
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .secret-feature:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--accent-pink);
+        }
+
+        .easter-egg {
+            position: fixed;
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .upgradeable-item {
+            position: relative;
+        }
+
+        .item-level {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-purple);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(224, 64, 251, 0.5);
+        }
+
+        .item-upgrade-btn {
+            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .item-bonus {
+            color: var(--accent-green);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div id="floatingCrystals"></div>
+    
+    <div class="phone-container">
+        <div class="header">
+            <h1>DH Шахта MEGA</h1>
+            <div class="subtitle">Ультимативный майнинг опыт</div>
+        </div>
+        
+        <div class="balance-display">
+            <div>💎 Баланс: <span class="balance-amount" id="balance">0</span> камней</div>
+            <div style="margin-top: 10px; font-size: 1rem; color: var(--text-muted)">
+                ⚡ <span id="stonesPerSecond">0</span> камней/сек
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('shahta')">⛏️ Шахта</div>
+            <div class="tab" onclick="showTab('inventory')">🎒 Инвентарь</div>
+            <div class="tab" onclick="showTab('dailybonus')">🎁 Бонус</div>
+            <div class="tab" onclick="showTab('luck')">🎰 Удача</div>
+            <div class="tab" onclick="showTab('credit')">💰 Кредит</div>
+            <div class="tab" onclick="showTab('auto')">🤖 Авто-майнинг</div>
+            <div class="tab" onclick="showTab('settings')">⚙️ Настройки</div>
+        </div>
+        
+        <!-- Вкладка Шахта -->
+        <div id="tab-shahta" class="tab-content active">
+            <div class="card">
+                <div class="clicker-section">
+                    <h3>⚡ Быстрый майнинг</h3>
+                    <p>Кликайте для мгновенной добычи!</p>
+                    <button id="clickButton">⛏️</button>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="clicksPerSecond">0/с</div>
+                            <div class="stat-label">Скорость клика</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalClicks">0</div>
+                            <div class="stat-label">Всего кликов</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="clickPower">1</div>
+                            <div class="stat-label">Сила клика</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🏔️ Локации для майнинга</h3>
+                <div id="locations">
+                    <!-- Локации будут добавлены через JavaScript -->
+                </div>
+            </div>
+            
+            <div id="notification" class="notification"></div>
+        </div>
+        
+        <!-- Вкладка Инвентарь -->
+        <div id="tab-inventory" class="tab-content">
+            <div class="card">
+                <h3>🎒 Ваш инвентарь</h3>
+                <div class="inventory-grid" id="inventoryGrid">
+                    <!-- Инвентарь будет заполнен через JavaScript -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Статистика</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalMined">0</div>
+                        <div class="stat-label">Всего добыто</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="locationsCompleted">0</div>
+                        <div class="stat-label">Локаций пройдено</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="playTime">0ч</div>
+                        <div class="stat-label">Время игры</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="luckWins">0</div>
+                        <div class="stat-label">Побед в удаче</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎪 Секретные фичи</h3>
+                <div class="secret-feature" onclick="activateRainbowMode()">
+                    🌈 Активировать Режим Радуги
+                </div>
+                <div class="secret-feature" onclick="deactivateRainbowMode()">
+                    🌈 Выключить Режим Радуги
+                </div>
+                <div class="secret-feature" onclick="spawnEasterEgg()">
+                    🥚 Найти Пасхалку
+                </div>
+                <div class="secret-feature" onclick="doubleProfit()">
+                    💰 Удвоить Профит (1 раз в день)
+                </div>
+            </div>
+        </div>
+        
+        <!-- Вкладка Бонус -->
+        <div id="tab-dailybonus" class="tab-content">
+            <div class="card">
+                <h3>🎁 Ежедневный бонус</h3>
+                <p>Заходи каждый день для получения награды!</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <button onclick="claimBonus()" class="gradient-button" id="bonusButton" style="padding: 25px 50px; font-size: 1.3rem;">
+                        🎁 Получить бонус
+                    </button>
+                </div>
+                <div id="bonusInfo" style="text-align: center; margin-top: 25px;"></div>
+            </div>
+            <div id="notification-bonus" class="notification"></div>
+        </div>
+        
+        <!-- Вкладка Удача -->
+        <div id="tab-luck" class="tab-content">
+            <div class="card">
+                <h3>🎰 Испытай удачу!</h3>
+                <p>Шанс выигрыша: <span style="color: var(--accent-green); font-weight: bold;">65%</span></p>
+                
+                <div class="betting-options">
+                    <div class="bet-option" onclick="tryLuck(10)">
+                        <div class="bet-amount">10 💎</div>
+                        <div class="bet-chance">Выигрыш: 15-30</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(50)">
+                        <div class="bet-amount">50 💎</div>
+                        <div class="bet-chance">Выигрыш: 75-150</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(100)">
+                        <div class="bet-amount">100 💎</div>
+                        <div class="bet-chance">Выигрыш: 150-300</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(250)">
+                        <div class="bet-amount">250 💎</div>
+                        <div class="bet-chance">Выигрыш: 375-750</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(500)">
+                        <div class="bet-amount">500 💎</div>
+                        <div class="bet-chance">Выигрыш: 750-1500</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(1000)">
+                        <div class="bet-amount">1000 💎</div>
+                        <div class="bet-chance">Выигрыш: 1500-3000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(2500)">
+                        <div class="bet-amount">2500 💎</div>
+                        <div class="bet-chance">Выигрыш: 3750-7500</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(5000)">
+                        <div class="bet-amount">5000 💎</div>
+                        <div class="bet-chance">Выигрыш: 7500-15000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(10000)">
+                        <div class="bet-amount">10000 💎</div>
+                        <div class="bet-chance">Выигрыш: 15000-30000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(25000)">
+                        <div class="bet-amount">25000 💎</div>
+                        <div class="bet-chance">Выигрыш: 37500-75000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(50000)">
+                        <div class="bet-amount">50000 💎</div>
+                        <div class="bet-chance">Выигрыш: 75000-150000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(100000)">
+                        <div class="bet-amount">100000 💎</div>
+                        <div class="bet-chance">Выигрыш: 150000-300000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(250000)">
+                        <div class="bet-amount">250000 💎</div>
+                        <div class="bet-chance">Выигрыш: 375000-750000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(500000)">
+                        <div class="bet-amount">500000 💎</div>
+                        <div class="bet-chance">Выигрыш: 750000-1500000</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(1000000)">
+                        <div class="bet-amount">1M 💎</div>
+                        <div class="bet-chance">Выигрыш: 1.5M-3M</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(2500000)">
+                        <div class="bet-amount">2.5M 💎</div>
+                        <div class="bet-chance">Выигрыш: 3.75M-7.5M</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(5000000)">
+                        <div class="bet-amount">5M 💎</div>
+                        <div class="bet-chance">Выигрыш: 7.5M-15M</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(10000000)">
+                        <div class="bet-amount">10M 💎</div>
+                        <div class="bet-chance">Выигрыш: 15M-30M</div>
+                    </div>
+                    <div class="bet-option" onclick="tryLuck(15000000)">
+                        <div class="bet-amount">15M 💎</div>
+                        <div class="bet-chance">Выигрыш: 22.5M-45M</div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid" style="margin-top: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalBets">0</div>
+                        <div class="stat-label">Всего ставок</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="winRate">0%</div>
+                        <div class="stat-label">Процент побед</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="profit">0</div>
+                        <div class="stat-label">Общий профит</div>
+                    </div>
+                </div>
+            </div>
+            <div id="notification-luck" class="notification"></div>
+        </div>
+        
+        <!-- Вкладка Кредит -->
+        <div id="tab-credit" class="tab-content">
+            <div class="card">
+                <h3>💰 Кредитная система</h3>
+                <p>Максимум 15 активных кредитов одновременно</p>
+                
+                <div class="credit-input">
+                    <input type="number" id="creditAmount" placeholder="Сумма кредита" min="1" max="1000000">
+                    <button onclick="takeCredit()">Взять кредит</button>
+                </div>
+                
+                <div class="credit-info" style="margin: 25px 0; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 15px;">
+                    <p>📅 Срок погашения: 
+                        <span id="creditTerms">
+                            ≤100: 24ч | 101-5000: 5д | ≥5001: 10д
+                        </span>
+                    </p>
+                    <p>💸 Процентная ставка: <span id="interestRate">33%</span></p>
+                    <p>📊 Активных кредитов: <span id="activeCredits">0</span>/15</p>
+                </div>
+                
+                <div class="credit-list" id="creditList">
+                    <!-- Список кредитов будет заполнен через JavaScript -->
+                </div>
+            </div>
+            <div id="notification-credit" class="notification"></div>
+        </div>
+        
+        <!-- Вкладка Авто-майнинг -->
+        <div id="tab-auto" class="tab-content">
+            <div class="card">
+                <h3>🤖 Система авто-майнинга</h3>
+                <p>Автоматическая добыча камней даже когда вы оффлайн!</p>
+                
+                <div class="auto-miner">
+                    <div class="miner-level">
+                        <div class="miner-info">
+                            <h4>⚡ Авто-кирка Уровень <span id="minerLevel">1</span></h4>
+                            <p>Добывает <span id="minerPower">1</span> камень каждые <span id="minerInterval">5</span> секунд</p>
+                            <div class="miner-stats">
+                                <div class="miner-stat">
+                                    <div class="miner-value" id="totalAutoMined">0</div>
+                                    <div class="miner-label">Всего добыто</div>
+                                </div>
+                                <div class="miner-stat">
+                                    <div class="miner-value" id="minerEfficiency">1/5с</div>
+                                    <div class="miner-label">Эффективность</div>
+                                </div>
+                            </div>
+                            <div class="upgrade-cost" id="upgradeCostText">Стоимость улучшения: 100 💎</div>
+                        </div>
+                        <button onclick="upgradeMiner()" id="upgradeMinerBtn">
+                            Улучшить
+                        </button>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="minerProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="autoMinedPerHour">0/ч</div>
+                        <div class="stat-label">Авто-добыча в час</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="minerUptime">0%</div>
+                        <div class="stat-label">Время работы</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка Настройки -->
+        <div id="tab-settings" class="tab-content">
+            <div class="card">
+                <h3>⚙️ Настройки анимаций</h3>
+                <p>Включите или выключите анимации для улучшения производительности</p>
+                
+                <div class="settings-option">
+                    <div>
+                        <strong>Анимация частиц</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Плавающие частицы на фоне</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="particlesAnimation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Анимация кнопок</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Переливающиеся кнопки</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="buttonsAnimation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Анимация ховера</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Эффекты при наведении</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="hoverAnimation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Анимация прогресса</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Анимированные прогресс-бары</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="progressAnimation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Анимация уведомлений</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Всплывающие уведомления</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="notificationsAnimation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Анимация кристаллов</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Плавающие кристаллы</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="crystalsAnimation" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎮 Игровые настройки</h3>
+                
+                <div class="settings-option">
+                    <div>
+                        <strong>Звуковые эффекты</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Звуки при кликах и действиях</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="soundEffects" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Виброотклик</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Вибрация при действиях (мобильные)</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="vibration" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div>
+                        <strong>Темная тема</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Всегда темная тема</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="darkTheme" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔧 Системные настройки</h3>
+                
+                <button onclick="exportSave()" style="width: 100%; margin: 10px 0;">
+                    💾 Экспорт сохранения
+                </button>
+                
+                <button onclick="importSave()" style="width: 100%; margin: 10px 0;">
+                    📤 Импорт сохранения
+                </button>
+                
+                <button onclick="resetGame()" style="width: 100%; margin: 10px 0; background: linear-gradient(45deg, var(--accent-red), var(--accent-orange));">
+                    🗑️ Сбросить игру
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация частиц и кристаллов
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 80;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (8 + Math.random() * 8) + 's';
+                particlesContainer.appendChild(particle);
+            }
+
+            // Добавляем плавающие кристаллы
+            const crystalsContainer = document.getElementById('floatingCrystals');
+            const crystalCount = 15;
+            const crystalIcons = ['💎', '🔮', '⭐', '✨', '🔸', '🔹'];
+            
+            for (let i = 0; i < crystalCount; i++) {
+                const crystal = document.createElement('div');
+                crystal.className = 'floating-crystal';
+                crystal.innerHTML = crystalIcons[Math.floor(Math.random() * crystalIcons.length)];
+                crystal.style.left = Math.random() * 100 + 'vw';
+                crystal.style.top = Math.random() * 100 + 'vh';
+                crystal.style.animationDelay = Math.random() * 6 + 's';
+                crystal.style.animationDuration = (4 + Math.random() * 4) + 's';
+                crystalsContainer.appendChild(crystal);
+            }
+        }
+
+        // Основные переменные игры
+        let balance = 0;
+        let totalClicks = 0;
+        let totalMined = 0;
+        let locationsCompleted = 0;
+        let playTime = 0;
+        let luckWins = 0;
+        let totalBets = 0;
+        let totalWins = 0;
+        let profit = 0;
+        let dailyBonusClaimed = false;
+        let lastClaimDate = null;
+        let clickSpeed = 200;
+        let isMining = false;
+        let clickPower = 1;
+        let autoMinerLevel = 1;
+        let autoMinerPower = 1;
+        let autoMinerInterval = 5000; // 5 секунд
+        let totalAutoMined = 0;
+        let minerUptime = 0;
+        let activeMinings = {};
+        let credits = [];
+        let inventory = [];
+        let lastSave = Date.now();
+        let stonesPerSecond = 0;
+        let lastStoneCount = 0;
+        let doubleProfitUsed = false;
+        let lastDoubleProfitDate = null;
+        let rainbowModeActive = false;
+
+        // Настройки анимаций
+        let settings = {
+            particlesAnimation: true,
+            buttonsAnimation: true,
+            hoverAnimation: true,
+            progressAnimation: true,
+            notificationsAnimation: true,
+            crystalsAnimation: true,
+            soundEffects: true,
+            vibration: true,
+            darkTheme: true
+        };
+
+        // Данные локаций (нормальное время в минутах)
+        const locationData = [
+            { id: 1, name: "⛏️ Начальная шахта", cost: 0, time: 2, rewardMin: 5, rewardMax: 15, emoji: "⛏️" },
+            { id: 2, name: "🪨 Каменный карьер", cost: 25, time: 5, rewardMin: 20, rewardMax: 50, emoji: "🪨" },
+            { id: 3, name: "💎 Алмазная шахта", cost: 100, time: 10, rewardMin: 80, rewardMax: 150, emoji: "💎" },
+            { id: 4, name: "🌟 Кристальная пещера", cost: 300, time: 20, rewardMin: 200, rewardMax: 400, emoji: "🌟" },
+            { id: 5, name: "🔥 Вулканический рудник", cost: 800, time: 30, rewardMin: 500, rewardMax: 1000, emoji: "🔥" },
+            { id: 6, name: "🚀 Космический прииск", cost: 2000, time: 45, rewardMin: 1200, rewardMax: 2500, emoji: "🚀" },
+            { id: 7, name: "⚡ Энергетический источник", cost: 5000, time: 60, rewardMin: 3000, rewardMax: 6000, emoji: "⚡" },
+            { id: 8, name: "🌌 Галактический рудник", cost: 12000, time: 90, rewardMin: 8000, rewardMax: 15000, emoji: "🌌" },
+            { id: 9, name: "♾️ Бесконечный рудник", cost: 25000, time: 120, rewardMin: 15000, rewardMax: 30000, emoji: "♾️" },
+            { id: 10, name: "⚛️ Квантовый источник", cost: 50000, time: 180, rewardMin: 30000, rewardMax: 60000, emoji: "⚛️" }
+        ];
+
+        // Данные инвентаря (15 предметов) с уровнями
+        const inventoryItems = [
+            { id: 1, name: "Обычная кирка", icon: "⛏️", description: "Базовая кирка", owned: true, type: "pickaxe", bonus: 1.0, level: 1, upgradeCost: 100 },
+            { id: 2, name: "Стальная кирка", icon: "🛠️", description: "+20% к добыче", owned: false, price: 150, type: "pickaxe", bonus: 1.2, level: 1, upgradeCost: 300 },
+            { id: 3, name: "Золотая кирка", icon: "💰", description: "+50% к добыче", owned: false, price: 500, type: "pickaxe", bonus: 1.5, level: 1, upgradeCost: 1000 },
+            { id: 4, name: "Алмазная кирка", icon: "💎", description: "+100% к добыче", owned: false, price: 1500, type: "pickaxe", bonus: 2.0, level: 1, upgradeCost: 3000 },
+            { id: 5, name: "Мифическая кирка", icon: "🔮", description: "+200% к добыче", owned: false, price: 5000, type: "pickaxe", bonus: 3.0, level: 1, upgradeCost: 10000 },
+            { id: 6, name: "Космическая кирка", icon: "🚀", description: "+500% к добыче", owned: false, price: 15000, type: "pickaxe", bonus: 6.0, level: 1, upgradeCost: 30000 },
+            
+            { id: 7, name: "Амулет новичка", icon: "🍀", description: "+10% к удаче", owned: false, price: 200, type: "amulet", bonus: 1.1, level: 1, upgradeCost: 500 },
+            { id: 8, name: "Амулет богатства", icon: "🏆", description: "+25% к удаче", owned: false, price: 800, type: "amulet", bonus: 1.25, level: 1, upgradeCost: 2000 },
+            { id: 9, name: "Магический амулет", icon: "✨", description: "+50% к удаче", owned: false, price: 2000, type: "amulet", bonus: 1.5, level: 1, upgradeCost: 5000 },
+            
+            { id: 10, name: "Кольцо процветания", icon: "💍", description: "+15% к бонусам", owned: false, price: 1000, type: "ring", bonus: 1.15, level: 1, upgradeCost: 2500 },
+            { id: 11, name: "Кольцо изобилия", icon: "💎", description: "+30% к бонусам", owned: false, price: 3000, type: "ring", bonus: 1.3, level: 1, upgradeCost: 7500 },
+            
+            { id: 12, name: "Ботинки скорости", icon: "👟", description: "+25% к скорости", owned: false, price: 1200, type: "boots", bonus: 0.75, level: 1, upgradeCost: 3000 },
+            { id: 13, name: "Плащ невидимости", icon: "🧥", description: "Шанс x2 добычи", owned: false, price: 4000, type: "cloak", bonus: 2.0, level: 1, upgradeCost: 10000 },
+            { id: 14, name: "Очки ясновидения", icon: "👓", description: "+20% к шансам", owned: false, price: 2500, type: "glasses", bonus: 1.2, level: 1, upgradeCost: 6000 },
+            { id: 15, name: "Чары усиления", icon: "🔰", description: "+40% ко всему", owned: false, price: 10000, type: "charm", bonus: 1.4, level: 1, upgradeCost: 25000 }
+        ];
+
+        // Инициализация игры
+        function initGame() {
+            loadGame();
+            createParticles();
+            renderLocations();
+            updateUI();
+            startGameLoop();
+            loadInventory();
+            startAutoMiner();
+            loadSettings();
+            
+            // Загрузка активных майнингов
+            checkActiveMinings();
+        }
+
+        // Основной игровой цикл
+        function startGameLoop() {
+            setInterval(() => {
+                playTime++;
+                minerUptime++;
+                
+                // Расчет камней в секунду
+                const currentStones = totalMined + totalAutoMined;
+                stonesPerSecond = currentStones - lastStoneCount;
+                lastStoneCount = currentStones;
+                
+                updateUI();
+                updateMiningProgress();
+                
+                // Авто-сохранение каждые 30 секунд
+                if (Date.now() - lastSave > 30000) {
+                    saveGame();
+                    lastSave = Date.now();
+                }
+            }, 1000);
+        }
+
+        // Функции майнинга
+        function startMining(locationId) {
+            const location = locationData.find(l => l.id === locationId);
+            if (!location) return;
+
+            if (balance >= location.cost) {
+                balance -= location.cost;
+                
+                const miningId = 'mining_' + Date.now();
+                activeMinings[miningId] = {
+                    locationId: locationId,
+                    startTime: Date.now(),
+                    duration: location.time * 60000, // минуты в миллисекунды
+                    reward: Math.floor(Math.random() * (location.rewardMax - location.rewardMin + 1)) + location.rewardMin
+                };
+
+                showNotification(`⛏️ Начато копание в ${location.name}!`);
+                updateUI();
+                saveGame();
+
+                // Таймер завершения майнинга
+                setTimeout(() => {
+                    completeMining(miningId);
+                }, location.time * 60000);
+            } else {
+                showNotification("❌ Недостаточно камней для начала майнинга!");
+            }
+        }
+
+        function completeMining(miningId) {
+            const mining = activeMinings[miningId];
+            if (!mining) return;
+
+            const location = locationData.find(l => l.id === mining.locationId);
+            const bonus = getMiningBonus();
+            const finalReward = Math.floor(mining.reward * bonus);
+
+            balance += finalReward;
+            totalMined += finalReward;
+            locationsCompleted++;
+            delete activeMinings[miningId];
+
+            // Анимация завершения
+            const locationElement = document.querySelector(`[data-location="${mining.locationId}"]`);
+            if (locationElement && settings.progressAnimation) {
+                locationElement.classList.add('mining-complete');
+                setTimeout(() => locationElement.classList.remove('mining-complete'), 600);
+            }
+
+            showNotification(`🎉 Шахта добыта! Получено ${finalReward} камней из ${location.name}${bonus > 1 ? ` (бонус x${bonus.toFixed(2)})` : ''}`);
+            updateUI();
+            saveGame();
+        }
+
+        function getMiningBonus() {
+            let bonus = 1;
+            inventory.forEach(item => {
+                if (item.owned && item.bonus) {
+                    bonus *= item.bonus;
+                }
+            });
+            return bonus;
+        }
+
+        // Функции удачи
+        function tryLuck(betAmount) {
+            if (balance < betAmount) {
+                showLuckNotification("❌ Недостаточно камней для ставки!");
+                return;
+            }
+
+            balance -= betAmount;
+            totalBets++;
+
+            const winChance = 0.65; // 65% шанс выигрыша
+            const isWin = Math.random() < winChance;
+
+            if (isWin) {
+                const winMultiplier = 1.5 + Math.random() * 1.5; // 1.5x - 3x
+                const winAmount = Math.floor(betAmount * winMultiplier);
+                const luckBonus = getLuckBonus();
+                const finalWin = Math.floor(winAmount * luckBonus);
+
+                balance += finalWin;
+                luckWins++;
+                totalWins++;
+                profit += (finalWin - betAmount);
+
+                showLuckNotification(`🎉 ПОБЕДА! Вы выиграли ${finalWin} камней!${luckBonus > 1 ? ` (удача x${luckBonus.toFixed(2)})` : ''}`, "win");
+            } else {
+                profit -= betAmount;
+                showLuckNotification("😔 Не повезло... Попробуйте еще раз!", "lose");
+            }
+
+            updateUI();
+            saveGame();
+        }
+
+        function getLuckBonus() {
+            let bonus = 1;
+            inventory.forEach(item => {
+                if (item.owned && item.type === "amulet" && item.bonus) {
+                    bonus *= item.bonus;
+                }
+            });
+            return bonus;
+        }
+
+        // Кредитная система
+        function takeCredit() {
+            const amountInput = document.getElementById('creditAmount');
+            const amount = parseInt(amountInput.value);
+
+            if (isNaN(amount) || amount < 1) {
+                showCreditNotification("❌ Введите корректную сумму!");
+                return;
+            }
+
+            if (credits.length >= 15) {
+                showCreditNotification("❌ Достигнут лимит в 15 активных кредитов!");
+                return;
+            }
+
+            const interestRate = 0.33; // 33%
+            const totalToPay = Math.floor(amount * (1 + interestRate));
+
+            // Определяем срок погашения
+            let daysToPay = 1; // по умолчанию 1 день
+            if (amount > 100 && amount <= 5000) {
+                daysToPay = 5;
+            } else if (amount > 5000) {
+                daysToPay = 10;
+            }
+
+            const dueDate = Date.now() + (daysToPay * 24 * 60 * 60 * 1000);
+
+            const credit = {
+                id: Date.now(),
+                amount: amount,
+                totalToPay: totalToPay,
+                takenAt: Date.now(),
+                dueDate: dueDate,
+                paid: false
+            };
+
+            credits.push(credit);
+            balance += amount;
+
+            showCreditNotification(`✅ Кредит на ${amount} камней получен! Вернуть ${totalToPay} через ${daysToPay} дней.`);
+            amountInput.value = '';
+            updateUI();
+            saveGame();
+
+            // Запускаем проверку просрочки
+            setTimeout(() => checkCreditDue(credit.id), daysToPay * 24 * 60 * 60 * 1000);
+        }
+
+        function checkCreditDue(creditId) {
+            const credit = credits.find(c => c.id === creditId);
+            if (!credit || credit.paid) return;
+
+            if (balance >= credit.totalToPay) {
+                // Автоматическое списание
+                balance -= credit.totalToPay;
+                credit.paid = true;
+                showCreditNotification(`✅ Кредит #${creditId} погашен автоматически.`);
+            } else {
+                // Увеличиваем долг на 18%
+                credit.totalToPay = Math.floor(credit.totalToPay * 1.18);
+                credit.dueDate = Date.now() + (24 * 60 * 60 * 1000); // Еще 1 день
+                showCreditNotification(`⚠️ Просрочка! Новый долг: ${credit.totalToPay} камней.`);
+
+                // Повторная проверка через день
+                setTimeout(() => checkCreditDue(creditId), 24 * 60 * 60 * 1000);
+            }
+
+            updateUI();
+            saveGame();
+        }
+
+        function payCredit(creditId) {
+            const credit = credits.find(c => c.id === creditId);
+            if (!credit) return;
+
+            if (balance >= credit.totalToPay) {
+                balance -= credit.totalToPay;
+                credit.paid = true;
+                showCreditNotification(`✅ Кредит #${creditId} успешно погашен!`);
+                updateUI();
+                saveGame();
+            } else {
+                showCreditNotification("❌ Недостаточно средств для погашения кредита!");
+            }
+        }
+
+        // Система авто-майнинга
+        function startAutoMiner() {
+            setInterval(() => {
+                if (autoMinerLevel > 0) {
+                    const bonus = getMiningBonus();
+                    const mined = Math.floor(autoMinerPower * bonus);
+                    balance += mined;
+                    totalAutoMined += mined;
+                    totalMined += mined;
+                    
+                    // Анимация прогресса
+                    const progressBar = document.getElementById('minerProgress');
+                    if (progressBar && settings.progressAnimation) {
+                        progressBar.style.width = '100%';
+                        setTimeout(() => {
+                            progressBar.style.width = '0%';
+                        }, 500);
+                    }
+                }
+            }, autoMinerInterval);
+        }
+
+        function upgradeMiner() {
+            const upgradeCost = getMinerUpgradeCost();
+            
+            if (balance >= upgradeCost) {
+                balance -= upgradeCost;
+                autoMinerLevel++;
+                autoMinerPower = Math.floor(autoMinerPower * 1.3 + 1); // Более плавный рост
+                autoMinerInterval = Math.max(2000, autoMinerInterval - 200); // Минимум 2 секунды
+                
+                showNotification(`⚡ Авто-майнер улучшен до уровня ${autoMinerLevel}!`);
+                updateUI();
+                saveGame();
+            } else {
+                showNotification("❌ Недостаточно камней для улучшения!");
+            }
+        }
+
+        function getMinerUpgradeCost() {
+            return Math.floor(100 * Math.pow(1.5, autoMinerLevel - 1)); // Более плавный рост стоимости
+        }
+
+        // Инвентарь
+        function loadInventory() {
+            // Загружаем сохраненный инвентарь или используем начальный
+            if (inventory.length === 0) {
+                inventory = JSON.parse(JSON.stringify(inventoryItems));
+            }
+            updateInventory();
+        }
+
+        function buyItem(itemId) {
+            const item = inventory.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (item.owned) {
+                showNotification("✅ Этот предмет уже куплен!");
+                return;
+            }
+
+            if (balance >= item.price) {
+                balance -= item.price;
+                item.owned = true;
+                showNotification(`🎉 Приобретено: ${item.name}!`);
+                updateUI();
+                saveGame();
+            } else {
+                showNotification("❌ Недостаточно камней для покупки!");
+            }
+        }
+
+        function upgradeItem(itemId) {
+            const item = inventory.find(i => i.id === itemId);
+            if (!item || !item.owned) {
+                showNotification("❌ Сначала нужно приобрести этот предмет!");
+                return;
+            }
+
+            if (balance >= item.upgradeCost) {
+                balance -= item.upgradeCost;
+                item.level++;
+                item.bonus *= 1.1; // Увеличиваем бонус на 10% за уровень
+                item.upgradeCost = Math.floor(item.upgradeCost * 2.5); // Увеличиваем стоимость улучшения
+                
+                showNotification(`⬆️ ${item.name} улучшен до уровня ${item.level}!`);
+                updateUI();
+                saveGame();
+            } else {
+                showNotification("❌ Недостаточно камней для улучшения!");
+            }
+        }
+
+        // Бонусная система
+        function claimBonus() {
+            const today = new Date().toDateString();
+            
+            if (lastClaimDate === today) {
+                showBonusNotification("❌ Бонус на сегодня уже получен!");
+                return;
+            }
+
+            const baseBonus = 100;
+            const streakBonus = Math.floor(Math.random() * 50) + 1; // 1-50 случайный бонус
+            const totalBonus = baseBonus + streakBonus;
+
+            balance += totalBonus;
+            lastClaimDate = today;
+            dailyBonusClaimed = true;
+
+            showBonusNotification(`🎉 Получен ежедневный бонус: ${totalBonus} камней!`);
+            updateUI();
+            saveGame();
+        }
+
+        // Секретные фичи
+        function activateRainbowMode() {
+            if (rainbowModeActive) return;
+            
+            rainbowModeActive = true;
+            document.body.style.background = 'linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #0000ff, #8000ff)';
+            document.body.style.backgroundSize = '1400% 1400%';
+            document.body.style.animation = 'rainbow 10s ease infinite';
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes rainbow {
+                    0% { background-position: 0% 50% }
+                    50% { background-position: 100% 50% }
+                    100% { background-position: 0% 50% }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            showNotification('🌈 Режим радуги активирован!');
+            saveGame();
+        }
+
+        function deactivateRainbowMode() {
+            if (!rainbowModeActive) return;
+            
+            rainbowModeActive = false;
+            document.body.style.background = 'linear-gradient(135deg, var(--dark-bg), var(--darker-bg))';
+            document.body.style.backgroundSize = 'auto';
+            document.body.style.animation = 'none';
+            
+            showNotification('🌈 Режим радуги выключен!');
+            saveGame();
+        }
+
+        function spawnEasterEgg() {
+            const egg = document.createElement('div');
+            egg.className = 'easter-egg';
+            egg.innerHTML = '🐉';
+            egg.style.left = Math.random() * 80 + 10 + '%';
+            egg.style.top = Math.random() * 80 + 10 + '%';
+            
+            egg.onclick = function() {
+                balance += 7777;
+                showNotification('🎉 Пасхалка найдена! +7777 камней!');
+                egg.remove();
+                updateUI();
+                saveGame();
+            };
+            
+            document.body.appendChild(egg);
+            setTimeout(() => {
+                if (egg.parentNode) {
+                    egg.remove();
+                }
+            }, 10000);
+        }
+
+        function doubleProfit() {
+            const today = new Date().toDateString();
+            if (doubleProfitUsed && lastDoubleProfitDate === today) {
+                showNotification('❌ Удвоение профита уже использовано сегодня!');
+                return;
+            }
+            
+            profit *= 2;
+            doubleProfitUsed = true;
+            lastDoubleProfitDate = today;
+            showNotification('💰 Профит удвоен на сегодня!');
+            updateUI();
+            saveGame();
+        }
+
+        // Настройки
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('dhShahtaSettings');
+            if (savedSettings) {
+                settings = { ...settings, ...JSON.parse(savedSettings) };
+            }
+            updateSettingsUI();
+        }
+
+        function saveSettings() {
+            localStorage.setItem('dhShahtaSettings', JSON.stringify(settings));
+        }
+
+        function updateSettingsUI() {
+            Object.keys(settings).forEach(key => {
+                const checkbox = document.getElementById(key);
+                if (checkbox) {
+                    checkbox.checked = settings[key];
+                }
+            });
+            applySettings();
+        }
+
+        function applySettings() {
+            // Применяем настройки анимаций
+            const particles = document.getElementById('particles');
+            const crystals = document.getElementById('floatingCrystals');
+            
+            if (particles) {
+                particles.style.display = settings.particlesAnimation ? 'block' : 'none';
+            }
+            if (crystals) {
+                crystals.style.display = settings.crystalsAnimation ? 'block' : 'none';
+            }
+            
+            // Применяем настройки кнопок
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                if (settings.buttonsAnimation) {
+                    button.style.animation = 'gradientShift 4s ease infinite, buttonPulse 2s ease-in-out infinite';
+                } else {
+                    button.style.animation = 'none';
+                }
+            });
+        }
+
+        // Системные функции
+        function exportSave() {
+            const gameData = {
+                balance,
+                totalClicks,
+                totalMined,
+                locationsCompleted,
+                playTime,
+                luckWins,
+                totalBets,
+                totalWins,
+                profit,
+                dailyBonusClaimed,
+                lastClaimDate,
+                clickPower,
+                autoMinerLevel,
+                autoMinerPower,
+                autoMinerInterval,
+                totalAutoMined,
+                minerUptime,
+                activeMinings,
+                credits,
+                inventory,
+                settings,
+                doubleProfitUsed,
+                lastDoubleProfitDate,
+                rainbowModeActive
+            };
+            
+            const dataStr = JSON.stringify(gameData);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'dh_shahta_save.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('💾 Сохранение экспортировано!');
+        }
+
+        function importSave() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = event => {
+                    try {
+                        const gameData = JSON.parse(event.target.result);
+                        loadGameData(gameData);
+                        showNotification('📤 Сохранение импортировано!');
+                    } catch (error) {
+                        showNotification('❌ Ошибка загрузки сохранения!');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        function resetGame() {
+            if (confirm('⚠️ Вы уверены? Это удалит весь прогресс!')) {
+                localStorage.removeItem('dhShahtaUltraSave');
+                localStorage.removeItem('dhShahtaSettings');
+                location.reload();
+            }
+        }
+
+        function loadGameData(gameData) {
+            balance = gameData.balance || 0;
+            totalClicks = gameData.totalClicks || 0;
+            totalMined = gameData.totalMined || 0;
+            locationsCompleted = gameData.locationsCompleted || 0;
+            playTime = gameData.playTime || 0;
+            luckWins = gameData.luckWins || 0;
+            totalBets = gameData.totalBets || 0;
+            totalWins = gameData.totalWins || 0;
+            profit = gameData.profit || 0;
+            dailyBonusClaimed = gameData.dailyBonusClaimed || false;
+            lastClaimDate = gameData.lastClaimDate || null;
+            clickPower = gameData.clickPower || 1;
+            autoMinerLevel = gameData.autoMinerLevel || 1;
+            autoMinerPower = gameData.autoMinerPower || 1;
+            autoMinerInterval = gameData.autoMinerInterval || 5000;
+            totalAutoMined = gameData.totalAutoMined || 0;
+            minerUptime = gameData.minerUptime || 0;
+            activeMinings = gameData.activeMinings || {};
+            credits = gameData.credits || [];
+            inventory = gameData.inventory || JSON.parse(JSON.stringify(inventoryItems));
+            settings = { ...settings, ...gameData.settings };
+            doubleProfitUsed = gameData.doubleProfitUsed || false;
+            lastDoubleProfitDate = gameData.lastDoubleProfitDate || null;
+            rainbowModeActive = gameData.rainbowModeActive || false;
+            
+            if (rainbowModeActive) {
+                activateRainbowMode();
+            } else {
+                deactivateRainbowMode();
+            }
+            
+            updateUI();
+            updateSettingsUI();
+            saveGame();
+        }
+
+        // Вспомогательные функции
+        function showTab(tabName) {
+            // Скрыть все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Показать выбранную вкладку
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            // Обновить активную вкладку в навигации
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function showNotification(message) {
+            if (!settings.notificationsAnimation) return;
+            
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        function showLuckNotification(message, type = "info") {
+            if (!settings.notificationsAnimation) return;
+            
+            const notification = document.getElementById('notification-luck');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            if (type === "win") {
+                notification.style.background = "rgba(105, 240, 174, 0.2)";
+                notification.style.borderColor = "var(--accent-green)";
+                notification.style.boxShadow = "0 0 25px rgba(105, 240, 174, 0.4)";
+            } else if (type === "lose") {
+                notification.style.background = "rgba(255, 82, 82, 0.2)";
+                notification.style.borderColor = "var(--accent-red)";
+                notification.style.boxShadow = "0 0 25px rgba(255, 82, 82, 0.4)";
+            }
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        function showBonusNotification(message) {
+            if (!settings.notificationsAnimation) return;
+            
+            const notification = document.getElementById('notification-bonus');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        function showCreditNotification(message) {
+            if (!settings.notificationsAnimation) return;
+            
+            const notification = document.getElementById('notification-credit');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // Рендер интерфейса
+        function renderLocations() {
+            const locationsContainer = document.getElementById('locations');
+            locationsContainer.innerHTML = '';
+
+            locationData.forEach(location => {
+                const locationElement = document.createElement('div');
+                locationElement.className = 'location';
+                locationElement.setAttribute('data-location', location.id);
+                locationElement.innerHTML = `
+                    <h3>${location.emoji} ${location.name}</h3>
+                    <p>💰 Стоимость: ${location.cost} | ⏱️ Время: ${location.time}м | 🎁 Награда: ${location.rewardMin}-${location.rewardMax}</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-${location.id}" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="mining-timer" id="timer-${location.id}"></div>
+                    <button onclick="startMining(${location.id})" ${balance < location.cost ? 'disabled' : ''}>
+                        Начать майнинг
+                    </button>
+                `;
+                locationsContainer.appendChild(locationElement);
+            });
+        }
+
+        function updateMiningProgress() {
+            const now = Date.now();
+            Object.keys(activeMinings).forEach(miningId => {
+                const mining = activeMinings[miningId];
+                const locationId = mining.locationId;
+                const progressBar = document.getElementById(`progress-${locationId}`);
+                const timerElement = document.getElementById(`timer-${locationId}`);
+                
+                if (progressBar && timerElement) {
+                    const elapsed = now - mining.startTime;
+                    const progress = Math.min(100, (elapsed / mining.duration) * 100);
+                    progressBar.style.width = progress + '%';
+                    
+                    // Таймер обратного отсчета
+                    const timeLeft = Math.max(0, mining.duration - elapsed);
+                    const minutes = Math.floor(timeLeft / 60000);
+                    const seconds = Math.floor((timeLeft % 60000) / 1000);
+                    timerElement.textContent = `Осталось: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            });
+        }
+
+        function updateUI() {
+            // Обновление баланса
+            document.getElementById('balance').textContent = balance.toLocaleString();
+            document.getElementById('stonesPerSecond').textContent = stonesPerSecond;
+            
+            // Обновление статистики
+            document.getElementById('totalClicks').textContent = totalClicks.toLocaleString();
+            document.getElementById('totalMined').textContent = (totalMined + totalAutoMined).toLocaleString();
+            document.getElementById('locationsCompleted').textContent = locationsCompleted.toLocaleString();
+            document.getElementById('playTime').textContent = Math.floor(playTime / 3600) + 'ч';
+            document.getElementById('luckWins').textContent = luckWins.toLocaleString();
+            document.getElementById('clickPower').textContent = clickPower;
+            
+            // Обновление статистики удачи
+            document.getElementById('totalBets').textContent = totalBets.toLocaleString();
+            document.getElementById('winRate').textContent = totalBets > 0 ? Math.round((totalWins / totalBets) * 100) + '%' : '0%';
+            document.getElementById('profit').textContent = profit.toLocaleString();
+            
+            // Обновление авто-майнера
+            document.getElementById('minerLevel').textContent = autoMinerLevel;
+            document.getElementById('minerPower').textContent = autoMinerPower;
+            document.getElementById('minerInterval').textContent = Math.floor(autoMinerInterval / 1000);
+            document.getElementById('totalAutoMined').textContent = totalAutoMined.toLocaleString();
+            document.getElementById('minerEfficiency').textContent = `${autoMinerPower}/${Math.floor(autoMinerInterval / 1000)}с`;
+            document.getElementById('upgradeCostText').textContent = `Стоимость улучшения: ${getMinerUpgradeCost().toLocaleString()} 💎`;
+            document.getElementById('autoMinedPerHour').textContent = Math.floor((autoMinerPower * 3600000) / autoMinerInterval) + '/ч';
+            document.getElementById('minerUptime').textContent = playTime > 0 ? Math.round((minerUptime / playTime) * 100) + '%' : '0%';
+            
+            // Обновление инвентаря
+            updateInventory();
+            
+            // Обновление кредитов
+            updateCredits();
+            
+            // Обновление бонусной информации
+            updateBonusInfo();
+            
+            // Обновление кнопок локаций
+            updateLocationButtons();
+        }
+
+        function updateLocationButtons() {
+            locationData.forEach(location => {
+                const button = document.querySelector(`[onclick="startMining(${location.id})"]`);
+                if (button) {
+                    button.disabled = balance < location.cost;
+                }
+            });
+        }
+
+        function updateInventory() {
+            const inventoryGrid = document.getElementById('inventoryGrid');
+            if (!inventoryGrid) return;
+
+            inventoryGrid.innerHTML = '';
+            inventory.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `inventory-item upgradeable-item ${item.owned ? 'owned' : ''}`;
+                itemElement.innerHTML = `
+                    <div class="item-level">${item.level}</div>
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-bonus">Бонус: +${((item.bonus - 1) * 100).toFixed(0)}%</div>
+                    ${!item.owned ? `
+                        <button onclick="buyItem(${item.id})" style="margin-top: 15px; width: 100%;">
+                            Купить (${item.price} 💎)
+                        </button>
+                    ` : `
+                        <div style="color: var(--accent-green); margin-top: 15px; font-weight: bold;">✓ ПРИОБРЕТЕНО</div>
+                        <button onclick="upgradeItem(${item.id})" class="item-upgrade-btn" ${balance < item.upgradeCost ? 'disabled' : ''}>
+                            Улучшить (${item.upgradeCost} 💎)
+                        </button>
+                    `}
+                `;
+                inventoryGrid.appendChild(itemElement);
+            });
+        }
+
+        function updateCredits() {
+            const creditList = document.getElementById('creditList');
+            const activeCreditsElement = document.getElementById('activeCredits');
+            
+            if (!creditList) return;
+
+            const activeCredits = credits.filter(c => !c.paid);
+            activeCreditsElement.textContent = activeCredits.length;
+
+            creditList.innerHTML = '';
+            activeCredits.forEach(credit => {
+                const timeLeft = credit.dueDate - Date.now();
+                const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
+                
+                const creditElement = document.createElement('div');
+                creditElement.className = 'credit-item';
+                creditElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${credit.amount.toLocaleString()} 💎 → ${credit.totalToPay.toLocaleString()} 💎</strong>
+                            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">
+                                📅 Осталось: ${daysLeft} дней | 📈 +33%
+                            </div>
+                        </div>
+                        <button onclick="payCredit(${credit.id})" style="margin: 0;">
+                            Погасить
+                        </button>
+                    </div>
+                `;
+                creditList.appendChild(creditElement);
+            });
+
+            if (activeCredits.length === 0) {
+                creditList.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 30px;">🎯 Нет активных кредитов</p>';
+            }
+        }
+
+        function updateBonusInfo() {
+            const bonusInfo = document.getElementById('bonusInfo');
+            const bonusButton = document.getElementById('bonusButton');
+            
+            if (!bonusInfo) return;
+
+            const today = new Date().toDateString();
+            if (lastClaimDate === today) {
+                bonusInfo.innerHTML = '<p>⏳ Бонус на сегодня уже получен</p>';
+                bonusButton.disabled = true;
+            } else {
+                bonusInfo.innerHTML = '<p>✨ Бонус доступен для получения!</p>';
+                bonusButton.disabled = false;
+            }
+        }
+
+        // Обработчики кликов
+        document.getElementById('clickButton').addEventListener('mousedown', function(e) {
+            if (e.button === 0) {
+                isMining = true;
+                startClickMining();
+            }
+        });
+
+        document.getElementById('clickButton').addEventListener('mouseup', function() {
+            isMining = false;
+            clickSpeed = 200;
+        });
+
+        document.getElementById('clickButton').addEventListener('mouseleave', function() {
+            isMining = false;
+            clickSpeed = 200;
+        });
+
+        function startClickMining() {
+            if (isMining) {
+                const bonus = getMiningBonus();
+                const mined = Math.floor(clickPower * bonus);
+                balance += mined;
+                totalClicks++;
+                totalMined += mined;
+                
+                clickSpeed = Math.max(80, clickSpeed * 0.98);
+                updateUI();
+                
+                setTimeout(startClickMining, clickSpeed);
+            }
+        }
+
+        // Обработчики настроек
+        document.querySelectorAll('.switch input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                settings[this.id] = this.checked;
+                saveSettings();
+                applySettings();
+            });
+        });
+
+        // Проверка активных майнингов при загрузке
+        function checkActiveMinings() {
+            const now = Date.now();
+            Object.keys(activeMinings).forEach(miningId => {
+                const mining = activeMinings[miningId];
+                if (now >= mining.startTime + mining.duration) {
+                    completeMining(miningId);
+                }
+            });
+        }
+
+        // Система сохранения
+        function saveGame() {
+            const gameData = {
+                balance,
+                totalClicks,
+                totalMined,
+                locationsCompleted,
+                playTime,
+                luckWins,
+                totalBets,
+                totalWins,
+                profit,
+                dailyBonusClaimed,
+                lastClaimDate,
+                clickPower,
+                autoMinerLevel,
+                autoMinerPower,
+                autoMinerInterval,
+                totalAutoMined,
+                minerUptime,
+                activeMinings,
+                credits,
+                inventory,
+                settings,
+                doubleProfitUsed,
+                lastDoubleProfitDate,
+                rainbowModeActive,
+                lastSave: Date.now()
+            };
+            localStorage.setItem('dhShahtaUltraSave', JSON.stringify(gameData));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('dhShahtaUltraSave');
+            if (saved) {
+                try {
+                    const gameData = JSON.parse(saved);
+                    loadGameData(gameData);
+                } catch (e) {
+                    console.error('Error loading save:', e);
+                    // Если ошибка загрузки, используем значения по умолчанию
+                    inventory = JSON.parse(JSON.stringify(inventoryItems));
+                }
+            } else {
+                // Первый запуск - используем начальные значения
+                inventory = JSON.parse(JSON.stringify(inventoryItems));
+            }
+        }
+
+        // Запуск игры при загрузке страницы
+        window.onload = initGame;
+    </script>
+</body>
+</html>
