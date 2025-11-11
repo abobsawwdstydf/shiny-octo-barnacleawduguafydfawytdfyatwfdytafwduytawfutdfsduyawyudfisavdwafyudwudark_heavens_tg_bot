@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор Кринжовых Пикапов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        :root {
+            --tiktok-pink: #ff0050;
+            --tiktok-purple: #00f2ea;
+            --youtube-red: #ff0000;
+            --dark-bg: #0f0f23;
+            --card-bg: #1a1a2e;
+            --text-color: #ffffff;
+            --accent-1: #ff00ff;
+            --accent-2: #00ffff;
+            --accent-3: #ffff00;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .platform-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.8rem;
+        }
+
+        .platform-icons i {
+            transition: all 0.3s ease;
+        }
+
+        .platform-icons i:hover {
+            transform: scale(1.2);
+        }
+
+        .fa-tiktok { color: var(--tiktok-pink); }
+        .fa-youtube { color: var(--youtube-red); }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            background: linear-gradient(45deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            10% { transform: translate(-2px, -2px); }
+            20% { transform: translate(2px, 2px); }
+            30% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #aaa;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+        }
+
+        .generate-btn {
+            background: linear-gradient(45deg, var(--tiktok-pink), var(--youtube-red));
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 0, 80, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 80, 0.6);
+        }
+
+        .generate-btn:active {
+            transform: translateY(1px);
+        }
+
+        .generate-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .generate-btn:hover::after {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .pickup-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pickup-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 255, 0.05), transparent);
+            z-index: 0;
+        }
+
+        .pickup-text {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: var(--accent-2);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            max-width: 90%;
+            z-index: 1;
+            position: relative;
+        }
+
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-2) }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 150px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            color: #aaa;
+            text-align: center;
+        }
+
+        .hashtag {
+            color: var(--accent-1);
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-1);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .generate-btn {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+            }
+            
+            .pickup-text {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="platform-icons">
+                <i class="fab fa-tiktok"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+        
+        <h1 class="title">ГЕНЕРАТОР КРИНЖОВЫХ ПИКАПОВ</h1>
+        <p class="subtitle">Создай самый кринжовый пикап для TikTok или YouTube Shorts</p>
+        
+        <div class="card">
+            <button class="generate-btn" id="generateBtn">
+                <i class="fas fa-bolt"></i> СГЕНЕРИРОВАТЬ КРИНЖ
+            </button>
+            
+            <div class="loading" id="loading"></div>
+            
+            <div class="pickup-display">
+                <div class="pickup-text" id="pickupText">Нажми кнопку, чтобы сгенерировать кринжовый пикап!</div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-value" id="counter">0</div>
+                <div class="stat-label">Сгенерировано</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Поделись своим кринжом в TikTok и YouTube Shorts! <span class="hashtag">#кринжпикап #ужасныепикапы #смешныепикапы</span>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Расширенная база данных пикапов (100+ фраз)
+        const greetings = [
+            "Эй, красавица", "Привет", "Слушай", "Ой, а что это", "Эй, ты", 
+            "Добрый день", "Здравствуй", "Приветик", "Салют", "Хей", 
+            "Приветствую", "Мое почтение", "Дарова", "Здарова", "Хай", 
+            "Привет-привет", "Йоу", "Гутен таг", "Бонжур", "Хола", 
+            "Алоха", "Чё как", "Как жизнь", "Категорически приветствую", 
+            "Приветствую тебя", "Мир тебе", "Будь как дома", "Рад видеть"
+        ];
+
+        const compliments = [
+            "твои глаза как два вареника", "ты пахнешь как свежий борщ", "твоя улыбка напоминает мне рассол", 
+            "твои ресницы как крылья чайки", "ты красива как новая сковородка", "твои волосы блестят как холодильник", 
+            "ты прекрасна как только что выглаженная рубашка", "твой голос звучит как кипящий чайник", 
+            "ты грациозна как кошка на шкафу", "твои руки нежны как только что замешанное тесто", 
+            "ты мила как котёнок в тапочках", "твоя походка завораживает как работающая стиральная машина", 
+            "ты притягательна как магнит на холодильнике", "твои губы сочны как спелый помидор", 
+            "ты изящна как журавль в небе", "твоя кожа сияет как только что вымытый пол", 
+            "ты обаятельна как щенок в рекламе корма", "твоя улыбка светлее люстры", 
+            "ты стройна как оливка", "твои глаза глубоки как кастрюля с супом", 
+            "ты нежна как пух одуванчика", "твои движения плавны как течение реки", 
+            "ты загадочна как инструкция на китайском", "твои волосы мягки как облако", 
+            "ты прекрасна как закат над панельным домом", "твои руки умелы как у повара", 
+            "ты изыскана как французский багет", "твоя улыбка тепла как батарея зимой", 
+            "ты ярка как неоновая вывеска", "твои глаза блестят как мокрая сковородка",
+            "ты воздушна как зефир", "твоя кожа нежна как лепесток розы",
+            "ты грациозна как лебедь в пруду", "твои волосы пахнут как свежий хлеб",
+            "ты красива как рассвет в деревне", "твоя улыбка греет как чашка чая",
+            "ты элегантна как павлин", "твои глаза сияют как звезды",
+            "ты мила как панда", "твои движения плавны как танец",
+            "ты обаятельна как персонаж аниме", "твои губы сладки как мед",
+            "ты прекрасна как картина", "твоя кожа бархатиста как персик"
+        ];
+
+        const questions = [
+            "может сходим в столовую?", "давай как пельмени - вместе?", "хочешь посмотреть на мой огород?", 
+            "может обменяемся рецептами?", "пойдём есть сметану?", "хочешь попробовать мой домашний квас?", 
+            "может зайдём в магазин за хлебом?", "давай посмотрим сериал про ремонт?", 
+            "хочешь послушать мой новый плейлист?", "может сфоткаемся на фоне заката?", 
+            "давай поедим шашлык на балконе?", "хочешь посмотреть мою коллекцию марок?", 
+            "может сходим в кино на новый фильм?", "давай погуляем по парку?", 
+            "хочешь посидеть в кафе за углом?", "может поедем на дачу?", 
+            "давай испечём вместе пирог?", "хочешь послушать как я играю на гитаре?", 
+            "может сходим на речку?", "давай поиграем в настолки?", 
+            "хочешь посмотреть мои детские фото?", "может поедем кататься на велосипедах?", 
+            "давай сходим в музей советского быта?", "хочешь попробовать мой фирменный салат?", 
+            "может посмотрим старые комедии?", "давай сходим в зоопарк?", 
+            "хочешь поесть мороженого зимой?", "может посидим на лавочке?", 
+            "давай порисуем друг друга?", "хочешь послушать виниловые пластинки?", 
+            "может сходим на каток?", "давай приготовим ужин вместе?", 
+            "хочешь посмотреть как я жонглирую?", "может поедем за город?", 
+            "давай устроим пикник в парке?", "хочешь послушать стихи которые я написал?", 
+            "может сходим в книжный магазин?", "давай поиграем в бадминтон?", 
+            "хочешь посмотреть мой гербарий?", "может поедем на озеро?", 
+            "давай сфотографируемся в фотоавтомате?", "хочешь попробовать мой домашний лимонад?", 
+            "может сходим на выставку кошек?", "давай поедим арбуз на скамейке?", 
+            "хочешь посмотреть как я собираю кубик Рубика?"
+        ];
+
+        // Элементы DOM
+        const generateBtn = document.getElementById('generateBtn');
+        const pickupText = document.getElementById('pickupText');
+        const counter = document.getElementById('counter');
+        const loading = document.getElementById('loading');
+        const toast = document.getElementById('toast');
+        
+        // Счётчики
+        let generatedCount = 0;
+        
+        // Функция для показа уведомления
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Функция для генерации пикапа
+        function generatePickup() {
+            const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+            const compliment = compliments[Math.floor(Math.random() * compliments.length)];
+            const question = questions[Math.floor(Math.random() * questions.length)];
+            
+            return `${greeting}, ${compliment}, ${question}`;
+        }
+        
+        // Функция для анимации печатной машинки
+        function typeWriter(text, element, speed = 50) {
+            element.innerHTML = "";
+            element.classList.remove("typing");
+            
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    element.classList.add("typing");
+                }
+            }
+            type();
+        }
+        
+        // Функция для мигания фона
+        function flashBackground() {
+            const colors = ["#ff00ff", "#00ffff", "#ffff00"];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.style.backgroundColor = randomColor;
+            
+            setTimeout(() => {
+                document.body.style.backgroundColor = "";
+            }, 100);
+        }
+        
+        // Обработчик клика на кнопку генерации
+        generateBtn.addEventListener('click', () => {
+            // Показываем загрузку
+            loading.style.display = 'block';
+            generateBtn.disabled = true;
+            
+            // Мигание фона
+            flashBackground();
+            
+            // Имитация загрузки
+            setTimeout(() => {
+                // Генерация нового пикапа
+                const newPickup = generatePickup();
+                
+                // Анимация печатной машинки
+                typeWriter(newPickup, pickupText);
+                
+                // Обновление счётчика
+                generatedCount++;
+                counter.textContent = generatedCount;
+                
+                // Скрываем загрузку
+                loading.style.display = 'none';
+                generateBtn.disabled = false;
+                
+                // Показываем уведомление
+                showToast("Новый кринжовый пикап создан!");
+            }, 1000);
+        });
+        
+        // Добавляем случайное мигание фона каждые несколько секунд
+        setInterval(() => {
+            if (Math.random() < 0.1) { // 10% шанс на мигание
+                flashBackground();
+            }
+        }, 5000);
+        
+        // Инициализация счетчиков
+        counter.textContent = generatedCount;
+    </script>
+</body>
+</html>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARKИСПЫТАНИЕ 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --neon-red: #ff003c;
+            --neon-blue: #00f3ff;
+            --neon-purple: #b300ff;
+            --dark-bg: #0a0a0a;
+            --blood-red: #8a0303;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            height: 100vh;
+            width: 100vw;
+            touch-action: manipulation;
+            cursor: crosshair;
+        }
+
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a0a0a 0%, var(--dark-bg) 70%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Стартовый экран */
+        #start-screen {
+            text-align: center;
+            padding: 2rem;
+            max-width: 90%;
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid var(--neon-red);
+            border-radius: 24px;
+            box-shadow: 
+                0 0 60px rgba(255, 0, 60, 0.4),
+                inset 0 0 40px rgba(255, 0, 60, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #start-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 60, 0.1), transparent);
+            animation: shine 8s infinite linear;
+            pointer-events: none;
+        }
+
+        #start-screen h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(255, 0, 60, 0.5);
+            position: relative;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .warning {
+            color: var(--neon-red);
+            font-size: 1.1rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 0, 60, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            text-shadow: 0 0 15px var(--neon-red);
+            animation: warning-pulse 2s infinite;
+        }
+
+        .button {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            margin: 1rem 0;
+            font-weight: 700;
+            box-shadow: 
+                0 0 30px rgba(255, 0, 60, 0.5),
+                0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 0 40px rgba(255, 0, 60, 0.7),
+                0 6px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        /* Игровой экран */
+        #game-screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #click-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            text-align: center;
+            font-weight: 700;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 2rem 3rem;
+            border-radius: 20px;
+            border: 2px solid var(--neon-red);
+            box-shadow: 
+                0 0 40px rgba(255, 0, 60, 0.4),
+                inset 0 0 30px rgba(255, 0, 60, 0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            animation: text-float 3s ease-in-out infinite;
+        }
+
+        #stats {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            text-align: right;
+            font-size: 1.2rem;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        #pain-level-text {
+            margin-top: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        #progress-container {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: min(300px, 40vw);
+            height: 28px;
+            background: rgba(50, 0, 0, 0.8);
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 0, 60, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
+            z-index: 10;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, 
+                #00ff00, 
+                #80ff00, 
+                #ffff00, 
+                #ff8000, 
+                #ff0000, 
+                #800000, 
+                #400000);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        }
+
+        #timer {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            font-weight: 900;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 30px rgba(179, 0, 255, 0.4);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            font-variant-numeric: tabular-nums;
+        }
+
+        #restart-button {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            display: none;
+            z-index: 10;
+        }
+
+        /* Экран результатов */
+        #result-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(40, 0, 20, 0.98) 0%, rgba(10, 10, 10, 0.99) 100%);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            z-index: 100;
+        }
+
+        #result-screen h2 {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            text-shadow: 0 0 30px rgba(255, 0, 60, 0.5);
+        }
+
+        #result-details {
+            font-size: 1.8rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(20, 0, 10, 0.8);
+            border-radius: 20px;
+            border: 2px solid var(--neon-red);
+            box-shadow: 
+                0 0 40px rgba(255, 0, 60, 0.3),
+                inset 0 0 30px rgba(255, 0, 60, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .social-tags {
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        /* Эффекты хоррора */
+        .screamer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(6rem, 15vw, 12rem);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 25;
+            text-shadow: 
+                0 0 30px var(--neon-red),
+                0 0 60px var(--neon-red);
+            transition: opacity 0.1s;
+        }
+
+        .dark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 7;
+            transition: opacity 0.3s;
+        }
+
+        .blood-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(150, 0, 0, 0.4) 0%, 
+                transparent 50%);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 6;
+            transition: opacity 0.5s;
+        }
+
+        .glitch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, 
+                    transparent 49%, 
+                    rgba(255, 0, 60, 0.1) 50%, 
+                    transparent 51%),
+                linear-gradient(0deg, 
+                    transparent 49%, 
+                    rgba(0, 243, 255, 0.1) 50%, 
+                    transparent 51%);
+            background-size: 50px 50px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 5;
+            animation: static-noise 0.2s infinite;
+        }
+
+        .crack {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            z-index: 8;
+        }
+
+        .blood-drip {
+            position: absolute;
+            top: -100px;
+            width: 3px;
+            height: 150px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                var(--blood-red), 
+                var(--neon-red),
+                transparent);
+            animation: blood-drip 4s linear forwards;
+            z-index: 9;
+            filter: blur(1px);
+        }
+
+        /* Анимации */
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-10%, -10%); }
+            100% { transform: rotate(360deg) translate(-10%, -10%); }
+        }
+
+        @keyframes warning-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes text-float {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -52%) scale(1.02); }
+        }
+
+        @keyframes static-noise {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+
+        @keyframes blood-drip {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        @keyframes shake-hard {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            10% { transform: translate(-8px, -4px) rotate(-1deg); }
+            20% { transform: translate(7px, 5px) rotate(1deg); }
+            30% { transform: translate(-6px, -6px) rotate(-1deg); }
+            40% { transform: translate(8px, 4px) rotate(1deg); }
+            50% { transform: translate(-7px, -5px) rotate(-1deg); }
+            60% { transform: translate(6px, 6px) rotate(1deg); }
+            70% { transform: translate(-8px, -4px) rotate(-1deg); }
+            80% { transform: translate(7px, 5px) rotate(1deg); }
+            90% { transform: translate(-6px, -6px) rotate(-1deg); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes horror-text {
+            0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(2deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0); opacity: 0; }
+        }
+
+        /* Хештеги */
+        .hashtag {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.1rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
+            z-index: 10;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Стартовый экран -->
+        <div id="start-screen">
+            <h1>DARKИСПЫТАНИЕ</h1>
+            <div class="subtitle">
+                <p>2025 | САМАЯ ПУГАЮЩАЯ ИГРА В ИНТЕРНЕТЕ</p>
+                <p>ТВОЯ ПСИХИКА БУДЕТ ПРОВЕРЕНА НА ПРОЧНОСТЬ</p>
+            </div>
+            <div class="warning">
+                ⚠️ ВНИМАНИЕ: ЭКСТРЕМАЛЬНЫЙ КОНТЕНТ!<br>
+                НЕ ДЛЯ СЛАБОНЕРВНЫХ И ЛЮДЕЙ С БОЛЬНЫМ СЕРДЦЕМ
+            </div>
+            <button id="start-button" class="button">🚨 НАЧАТЬ ИСПЫТАНИЕ 🚨</button>
+            <div id="record" class="subtitle">🏆 АБСОЛЮТНЫЙ РЕКОРД: 0 КЛИКОВ</div>
+            <div class="social-tags">#DIGame #DarkИспытание #Хоррор2025</div>
+        </div>
+
+        <!-- Игровой экран -->
+        <div id="game-screen">
+            <div class="screamer" id="screamer"></div>
+            <div class="dark-overlay" id="dark-overlay"></div>
+            <div class="blood-overlay" id="blood-overlay"></div>
+            <div class="glitch-overlay" id="glitch-overlay"></div>
+            
+            <div class="hashtag">#DIGame | #DarkИспытание</div>
+            
+            <div id="stats">
+                <div>КЛИКИ: <span id="click-count">0</span></div>
+                <div id="pain-level-text">СТАБИЛЬНОСТЬ 😎</div>
+            </div>
+            
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+            
+            <div id="click-text">💀 КЛИКАЙ... ЕСЛИ ОСМЕЛИШЬСЯ 💀</div>
+            
+            <div id="timer">45</div>
+            
+            <button id="restart-button" class="button">🔄 ИСПЫТАТЬ СНОВА</button>
+        </div>
+
+        <!-- Экран результатов -->
+        <div id="result-screen">
+            <h2>ИСПЫТАНИЕ ПРОЙДЕНО</h2>
+            <div id="result-details">
+                <p id="result-text">ТВОЙ РЕЗУЛЬТАТ: X КЛИКОВ</p>
+                <p id="pain-result">УРОВЕНЬ СТРЕССА: Y</p>
+            </div>
+            <div class="social-tags">
+                <p>ПОДЕЛИСЬ РЕЗУЛЬТАТОМ:</p>
+                <p>#DIGame #DarkИспытание #ХоррорЧеллендж</p>
+            </div>
+            <button id="play-again-button" class="button">🎮 ПРОЙТИ СНОВА</button>
+        </div>
+    </div>
+
+    <script>
+        // Элементы DOM
+        const gameContainer = document.getElementById('game-container');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const playAgainButton = document.getElementById('play-again-button');
+        const clickCountElement = document.getElementById('click-count');
+        const painLevelText = document.getElementById('pain-level-text');
+        const progressBar = document.getElementById('progress-bar');
+        const timerElement = document.getElementById('timer');
+        const resultText = document.getElementById('result-text');
+        const painResult = document.getElementById('pain-result');
+        const recordElement = document.getElementById('record');
+        const screamer = document.getElementById('screamer');
+        const darkOverlay = document.getElementById('dark-overlay');
+        const bloodOverlay = document.getElementById('blood-overlay');
+        const glitchOverlay = document.getElementById('glitch-overlay');
+
+        // Переменные игры
+        let clickCount = 0;
+        let painLevel = 0;
+        let timer;
+        let timeLeft = 45;
+        let isGameActive = false;
+        let record = localStorage.getItem('darkRecord') || 0;
+        let lastClickTime = 0;
+        let clickDelay = 40;
+        let horrorEffectsPlayed = [];
+        let jumpscareCooldown = false;
+        
+        recordElement.textContent = `🏆 АБСОЛЮТНЫЙ РЕКОРД: ${record} КЛИКОВ`;
+
+        // Звуковая система
+        class HorrorAudio {
+            constructor() {
+                this.audioContext = null;
+                this.init();
+            }
+
+            init() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.log("Аудио не поддерживается");
+                }
+            }
+
+            playSound(type) {
+                if (!this.audioContext) return;
+
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                const filter = this.audioContext.createBiquadFilter();
+
+                switch(type) {
+                    case 'jumpscare':
+                        oscillator.type = 'sawtooth';
+                        oscillator.frequency.setValueAtTime(80, this.audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(600, this.audioContext.currentTime + 0.4);
+                        gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 1000;
+                        break;
+
+                    case 'scream':
+                        oscillator.type = 'square';
+                        oscillator.frequency.setValueAtTime(200, this.audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(80, this.audioContext.currentTime + 1.2);
+                        gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 1.5);
+                        break;
+
+                    case 'heartbeat':
+                        oscillator.type = 'sine';
+                        oscillator.frequency.value = 60;
+                        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+                        break;
+
+                    default:
+                        oscillator.type = 'triangle';
+                        oscillator.frequency.value = 180 + Math.random() * 40;
+                        gainNode.gain.value = 0.08;
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.15);
+                }
+
+                oscillator.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+
+                oscillator.start();
+                oscillator.stop(this.audioContext.currentTime + (type === 'scream' ? 1.5 : 0.5));
+            }
+        }
+
+        const audio = new HorrorAudio();
+
+        // Инициализация игры
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', startGame);
+        playAgainButton.addEventListener('click', startGame);
+
+        // Отслеживание мыши для эффектов
+        gameScreen.addEventListener('mousemove', (e) => {
+            bloodOverlay.style.setProperty('--mouse-x', `${e.clientX}px`);
+            bloodOverlay.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
+
+        // Обработчик кликов
+        gameScreen.addEventListener('click', handleClick);
+        gameScreen.addEventListener('touchstart', handleClick, {passive: true});
+
+        function startGame() {
+            // Сброс состояния
+            clickCount = 0;
+            painLevel = 0;
+            timeLeft = 45;
+            isGameActive = true;
+            lastClickTime = 0;
+            horrorEffectsPlayed = [];
+            jumpscareCooldown = false;
+            
+            // Очистка экрана
+            document.querySelectorAll('.crack, .blood-drip').forEach(el => el.remove());
+            
+            // Сброс визуальных элементов
+            clickCountElement.textContent = '0';
+            painLevelText.textContent = 'СТАБИЛЬНОСТЬ 😎';
+            painLevelText.style.color = '#00ff00';
+            progressBar.style.width = '0%';
+            timerElement.textContent = '45';
+            timerElement.style.color = '';
+            timerElement.style.animation = '';
+            gameContainer.style.background = 'radial-gradient(circle at center, #1a0a0a 0%, var(--dark-bg) 70%)';
+            gameContainer.style.animation = '';
+            screamer.style.opacity = '0';
+            darkOverlay.style.opacity = '0';
+            bloodOverlay.style.opacity = '0';
+            glitchOverlay.style.opacity = '0';
+            
+            // Переключение экранов
+            startScreen.style.display = 'none';
+            resultScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            restartButton.style.display = 'none';
+            
+            // Запуск таймера (не зависит от кликов)
+            clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function handleClick(event) {
+            if (!isGameActive) return;
+            
+            // Защита от спама кликами
+            const currentTime = Date.now();
+            if (currentTime - lastClickTime < clickDelay) return;
+            lastClickTime = currentTime;
+            
+            // Увеличение счетчика
+            clickCount++;
+            clickCountElement.textContent = clickCount;
+            
+            // Обновление уровня боли
+            updatePainLevel();
+            
+            // Визуальные эффекты
+            createClickEffect(event.clientX || event.touches[0].clientX, 
+                            event.clientY || event.touches[0].clientY);
+            
+            // Специальные эффекты хоррора
+            triggerHorrorEffects();
+            
+            // Звуковые эффекты
+            audio.playSound('click');
+        }
+
+        function updatePainLevel() {
+            painLevel = Math.min(clickCount * 1.1, 100);
+            progressBar.style.width = `${painLevel}%`;
+            
+            // Обновление текста уровня стресса
+            const levels = [
+                { threshold: 10, text: 'СТАБИЛЬНОСТЬ 😎', color: '#00ff00' },
+                { threshold: 20, text: 'НАПРЯЖЕНИЕ 😐', color: '#80ff00' },
+                { threshold: 30, text: 'ТРЕВОГА 😣', color: '#ffff00' },
+                { threshold: 40, text: 'ПАНИКА 😫', color: '#ff8000' },
+                { threshold: 50, text: 'УЖАС 😖', color: '#ff4000' },
+                { threshold: 60, text: 'КОШМАР 😩', color: '#ff0000' },
+                { threshold: 70, text: 'ИСТЕРИКА 😰', color: '#cc0000' },
+                { threshold: 80, text: 'БЕЗУМИЕ 😱', color: '#990000' },
+                { threshold: 90, text: 'ПСИХОЗ 💀', color: '#660000' },
+                { threshold: 100, text: 'РАЗУМ УТРАЧЕН 👹', color: '#330000' }
+            ];
+
+            const currentLevel = levels.find(level => painLevel < level.threshold) || levels[levels.length - 1];
+            painLevelText.textContent = currentLevel.text;
+            painLevelText.style.color = currentLevel.color;
+        }
+
+        function triggerHorrorEffects() {
+            const random = Math.random();
+
+            // Тряска экрана
+            if (painLevel >= 30 && random > 0.7) {
+                gameContainer.style.animation = 'shake-hard 0.5s';
+                setTimeout(() => gameContainer.style.animation = '', 500);
+            }
+
+            // Внезапное потемнение
+            if (painLevel >= 40 && random > 0.8) {
+                darkOverlay.style.opacity = '0.8';
+                setTimeout(() => darkOverlay.style.opacity = '0', 400);
+            }
+
+            // Кровавые эффекты
+            if (painLevel >= 50 && random > 0.85) {
+                bloodOverlay.style.opacity = '0.3';
+                setTimeout(() => bloodOverlay.style.opacity = '0', 800);
+                
+                // Создание капель крови
+                for (let i = 0; i < 2; i++) {
+                    setTimeout(() => createBloodDrip(), i * 300);
+                }
+            }
+
+            // Глитч-эффекты
+            if (painLevel >= 60 && random > 0.9) {
+                glitchOverlay.style.opacity = '0.4';
+                setTimeout(() => glitchOverlay.style.opacity = '0', 200);
+                gameContainer.style.animation = 'flicker 0.3s';
+                setTimeout(() => gameContainer.style.animation = '', 300);
+            }
+
+            // СКРИМЕРЫ
+            if (painLevel >= 70 && random > 0.93 && !jumpscareCooldown) {
+                triggerJumpscare();
+            }
+
+            // Экстремальные эффекты
+            if (painLevel >= 85 && random > 0.96) {
+                triggerExtremeHorror();
+            }
+        }
+
+        function triggerJumpscare() {
+            jumpscareCooldown = true;
+            
+            const jumpScares = [
+                { emoji: '👹', text: 'ТЫ МОЙ!' },
+                { emoji: '💀', text: 'НЕ УЙДЕШЬ!' },
+                { emoji: '👻', text: 'Я ВИЖУ ТЕБЯ!' },
+                { emoji: '🤡', text: 'ВЕСЕЛЬЕ НАЧИНАЕТСЯ!' },
+                { emoji: '🔪', text: 'ПОРА ЗАКОНЧИТЬ!' }
+            ];
+            
+            const scare = jumpScares[Math.floor(Math.random() * jumpScares.length)];
+            
+            screamer.innerHTML = `<div style="text-align: center;">
+                <div style="font-size: 8rem; margin-bottom: 2rem;">${scare.emoji}</div>
+                <div style="font-size: 2.5rem; text-shadow: 0 0 20px var(--neon-red);">${scare.text}</div>
+            </div>`;
+            
+            screamer.style.opacity = '1';
+            audio.playSound('jumpscare');
+            
+            // Затемнение фона
+            darkOverlay.style.opacity = '0.6';
+            
+            setTimeout(() => {
+                screamer.style.opacity = '0';
+                darkOverlay.style.opacity = '0';
+                setTimeout(() => jumpscareCooldown = false, 4000);
+            }, 1000);
+        }
+
+        function triggerExtremeHorror() {
+            audio.playSound('scream');
+            
+            // Интенсивное мерцание
+            let flickerCount = 0;
+            const flickerInterval = setInterval(() => {
+                gameContainer.style.animation = 'flicker 0.1s';
+                flickerCount++;
+                if (flickerCount > 8) {
+                    clearInterval(flickerInterval);
+                    gameContainer.style.animation = '';
+                }
+            }, 120);
+            
+            // Множественные капли крови
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => createBloodDrip(), i * 150);
+            }
+
+            // Сердцебиение
+            audio.playSound('heartbeat');
+        }
+
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.style.position = 'absolute';
+            effect.style.left = `${x - 25}px`;
+            effect.style.top = `${y - 25}px`;
+            effect.style.width = '50px';
+            effect.style.height = '50px';
+            effect.style.background = 'radial-gradient(circle, rgba(255,0,60,0.8) 0%, transparent 70%)';
+            effect.style.borderRadius = '50%';
+            effect.style.pointerEvents = 'none';
+            effect.style.zIndex = '3';
+            effect.style.animation = 'click-effect 0.4s forwards';
+            
+            gameScreen.appendChild(effect);
+            
+            setTimeout(() => {
+                if (effect.parentNode) effect.parentNode.removeChild(effect);
+            }, 400);
+        }
+
+        function createBloodDrip() {
+            const drip = document.createElement('div');
+            drip.className = 'blood-drip';
+            drip.style.left = `${Math.random() * 100}vw`;
+            
+            gameScreen.appendChild(drip);
+            
+            setTimeout(() => {
+                if (drip.parentNode) drip.parentNode.removeChild(drip);
+            }, 4000);
+        }
+
+        function updateTimer() {
+            if (!isGameActive) return;
+            
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            
+            // Специальные эффекты в последние секунды
+            if (timeLeft <= 10) {
+                timerElement.style.color = 'var(--neon-red)';
+                timerElement.style.animation = 'flicker 0.5s infinite';
+                
+                // Увеличиваем частоту ужасов
+                if (Math.random() > 0.6) {
+                    triggerHorrorEffects();
+                }
+            }
+            
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            isGameActive = false;
+            clearInterval(timer);
+            
+            // Обновление рекорда
+            if (clickCount > record) {
+                record = clickCount;
+                localStorage.setItem('darkRecord', record);
+                recordElement.textContent = `🏆 АБСОЛЮТНЫЙ РЕКОРД: ${record} КЛИКОВ`;
+            }
+            
+            // Показать результат
+            resultText.textContent = `ТВОЙ РЕЗУЛЬТАТ: ${clickCount} КЛИКОВ`;
+            painResult.textContent = `УРОВЕНЬ СТРЕССА: ${painLevelText.textContent}`;
+            gameScreen.style.display = 'none';
+            resultScreen.style.display = 'flex';
+            restartButton.style.display = 'block';
+            
+            // Финальный звук
+            audio.playSound('scream');
+        }
+    </script>
+</body>
+</html>
