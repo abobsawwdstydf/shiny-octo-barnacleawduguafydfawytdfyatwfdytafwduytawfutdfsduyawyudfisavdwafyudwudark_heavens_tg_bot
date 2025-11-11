@@ -66,8 +66,8 @@
             text-align: center;
             margin-bottom: 20px;
             position: relative;
-            background: rgba(26, 26, 46, 0.9);
             padding: 20px;
+            background: rgba(26, 26, 46, 0.9);
             border-radius: 25px;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -77,13 +77,13 @@
         h1 {
             color: var(--primary-color);
             text-shadow: 0 0 30px rgba(187, 134, 252, 0.8);
-            font-size: 2.8rem;
-            margin-bottom: 5px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-purple), var(--accent-cyan));
+            font-size: 3rem;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-cyan), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: titleGlow 3s ease-in-out infinite alternate;
+            animation: titleGlow 4s ease-in-out infinite alternate;
             font-weight: 900;
             letter-spacing: 1px;
         }
@@ -98,26 +98,27 @@
                 transform: scale(1.02);
             }
             100% { 
-                filter: drop-shadow(0 0 15px rgba(224, 64, 251, 0.6));
+                filter: drop-shadow(0 0 20px rgba(224, 64, 251, 0.7));
                 transform: scale(1);
             }
         }
 
         .subtitle {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            text-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .card {
             background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(40, 40, 70, 0.9));
             border-radius: 25px;
-            padding: 25px;
-            margin: 18px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(25px);
             position: relative;
             overflow: hidden;
         }
@@ -129,8 +130,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.1), transparent);
-            transition: 0.6s;
+            background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.15), transparent);
+            transition: 0.8s;
         }
 
         .card:hover::before {
@@ -138,28 +139,28 @@
         }
 
         .card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
             border-color: rgba(187, 134, 252, 0.4);
         }
 
         button {
             border: none;
             color: white;
-            padding: 16px 32px;
+            padding: 18px 32px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 800;
-            margin: 8px 6px;
+            margin: 10px 8px;
             cursor: pointer;
             border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             background: var(--gradient-2);
             background-size: 300% 300%;
-            animation: gradientShift 4s ease infinite, buttonPulse 2s ease-in-out infinite;
+            animation: gradientShift 6s ease infinite, buttonPulse 3s ease-in-out infinite;
             position: relative;
             overflow: hidden;
             word-break: break-word;
@@ -169,9 +170,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            flex-direction: column;
-            gap: 5px;
             letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         button::before {
@@ -182,7 +182,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.5s;
+            transition: 0.6s;
         }
 
         button:hover::before {
@@ -190,14 +190,14 @@
         }
 
         button:hover {
-            transform: translateY(-6px) scale(1.08);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            animation: gradientShift 2s ease infinite, buttonPulse 1s ease-in-out infinite;
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: gradientShift 3s ease infinite, buttonPulse 1.5s ease-in-out infinite;
         }
 
         button:active {
-            transform: translateY(2px) scale(0.95);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(4px) scale(0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         button:disabled {
@@ -220,26 +220,26 @@
 
         @keyframes buttonPulse {
             0%, 100% { 
-                box-shadow: 0 8px 25px rgba(187, 134, 252, 0.5),
-                           0 0 0 0 rgba(100, 255, 218, 0.4); 
+                box-shadow: 0 10px 30px rgba(187, 134, 252, 0.5),
+                          0 0 0 0 rgba(100, 255, 218, 0.4); 
             }
             50% { 
-                box-shadow: 0 8px 35px rgba(100, 255, 218, 0.7),
-                           0 0 0 10px rgba(100, 255, 218, 0); 
+                box-shadow: 0 15px 40px rgba(100, 255, 218, 0.6),
+                          0 0 0 10px rgba(187, 134, 252, 0.2); 
             }
         }
 
         .balance-display {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             text-align: center;
-            margin: 25px 0;
+            margin: 30px 0;
             padding: 25px;
             background: var(--gradient-3);
             border-radius: 25px;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 40px rgba(79, 172, 254, 0.4),
-                       inset 0 0 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -251,7 +251,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(transparent, rgba(187, 134, 252, 0.2), transparent 30%);
+            background: conic-gradient(transparent, rgba(255, 255, 255, 0.1), transparent 30%);
             animation: rotate 6s linear infinite;
         }
 
@@ -262,7 +262,7 @@
         .balance-amount {
             color: var(--accent-lime);
             text-shadow: 0 0 20px rgba(238, 255, 65, 0.8);
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             position: relative;
             z-index: 1;
             font-weight: 900;
@@ -273,12 +273,12 @@
             border: 2px solid var(--secondary-color);
             color: var(--text-color);
             padding: 20px;
-            margin: 18px 0;
+            margin: 20px 0;
             border-radius: 20px;
             display: none;
             text-align: center;
-            box-shadow: 0 0 30px rgba(105, 240, 174, 0.5);
-            animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(105, 240, 174, 0.4);
+            animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
             font-weight: 600;
@@ -286,7 +286,7 @@
 
         @keyframes slideIn {
             from { 
-                transform: translateY(-30px) scale(0.9); 
+                transform: translateY(-40px) scale(0.9); 
                 opacity: 0; 
             }
             to { 
@@ -297,69 +297,68 @@
 
         .clicker-section {
             text-align: center;
-            margin: 30px 0;
+            margin: 40px 0;
         }
 
         #clickButton {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             background: var(--gradient-5);
-            background-size: 300% 300%;
-            animation: gradientShift 4s ease infinite, pulse 2s infinite, rotate 15s linear infinite;
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite, pulse 3s infinite, rotate 15s linear infinite;
             color: white;
-            font-size: 36px;
+            font-size: 40px;
             border: none;
             cursor: pointer;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6),
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
                        0 0 0 0 rgba(250, 112, 154, 0.4),
                        0 0 0 0 rgba(254, 225, 64, 0.4);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             margin: 0 auto;
-            font-weight: 900;
         }
 
         #clickButton::after {
             content: '';
             position: absolute;
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             border: 4px solid var(--primary-color);
             border-radius: 50%;
-            animation: ripple 3s infinite;
-            opacity: 0.7;
+            animation: ripple 4s infinite;
+            opacity: 0.8;
         }
 
         #clickButton::before {
             content: '';
             position: absolute;
-            width: 220px;
-            height: 220px;
+            width: 240px;
+            height: 240px;
             border: 3px solid var(--secondary-color);
             border-radius: 50%;
-            animation: ripple 4s infinite 1.5s;
-            opacity: 0.5;
+            animation: ripple 5s infinite 1.5s;
+            opacity: 0.6;
         }
 
         @keyframes pulse {
             0% { 
-                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6),
-                           0 0 0 0 rgba(250, 112, 154, 0.6),
-                           0 0 0 0 rgba(254, 225, 64, 0.4); 
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                          0 0 0 0 rgba(250, 112, 154, 0.6),
+                          0 0 0 0 rgba(254, 225, 64, 0.4); 
             }
             70% { 
-                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6),
-                           0 0 0 40px rgba(250, 112, 154, 0),
-                           0 0 0 30px rgba(254, 225, 64, 0); 
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                          0 0 0 40px rgba(250, 112, 154, 0),
+                          0 0 0 30px rgba(254, 225, 64, 0); 
             }
             100% { 
-                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6),
-                           0 0 0 0 rgba(250, 112, 154, 0),
-                           0 0 0 0 rgba(254, 225, 64, 0); 
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                          0 0 0 0 rgba(250, 112, 154, 0),
+                          0 0 0 0 rgba(254, 225, 64, 0); 
             }
         }
 
@@ -372,14 +371,14 @@
             display: flex;
             width: 100%;
             justify-content: space-between;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             background: rgba(30, 30, 50, 0.9);
             padding: 15px;
             border-radius: 25px;
             flex-wrap: wrap;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -389,8 +388,8 @@
             cursor: pointer;
             color: var(--text-color);
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 14px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 15px;
             font-weight: 700;
             text-align: center;
             flex: 1;
@@ -403,9 +402,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 5px;
-            min-height: 70px;
+            letter-spacing: 0.5px;
         }
 
         .tab::before {
@@ -416,7 +413,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.3), transparent);
-            transition: 0.5s;
+            transition: 0.6s;
         }
 
         .tab:hover::before {
@@ -425,22 +422,22 @@
 
         .tab:hover {
             background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         .tab.active {
             background: var(--gradient-2);
             color: #121212;
-            font-weight: 900;
+            font-weight: 800;
             box-shadow: 0 10px 30px rgba(187, 134, 252, 0.5);
-            transform: translateY(-3px) scale(1.08);
+            transform: translateY(-4px);
         }
 
         .tab-content {
             display: none;
             width: 100%;
-            animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes fadeInUp {
@@ -460,14 +457,14 @@
 
         .location {
             border: 2px solid rgba(255, 255, 255, 0.15);
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.7));
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 25px;
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(50, 50, 80, 0.6));
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
         }
 
         .location::before {
@@ -478,7 +475,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.2), transparent);
-            transition: 0.6s;
+            transition: 0.8s;
         }
 
         .location:hover::before {
@@ -486,17 +483,17 @@
         }
 
         .location:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px) scale(1.04);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             border-color: rgba(187, 134, 252, 0.5);
         }
 
         .location h3 {
             color: var(--primary-color);
             margin-bottom: 15px;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             text-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
-            font-weight: 800;
+            font-weight: 700;
         }
 
         .mining-timer {
@@ -508,27 +505,26 @@
         }
 
         .progress-container {
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .progress-bar {
             height: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
             overflow: hidden;
             position: relative;
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .progress-fill {
             height: 100%;
             background: var(--gradient-4);
-            border-radius: 10px;
-            transition: width 0.5s ease;
+            border-radius: 12px;
+            transition: width 0.6s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(67, 233, 123, 0.5);
         }
 
         .progress-fill::after {
@@ -539,7 +535,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            animation: shimmer 2s infinite;
+            animation: shimmer 3s infinite;
         }
 
         @keyframes shimmer {
@@ -549,13 +545,13 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.7));
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(45, 45, 75, 0.7));
             padding: 25px;
             border-radius: 20px;
             text-align: center;
@@ -563,7 +559,7 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
 
         .stat-card::before {
@@ -574,7 +570,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.15), transparent);
-            transition: 0.5s;
+            transition: 0.6s;
         }
 
         .stat-card:hover::before {
@@ -582,13 +578,13 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-8px) scale(1.05);
+            transform: translateY(-8px);
             border-color: rgba(187, 134, 252, 0.4);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
 
         .stat-value {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 900;
             color: var(--secondary-color);
             margin-bottom: 10px;
@@ -598,38 +594,34 @@
         }
 
         .stat-label {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
             font-weight: 600;
         }
 
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
         .inventory-item {
-            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.7));
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(50, 50, 80, 0.6));
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             border: 2px solid rgba(255, 255, 255, 0.15);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            backdrop-filter: blur(15px);
         }
 
         .inventory-item.owned {
             border-color: var(--accent-green);
             box-shadow: 0 0 30px rgba(105, 240, 174, 0.4);
-            background: linear-gradient(135deg, rgba(30, 50, 40, 0.8), rgba(40, 70, 50, 0.7));
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.9), rgba(40, 60, 50, 0.7));
         }
 
         .inventory-item::before {
@@ -640,7 +632,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.2), transparent);
-            transition: 0.6s;
+            transition: 0.8s;
         }
 
         .inventory-item:hover::before {
@@ -648,8 +640,8 @@
         }
 
         .inventory-item:hover {
-            transform: translateY(-8px) scale(1.08);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px) scale(1.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             border-color: rgba(187, 134, 252, 0.5);
         }
 
@@ -657,11 +649,6 @@
             font-size: 3.5rem;
             margin-bottom: 15px;
             filter: drop-shadow(0 0 15px rgba(187, 134, 252, 0.6));
-            transition: all 0.3s ease;
-        }
-
-        .inventory-item:hover .item-icon {
-            transform: scale(1.2) rotate(5deg);
         }
 
         .item-name {
@@ -670,27 +657,26 @@
             color: var(--primary-color);
             font-size: 1.2rem;
             word-break: break-word;
-            text-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
         }
 
         .item-description {
             font-size: 0.9rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
-            line-height: 1.4;
+            margin-bottom: 18px;
+            line-height: 1.5;
             word-break: break-word;
-            flex-grow: 1;
         }
 
         .betting-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
-            margin: 25px 0;
+            margin: 30px 0;
         }
 
         .bet-option {
-            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.7));
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(45, 45, 75, 0.7));
             padding: 20px;
             border-radius: 20px;
             text-align: center;
@@ -699,11 +685,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            backdrop-filter: blur(15px);
         }
 
         .bet-option::before {
@@ -714,7 +696,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(187, 134, 252, 0.2), transparent);
-            transition: 0.5s;
+            transition: 0.6s;
         }
 
         .bet-option:hover::before {
@@ -722,9 +704,9 @@
         }
 
         .bet-option:hover {
-            transform: translateY(-6px) scale(1.08);
+            transform: translateY(-8px) scale(1.08);
             border-color: rgba(187, 134, 252, 0.5);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
 
         .bet-amount {
@@ -734,7 +716,7 @@
             margin-bottom: 8px;
             text-shadow: 0 0 12px rgba(100, 255, 218, 0.6);
             word-break: break-word;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .bet-chance {
@@ -745,106 +727,105 @@
         }
 
         .credit-section {
-            margin-top: 25px;
+            margin-top: 30px;
         }
 
         .credit-input {
             display: flex;
             gap: 15px;
-            margin: 25px 0;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
 
         .credit-input input {
             flex: 1;
-            padding: 18px;
+            padding: 20px;
             border-radius: 20px;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             color: var(--text-color);
-            font-size: 16px;
-            transition: all 0.3s ease;
-            min-width: 150px;
+            font-size: 18px;
+            transition: all 0.4s ease;
+            min-width: 200px;
             backdrop-filter: blur(10px);
-            font-weight: 600;
         }
 
         .credit-input input:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 20px rgba(187, 134, 252, 0.5);
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .credit-list {
-            margin-top: 25px;
+            margin-top: 30px;
         }
 
         .credit-item {
-            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.7));
-            padding: 20px;
-            border-radius: 20px;
-            margin: 15px 0;
-            border-left: 6px solid var(--primary-color);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .credit-item:hover {
-            transform: translateX(8px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .auto-miner {
-            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 70, 0.7));
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(45, 45, 75, 0.7));
             padding: 25px;
             border-radius: 20px;
-            margin: 25px 0;
-            border: 2px solid rgba(255, 255, 255, 0.15);
+            margin: 18px 0;
+            border-left: 6px solid var(--primary-color);
             transition: all 0.4s ease;
             backdrop-filter: blur(15px);
         }
 
+        .credit-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .auto-miner {
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(50, 50, 80, 0.6));
+            padding: 30px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.5s ease;
+            backdrop-filter: blur(20px);
+        }
+
         .auto-miner:hover {
             border-color: rgba(187, 134, 252, 0.5);
-            transform: translateY(-6px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .miner-level {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
             gap: 20px;
         }
 
         .miner-info {
             flex: 1;
-            min-width: 200px;
+            min-width: 250px;
         }
 
         .miner-stats {
             display: flex;
             gap: 25px;
-            margin-top: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
         .miner-stat {
             text-align: center;
             flex: 1;
-            min-width: 90px;
+            min-width: 100px;
         }
 
         .miner-value {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 900;
             color: var(--secondary-color);
             text-shadow: 0 0 12px rgba(100, 255, 218, 0.6);
             word-break: break-word;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .miner-label {
@@ -859,18 +840,18 @@
             margin-top: 15px;
             font-size: 1.2rem;
             word-break: break-word;
-            text-shadow: 0 0 10px rgba(255, 171, 64, 0.5);
+            text-shadow: 0 0 10px rgba(255, 171, 64, 0.4);
         }
 
         .settings-option {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px;
+            padding: 20px;
             margin: 12px 0;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 15px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             flex-wrap: wrap;
             gap: 15px;
             backdrop-filter: blur(10px);
@@ -884,7 +865,7 @@
         .switch {
             position: relative;
             display: inline-block;
-            width: 65px;
+            width: 70px;
             height: 38px;
             flex-shrink: 0;
         }
@@ -902,10 +883,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #555;
+            background: linear-gradient(135deg, #777, #999);
             transition: .4s;
             border-radius: 34px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .slider:before {
@@ -915,18 +896,18 @@
             width: 30px;
             left: 4px;
             bottom: 4px;
-            background-color: white;
+            background: white;
             transition: .4s;
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         input:checked + .slider {
-            background: var(--gradient-2);
+            background: var(--gradient-4);
         }
 
         input:checked + .slider:before {
-            transform: translateX(27px);
+            transform: translateX(32px);
         }
 
         .particles {
@@ -956,17 +937,17 @@
 
         .particle:nth-child(3n) {
             background: var(--accent-purple);
-            animation-duration: 15s;
+            animation-duration: 14s;
         }
 
         .particle:nth-child(4n) {
             background: var(--accent-cyan);
-            animation-duration: 8s;
+            animation-duration: 16s;
         }
 
         @keyframes float {
             0% { 
-                transform: translateY(100vh) rotate(0deg) scale(0.3); 
+                transform: translateY(100vh) rotate(0deg) scale(0.5); 
                 opacity: 0; 
             }
             10% { 
@@ -977,7 +958,7 @@
                 opacity: 1; 
             }
             100% { 
-                transform: translateY(-100vh) rotate(360deg) scale(0.3); 
+                transform: translateY(-100vh) rotate(360deg) scale(0.5); 
                 opacity: 0; 
             }
         }
@@ -995,14 +976,8 @@
             0%, 100% { 
                 transform: translateY(0px) rotate(0deg) scale(1); 
             }
-            25% { 
-                transform: translateY(-25px) rotate(90deg) scale(1.1); 
-            }
             50% { 
-                transform: translateY(-50px) rotate(180deg) scale(1.2); 
-            }
-            75% { 
-                transform: translateY(-25px) rotate(270deg) scale(1.1); 
+                transform: translateY(-25px) rotate(180deg) scale(1.1); 
             }
         }
 
@@ -1011,25 +986,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: var(--gradient-1);
-            padding: 35px;
-            border-radius: 25px;
-            box-shadow: 0 0 60px rgba(187, 134, 252, 0.6);
+            background: var(--gradient-2);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
             text-align: center;
             z-index: 1000;
-            animation: achievementPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: achievementPop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             border: 3px solid var(--primary-color);
             backdrop-filter: blur(20px);
         }
 
         @keyframes achievementPop {
             0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+            70% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .mining-complete {
-            animation: miningComplete 0.6s ease;
+            animation: miningComplete 0.8s ease;
         }
 
         @keyframes miningComplete {
@@ -1041,26 +1016,26 @@
         .secret-feature {
             background: var(--gradient-5);
             padding: 15px 25px;
-            border-radius: 25px;
+            border-radius: 30px;
             margin: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             text-align: center;
             font-weight: 800;
             word-break: break-word;
-            box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .secret-feature:hover {
-            transform: scale(1.12);
+            transform: scale(1.15);
             box-shadow: 0 0 30px var(--accent-pink);
         }
 
         .easter-egg {
             position: fixed;
             font-size: 4rem;
-            animation: bounce 2s infinite;
+            animation: bounce 2.5s infinite;
             cursor: pointer;
             z-index: 1001;
             filter: drop-shadow(0 0 20px rgba(255, 215, 64, 0.8));
@@ -1068,7 +1043,7 @@
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.2); }
+            50% { transform: translateY(-25px) scale(1.1); }
         }
 
         .upgradeable-item {
@@ -1080,7 +1055,7 @@
             top: 12px;
             right: 12px;
             background: var(--gradient-2);
-            color: white;
+            color: #121212;
             border-radius: 50%;
             width: 35px;
             height: 35px;
@@ -1095,92 +1070,59 @@
 
         .item-upgrade-btn {
             margin-top: 12px;
-            padding: 10px 15px;
-            font-size: 0.85rem;
+            padding: 12px 16px;
+            font-size: 0.9rem;
             background: var(--gradient-3);
             word-break: break-word;
             white-space: normal;
-            min-height: 45px;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            flex-direction: column;
-            gap: 3px;
             font-weight: 700;
             border-radius: 15px;
         }
 
         .item-bonus {
             color: var(--accent-green);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-bottom: 12px;
             word-break: break-word;
-            font-weight: 700;
-            text-shadow: 0 0 8px rgba(105, 240, 174, 0.5);
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(105, 240, 174, 0.4);
         }
 
         .compact-number {
-            font-size: 0.9em;
+            font-size: 0.95em;
             word-break: break-word;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .cooldown-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 20px;
-            color: var(--accent-yellow);
-            font-weight: 900;
+            border-radius: inherit;
+            font-weight: 800;
             font-size: 1.1rem;
-            text-shadow: 0 0 10px rgba(255, 215, 64, 0.8);
+            color: var(--accent-yellow);
+            text-shadow: 0 0 10px rgba(255, 215, 64, 0.6);
             backdrop-filter: blur(5px);
         }
 
         .upgrade-delay {
             color: var(--accent-red);
             font-size: 0.8rem;
-            margin-top: 5px;
-            font-weight: 700;
-            text-shadow: 0 0 8px rgba(255, 82, 82, 0.5);
-        }
-
-        .premium-border {
-            border: 3px solid;
-            border-image: linear-gradient(45deg, var(--accent-yellow), var(--accent-orange), var(--accent-red), var(--accent-purple)) 1;
-            animation: borderGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { border-image-source: linear-gradient(45deg, var(--accent-yellow), var(--accent-orange), var(--accent-red), var(--accent-purple)); }
-            25% { border-image-source: linear-gradient(45deg, var(--accent-orange), var(--accent-red), var(--accent-purple), var(--accent-yellow)); }
-            50% { border-image-source: linear-gradient(45deg, var(--accent-red), var(--accent-purple), var(--accent-yellow), var(--accent-orange)); }
-            75% { border-image-source: linear-gradient(45deg, var(--accent-purple), var(--accent-yellow), var(--accent-orange), var(--accent-red)); }
-        }
-
-        .legendary-item {
-            background: linear-gradient(135deg, rgba(80, 30, 50, 0.9), rgba(120, 40, 70, 0.8));
-            border: 3px solid var(--accent-orange);
-            box-shadow: 0 0 40px rgba(255, 171, 64, 0.6);
-        }
-
-        .epic-item {
-            background: linear-gradient(135deg, rgba(50, 30, 80, 0.9), rgba(70, 40, 120, 0.8));
-            border: 3px solid var(--accent-purple);
-            box-shadow: 0 0 35px rgba(224, 64, 251, 0.5);
-        }
-
-        .rare-item {
-            background: linear-gradient(135deg, rgba(30, 50, 80, 0.9), rgba(40, 70, 120, 0.8));
-            border: 3px solid var(--accent-blue);
-            box-shadow: 0 0 30px rgba(68, 138, 255, 0.4);
+            margin-top: 8px;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(255, 82, 82, 0.4);
         }
     </style>
 </head>
@@ -1191,12 +1133,12 @@
     <div class="phone-container">
         <div class="header">
             <h1>DH Шахта</h1>
-            <div class="subtitle">⚡ Ультимативный майнинг опыт ⚡</div>
+            <div class="subtitle">Эпический майнинг опыт</div>
         </div>
         
         <div class="balance-display">
             <div>💎 Баланс: <span class="balance-amount" id="balance">0</span> камней</div>
-            <div style="margin-top: 10px; font-size: 1.1rem; color: var(--text-muted); font-weight: 700;">
+            <div style="margin-top: 15px; font-size: 1.2rem; color: var(--text-muted)">
                 ⚡ <span id="stonesPerSecond">0</span> камней/сек
             </div>
         </div>
@@ -1216,7 +1158,7 @@
             <div class="card">
                 <div class="clicker-section">
                     <h3>⚡ Быстрый майнинг</h3>
-                    <p style="font-weight: 600; margin-bottom: 20px;">Кликайте для мгновенной добычи!</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">Кликайте для мгновенной добычи!</p>
                     <button id="clickButton">⛏️</button>
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -1297,13 +1239,13 @@
         <div id="tab-dailybonus" class="tab-content">
             <div class="card">
                 <h3>🎁 Ежедневный бонус</h3>
-                <p style="font-weight: 600;">Заходи каждый день для получения награды!</p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <button onclick="claimBonus()" class="gradient-button" id="bonusButton" style="padding: 25px 50px; font-size: 1.4rem;">
+                <p style="font-size: 1.1rem;">Заходи каждый день для получения награды!</p>
+                <div style="text-align: center; margin: 40px 0;">
+                    <button onclick="claimBonus()" class="gradient-button" id="bonusButton" style="padding: 30px 60px; font-size: 1.5rem;">
                         🎁 Получить бонус
                     </button>
                 </div>
-                <div id="bonusInfo" style="text-align: center; margin-top: 25px; font-weight: 600;"></div>
+                <div id="bonusInfo" style="text-align: center; margin-top: 30px; font-size: 1.1rem;"></div>
             </div>
             <div id="notification-bonus" class="notification"></div>
         </div>
@@ -1312,104 +1254,104 @@
         <div id="tab-luck" class="tab-content">
             <div class="card">
                 <h3>🎰 Испытай удачу!</h3>
-                <p style="font-weight: 600;">Шанс выигрыша: <span style="color: var(--accent-green); font-weight: 800;">39%</span></p>
+                <p style="font-size: 1.1rem;">Шанс выигрыша: <span style="color: var(--accent-green); font-weight: bold; text-shadow: 0 0 10px rgba(105, 240, 174, 0.6);">71%</span></p>
                 
                 <div class="betting-options">
                     <div class="bet-option" onclick="tryLuck(10)">
                         <div class="bet-amount">10 💎</div>
-                        <div class="bet-chance">Выигрыш: 15-30</div>
+                        <div class="bet-chance">Выигрыш: 17-34</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(50)">
                         <div class="bet-amount">50 💎</div>
-                        <div class="bet-chance">Выигрыш: 75-150</div>
+                        <div class="bet-chance">Выигрыш: 85-170</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(100)">
                         <div class="bet-amount">100 💎</div>
-                        <div class="bet-chance">Выигрыш: 150-300</div>
+                        <div class="bet-chance">Выигрыш: 170-340</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(250)">
                         <div class="bet-amount">250 💎</div>
-                        <div class="bet-chance">Выигрыш: 375-750</div>
+                        <div class="bet-chance">Выигрыш: 425-850</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(500)">
                         <div class="bet-amount">500 💎</div>
-                        <div class="bet-chance">Выигрыш: 750-1500</div>
+                        <div class="bet-chance">Выигрыш: 850-1.7K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(1000)">
                         <div class="bet-amount">1K 💎</div>
-                        <div class="bet-chance">Выигрыш: 1.5K-3K</div>
+                        <div class="bet-chance">Выигрыш: 1.7K-3.4K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(2500)">
                         <div class="bet-amount">2.5K 💎</div>
-                        <div class="bet-chance">Выигрыш: 3.75K-7.5K</div>
+                        <div class="bet-chance">Выигрыш: 4.25K-8.5K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(5000)">
                         <div class="bet-amount">5K 💎</div>
-                        <div class="bet-chance">Выигрыш: 7.5K-15K</div>
+                        <div class="bet-chance">Выигрыш: 8.5K-17K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(10000)">
                         <div class="bet-amount">10K 💎</div>
-                        <div class="bet-chance">Выигрыш: 15K-30K</div>
+                        <div class="bet-chance">Выигрыш: 17K-34K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(25000)">
                         <div class="bet-amount">25K 💎</div>
-                        <div class="bet-chance">Выигрыш: 37.5K-75K</div>
+                        <div class="bet-chance">Выигрыш: 42.5K-85K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(50000)">
                         <div class="bet-amount">50K 💎</div>
-                        <div class="bet-chance">Выигрыш: 75K-150K</div>
+                        <div class="bet-chance">Выигрыш: 85K-170K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(100000)">
                         <div class="bet-amount">100K 💎</div>
-                        <div class="bet-chance">Выигрыш: 150K-300K</div>
+                        <div class="bet-chance">Выигрыш: 170K-340K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(250000)">
                         <div class="bet-amount">250K 💎</div>
-                        <div class="bet-chance">Выигрыш: 375K-750K</div>
+                        <div class="bet-chance">Выигрыш: 425K-850K</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(500000)">
                         <div class="bet-amount">500K 💎</div>
-                        <div class="bet-chance">Выигрыш: 750K-1.5M</div>
+                        <div class="bet-chance">Выигрыш: 850K-1.7M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(1000000)">
                         <div class="bet-amount">1M 💎</div>
-                        <div class="bet-chance">Выигрыш: 1.5M-3M</div>
+                        <div class="bet-chance">Выигрыш: 1.7M-3.4M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(2500000)">
                         <div class="bet-amount">2.5M 💎</div>
-                        <div class="bet-chance">Выигрыш: 3.75M-7.5M</div>
+                        <div class="bet-chance">Выигрыш: 4.25M-8.5M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(5000000)">
                         <div class="bet-amount">5M 💎</div>
-                        <div class="bet-chance">Выигрыш: 7.5M-15M</div>
+                        <div class="bet-chance">Выигрыш: 8.5M-17M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(10000000)">
                         <div class="bet-amount">10M 💎</div>
-                        <div class="bet-chance">Выигрыш: 15M-30M</div>
+                        <div class="bet-chance">Выигрыш: 17M-34M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(15000000)">
                         <div class="bet-amount">15M 💎</div>
-                        <div class="bet-chance">Выигрыш: 22.5M-45M</div>
+                        <div class="bet-chance">Выигрыш: 25.5M-51M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(50000000)">
                         <div class="bet-amount">50M 💎</div>
-                        <div class="bet-chance">Выигрыш: 75M-150M</div>
+                        <div class="bet-chance">Выигрыш: 85M-170M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(100000000)">
                         <div class="bet-amount">100M 💎</div>
-                        <div class="bet-chance">Выигрыш: 150M-300M</div>
+                        <div class="bet-chance">Выигрыш: 170M-340M</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(500000000)">
                         <div class="bet-amount">500M 💎</div>
-                        <div class="bet-chance">Выигрыш: 750M-1.5B</div>
+                        <div class="bet-chance">Выигрыш: 850M-1.7B</div>
                     </div>
                     <div class="bet-option" onclick="tryLuck(1000000000)">
                         <div class="bet-amount">1B 💎</div>
-                        <div class="bet-chance">Выигрыш: 1.5B-3B</div>
+                        <div class="bet-chance">Выигрыш: 1.7B-3.4B</div>
                     </div>
                 </div>
                 
-                <div class="stats-grid" style="margin-top: 30px;">
+                <div class="stats-grid" style="margin-top: 40px;">
                     <div class="stat-card">
                         <div class="stat-value" id="totalBets">0</div>
                         <div class="stat-label">Всего ставок</div>
@@ -1431,21 +1373,21 @@
         <div id="tab-credit" class="tab-content">
             <div class="card">
                 <h3>💰 Кредитная система</h3>
-                <p style="font-weight: 600;">Максимум 15 активных кредитов одновременно</p>
+                <p style="font-size: 1.1rem;">Максимум 15 активных кредитов одновременно</p>
                 
                 <div class="credit-input">
                     <input type="number" id="creditAmount" placeholder="Сумма кредита" min="1" max="1000000000">
                     <button onclick="takeCredit()">Взять кредит</button>
                 </div>
                 
-                <div class="credit-info" style="margin: 25px 0; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 20px; backdrop-filter: blur(10px);">
-                    <p style="font-weight: 600;">📅 Срок погашения: 
+                <div class="credit-info" style="margin: 30px 0; padding: 25px; background: rgba(0,0,0,0.4); border-radius: 20px; backdrop-filter: blur(10px);">
+                    <p style="font-size: 1.1rem; margin-bottom: 10px;">📅 Срок погашения: 
                         <span id="creditTerms">
                             ≤100: 24ч | 101-5000: 5д | ≥5001: 10д
                         </span>
                     </p>
-                    <p style="font-weight: 600;">💸 Процентная ставка: <span id="interestRate">33%</span></p>
-                    <p style="font-weight: 600;">📊 Активных кредитов: <span id="activeCredits">0</span>/15</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 10px;">💸 Процентная ставка: <span id="interestRate">33%</span></p>
+                    <p style="font-size: 1.1rem;">📊 Активных кредитов: <span id="activeCredits">0</span>/15</p>
                 </div>
                 
                 <div class="credit-list" id="creditList">
@@ -1459,13 +1401,13 @@
         <div id="tab-auto" class="tab-content">
             <div class="card">
                 <h3>🤖 Система авто-майнинга</h3>
-                <p style="font-weight: 600;">Автоматическая добыча камней даже когда вы оффлайн!</p>
+                <p style="font-size: 1.1rem;">Автоматическая добыча камней даже когда вы оффлайн!</p>
                 
                 <div class="auto-miner">
                     <div class="miner-level">
                         <div class="miner-info">
                             <h4>⚡ Авто-кирка Уровень <span id="minerLevel">1</span></h4>
-                            <p style="font-weight: 600;">Добывает <span id="minerPower">1</span> камень каждые <span id="minerInterval">5</span> секунд</p>
+                            <p style="font-size: 1.1rem;">Добывает <span id="minerPower">1</span> камень каждые <span id="minerInterval">5</span> секунд</p>
                             <div class="miner-stats">
                                 <div class="miner-stat">
                                     <div class="miner-value" id="totalAutoMined">0</div>
@@ -1477,7 +1419,7 @@
                                 </div>
                             </div>
                             <div class="upgrade-cost" id="upgradeCostText">Стоимость улучшения: 100 💎</div>
-                            <div class="upgrade-delay" id="upgradeCooldown"></div>
+                            <div class="upgrade-delay" id="minerCooldown"></div>
                         </div>
                         <button onclick="upgradeMiner()" id="upgradeMinerBtn">
                             Улучшить за<br><span id="upgradeCostValue">100</span> 💎
@@ -1507,12 +1449,12 @@
         <div id="tab-settings" class="tab-content">
             <div class="card">
                 <h3>⚙️ Настройки анимаций</h3>
-                <p style="font-weight: 600;">Включите или выключите анимации для улучшения производительности</p>
+                <p style="font-size: 1.1rem;">Включите или выключите анимации для улучшения производительности</p>
                 
                 <div class="settings-option">
                     <div>
-                        <strong>Анимация частиц</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Плавающие частицы на фоне</div>
+                        <strong style="font-size: 1.1rem;">Анимация частиц</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Плавающие частицы на фоне</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="particlesAnimation" checked>
@@ -1522,8 +1464,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Анимация кнопок</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Переливающиеся кнопки</div>
+                        <strong style="font-size: 1.1rem;">Анимация кнопок</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Переливающиеся кнопки</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="buttonsAnimation" checked>
@@ -1533,8 +1475,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Анимация ховера</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Эффекты при наведении</div>
+                        <strong style="font-size: 1.1rem;">Анимация ховера</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Эффекты при наведении</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="hoverAnimation" checked>
@@ -1544,8 +1486,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Анимация прогресса</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Анимированные прогресс-бары</div>
+                        <strong style="font-size: 1.1rem;">Анимация прогресса</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Анимированные прогресс-бары</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="progressAnimation" checked>
@@ -1555,8 +1497,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Анимация уведомлений</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Всплывающие уведомления</div>
+                        <strong style="font-size: 1.1rem;">Анимация уведомлений</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Всплывающие уведомления</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="notificationsAnimation" checked>
@@ -1566,8 +1508,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Анимация кристаллов</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Плавающие кристаллы</div>
+                        <strong style="font-size: 1.1rem;">Анимация кристаллов</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Плавающие кристаллы</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="crystalsAnimation" checked>
@@ -1581,8 +1523,8 @@
                 
                 <div class="settings-option">
                     <div>
-                        <strong>Звуковые эффекты</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Звуки при кликах и действиях</div>
+                        <strong style="font-size: 1.1rem;">Звуковые эффекты</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Звуки при кликах и действиях</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="soundEffects" checked>
@@ -1592,8 +1534,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Виброотклик</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Вибрация при действиях (мобильные)</div>
+                        <strong style="font-size: 1.1rem;">Виброотклик</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Вибрация при действиях (мобильные)</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="vibration" checked>
@@ -1603,8 +1545,8 @@
 
                 <div class="settings-option">
                     <div>
-                        <strong>Темная тема</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-muted);">Всегда темная тема</div>
+                        <strong style="font-size: 1.1rem;">Темная тема</strong>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Всегда темная тема</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="darkTheme" checked>
@@ -1616,15 +1558,15 @@
             <div class="card">
                 <h3>🔧 Системные настройки</h3>
                 
-                <button onclick="exportSave()" style="width: 100%; margin: 10px 0;">
+                <button onclick="exportSave()" style="width: 100%; margin: 12px 0;">
                     💾 Экспорт сохранения
                 </button>
                 
-                <button onclick="importSave()" style="width: 100%; margin: 10px 0;">
+                <button onclick="importSave()" style="width: 100%; margin: 12px 0;">
                     📤 Импорт сохранения
                 </button>
                 
-                <button onclick="resetGame()" style="width: 100%; margin: 10px 0; background: linear-gradient(45deg, var(--accent-red), var(--accent-orange));">
+                <button onclick="resetGame()" style="width: 100%; margin: 12px 0; background: var(--gradient-5);">
                     🗑️ Сбросить игру
                 </button>
             </div>
@@ -1670,14 +1612,14 @@
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + 'vw';
                 particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
                 particlesContainer.appendChild(particle);
             }
 
             // Добавляем плавающие кристаллы
             const crystalsContainer = document.getElementById('floatingCrystals');
             const crystalCount = 20;
-            const crystalIcons = ['💎', '🔮', '⭐', '✨', '🔸', '🔹', '💠', '❄️'];
+            const crystalIcons = ['💎', '🔮', '⭐', '✨', '🔸', '🔹', '💠', '❄️', '⚡', '🔥'];
             
             for (let i = 0; i < crystalCount; i++) {
                 const crystal = document.createElement('div');
@@ -1687,7 +1629,6 @@
                 crystal.style.top = Math.random() * 100 + 'vh';
                 crystal.style.animationDelay = Math.random() * 8 + 's';
                 crystal.style.animationDuration = (6 + Math.random() * 6) + 's';
-                crystal.style.color = ['#bb86fc', '#64ffda', '#e040fb', '#18ffff', '#ffab40'][Math.floor(Math.random() * 5)];
                 crystalsContainer.appendChild(crystal);
             }
         }
@@ -1723,6 +1664,7 @@
         let rainbowModeActive = false;
         let lastUpgradeTime = 0;
         let upgradeCooldown = 300000; // 5 минут в миллисекундах
+        let lastItemUpgradeTime = {};
 
         // Настройки анимаций
         let settings = {
@@ -1751,35 +1693,36 @@
             { id: 10, name: "⚛️ Квантовый источник", cost: 50000, time: 180, rewardMin: 30000, rewardMax: 60000, emoji: "⚛️" }
         ];
 
-        // Расширенный инвентарь с большими ценами
+        // Данные инвентаря (увеличенное количество предметов)
         const inventoryItems = [
-            // Обычные предметы
-            { id: 1, name: "Обычная кирка", icon: "⛏️", description: "Базовая кирка для начинающих", owned: true, type: "pickaxe", bonus: 1.0, level: 1, upgradeCost: 100, rarity: "common" },
-            { id: 2, name: "Стальная кирка", icon: "🛠️", description: "Прочная стальная кирка", owned: false, price: 500, type: "pickaxe", bonus: 1.2, level: 1, upgradeCost: 1000, rarity: "common" },
-            { id: 3, name: "Золотая кирка", icon: "💰", description: "Блестящая золотая кирка", owned: false, price: 2000, type: "pickaxe", bonus: 1.5, level: 1, upgradeCost: 5000, rarity: "common" },
+            { id: 1, name: "Обычная кирка", icon: "⛏️", description: "Базовая кирка для начинающих", owned: true, type: "pickaxe", bonus: 1.0, level: 1, upgradeCost: 100 },
+            { id: 2, name: "Стальная кирка", icon: "🛠️", description: "+25% к добыче ресурсов", owned: false, price: 500, type: "pickaxe", bonus: 1.25, level: 1, upgradeCost: 1000 },
+            { id: 3, name: "Золотая кирка", icon: "💰", description: "+60% к добыче и +10% к удаче", owned: false, price: 2000, type: "pickaxe", bonus: 1.6, level: 1, upgradeCost: 4000 },
+            { id: 4, name: "Алмазная кирка", icon: "💎", description: "+120% к добыче всех ресурсов", owned: false, price: 8000, type: "pickaxe", bonus: 2.2, level: 1, upgradeCost: 16000 },
+            { id: 5, name: "Мифическая кирка", icon: "🔮", description: "+250% к добыче и шанс x3", owned: false, price: 25000, type: "pickaxe", bonus: 3.5, level: 1, upgradeCost: 50000 },
+            { id: 6, name: "Космическая кирка", icon: "🚀", description: "+500% к добыче в космосе", owned: false, price: 75000, type: "pickaxe", bonus: 6.0, level: 1, upgradeCost: 150000 },
+            { id: 7, name: "Легендарная кирка", icon: "👑", description: "+800% и автодобыча +50%", owned: false, price: 200000, type: "pickaxe", bonus: 9.0, level: 1, upgradeCost: 400000 },
             
-            // Редкие предметы
-            { id: 4, name: "Алмазная кирка", icon: "💎", description: "Невероятно прочная алмазная кирка", owned: false, price: 10000, type: "pickaxe", bonus: 2.0, level: 1, upgradeCost: 20000, rarity: "rare" },
-            { id: 5, name: "Амулет новичка", icon: "🍀", description: "Приносит удачу начинающим", owned: false, price: 1500, type: "amulet", bonus: 1.1, level: 1, upgradeCost: 3000, rarity: "rare" },
-            { id: 6, name: "Кольцо процветания", icon: "💍", description: "Увеличивает все бонусы", owned: false, price: 8000, type: "ring", bonus: 1.15, level: 1, upgradeCost: 16000, rarity: "rare" },
-            { id: 7, name: "Ботинки скорости", icon: "👟", description: "Ускоряет все процессы", owned: false, price: 12000, type: "boots", bonus: 0.85, level: 1, upgradeCost: 24000, rarity: "rare" },
+            { id: 8, name: "Амулет новичка", icon: "🍀", description: "+15% к удаче в майнинге", owned: false, price: 1000, type: "amulet", bonus: 1.15, level: 1, upgradeCost: 2000 },
+            { id: 9, name: "Амулет богатства", icon: "🏆", description: "+35% к удаче и +20% к доходу", owned: false, price: 5000, type: "amulet", bonus: 1.35, level: 1, upgradeCost: 10000 },
+            { id: 10, name: "Магический амулет", icon: "✨", description: "+70% к удаче во всех играх", owned: false, price: 20000, type: "amulet", bonus: 1.7, level: 1, upgradeCost: 40000 },
+            { id: 11, name: "Божественный амулет", icon: "😇", description: "+120% к удаче и защита", owned: false, price: 80000, type: "amulet", bonus: 2.2, level: 1, upgradeCost: 160000 },
             
-            // Эпические предметы
-            { id: 8, name: "Мифическая кирка", icon: "🔮", description: "Древняя мифическая кирка", owned: false, price: 50000, type: "pickaxe", bonus: 3.0, level: 1, upgradeCost: 100000, rarity: "epic" },
-            { id: 9, name: "Амулет богатства", icon: "🏆", description: "Привлекает несметные богатства", owned: false, price: 30000, type: "amulet", bonus: 1.25, level: 1, upgradeCost: 60000, rarity: "epic" },
-            { id: 10, name: "Магический амулет", icon: "✨", description: "Наполнен магической силой", owned: false, price: 75000, type: "amulet", bonus: 1.5, level: 1, upgradeCost: 150000, rarity: "epic" },
-            { id: 11, name: "Кольцо изобилия", icon: "💎", description: "Создает изобилие ресурсов", owned: false, price: 60000, type: "ring", bonus: 1.3, level: 1, upgradeCost: 120000, rarity: "epic" },
-            { id: 12, name: "Плащ невидимости", icon: "🧥", description: "Позволяет оставаться незамеченным", owned: false, price: 90000, type: "cloak", bonus: 2.0, level: 1, upgradeCost: 180000, rarity: "epic" },
+            { id: 12, name: "Кольцо процветания", icon: "💍", description: "+25% к бонусам и наградам", owned: false, price: 3000, type: "ring", bonus: 1.25, level: 1, upgradeCost: 6000 },
+            { id: 13, name: "Кольцо изобилия", icon: "💎", description: "+50% к бонусам и скорости", owned: false, price: 12000, type: "ring", bonus: 1.5, level: 1, upgradeCost: 24000 },
+            { id: 14, name: "Кольцо всемогущества", icon: "🌟", description: "+100% ко всем бонусам", owned: false, price: 50000, type: "ring", bonus: 2.0, level: 1, upgradeCost: 100000 },
             
-            // Легендарные предметы
-            { id: 13, name: "Космическая кирка", icon: "🚀", description: "Кирка из космических материалов", owned: false, price: 250000, type: "pickaxe", bonus: 6.0, level: 1, upgradeCost: 500000, rarity: "legendary" },
-            { id: 14, name: "Очки ясновидения", icon: "👓", description: "Позволяют видеть скрытые ресурсы", owned: false, price: 150000, type: "glasses", bonus: 1.2, level: 1, upgradeCost: 300000, rarity: "legendary" },
-            { id: 15, name: "Чары усиления", icon: "🔰", description: "Мощные чары усиления", owned: false, price: 300000, type: "charm", bonus: 1.4, level: 1, upgradeCost: 600000, rarity: "legendary" },
-            { id: 16, name: "Драконья кирка", icon: "🐉", description: "Кирка из чешуи древнего дракона", owned: false, price: 1000000, type: "pickaxe", bonus: 10.0, level: 1, upgradeCost: 2000000, rarity: "legendary" },
-            { id: 17, name: "Фениксово перо", icon: "🔥", description: "Перо мифической птицы Феникс", owned: false, price: 750000, type: "charm", bonus: 1.8, level: 1, upgradeCost: 1500000, rarity: "legendary" },
-            { id: 18, name: "Артефакт времени", icon: "⏳", description: "Контролирует поток времени", owned: false, price: 2000000, type: "artifact", bonus: 0.5, level: 1, upgradeCost: 4000000, rarity: "legendary" },
-            { id: 19, name: "Кристалл бесконечности", icon: "♾️", description: "Источник бесконечной энергии", owned: false, price: 5000000, type: "artifact", bonus: 3.0, level: 1, upgradeCost: 10000000, rarity: "legendary" },
-            { id: 20, name: "Сфера вселенной", icon: "🌌", description: "Содержит силу всей вселенной", owned: false, price: 10000000, type: "artifact", bonus: 5.0, level: 1, upgradeCost: 20000000, rarity: "legendary" }
+            { id: 15, name: "Ботинки скорости", icon: "👟", description: "+40% к скорости майнинга", owned: false, price: 4000, type: "boots", bonus: 0.6, level: 1, upgradeCost: 8000 },
+            { id: 16, name: "Плащ невидимости", icon: "🧥", description: "Шанс x3 добычи при удаче", owned: false, price: 15000, type: "cloak", bonus: 3.0, level: 1, upgradeCost: 30000 },
+            { id: 17, name: "Очки ясновидения", icon: "👓", description: "+35% к шансам выигрыша", owned: false, price: 10000, type: "glasses", bonus: 1.35, level: 1, upgradeCost: 20000 },
+            { id: 18, name: "Чары усиления", icon: "🔰", description: "+60% ко всем показателям", owned: false, price: 30000, type: "charm", bonus: 1.6, level: 1, upgradeCost: 60000 },
+            { id: 19, name: "Магический жезл", icon: "🪄", description: "Удваивает авто-майнинг", owned: false, price: 100000, type: "wand", bonus: 2.0, level: 1, upgradeCost: 200000 },
+            { id: 20, name: "Древний артефакт", icon: "🏺", description: "+150% ко всему и x5 шанс", owned: false, price: 500000, type: "artifact", bonus: 2.5, level: 1, upgradeCost: 1000000 },
+            { id: 21, name: "Кристалл силы", icon: "🔸", description: "+80% к силе и скорости", owned: false, price: 25000, type: "crystal", bonus: 1.8, level: 1, upgradeCost: 50000 },
+            { id: 22, name: "Эликсир удачи", icon: "🧪", description: "+90% к удаче на 24 часа", owned: false, price: 15000, type: "potion", bonus: 1.9, level: 1, upgradeCost: 30000 },
+            { id: 23, name: "Тотем защиты", icon: "🛡️", description: "Защита от проигрышей 50%", owned: false, price: 40000, type: "totem", bonus: 0.5, level: 1, upgradeCost: 80000 },
+            { id: 24, name: "Свиток мудрости", icon: "📜", description: "+75% к опыту и деньгам", owned: false, price: 35000, type: "scroll", bonus: 1.75, level: 1, upgradeCost: 70000 },
+            { id: 25, name: "Книга заклинаний", icon: "📖", description: "Открывает секретные возможности", owned: false, price: 200000, type: "book", bonus: 3.0, level: 1, upgradeCost: 400000 }
         ];
 
         // Инициализация игры
@@ -1792,6 +1735,8 @@
             loadInventory();
             startAutoMiner();
             loadSettings();
+            
+            // Загрузка активных майнингов
             checkActiveMinings();
         }
 
@@ -1801,6 +1746,7 @@
                 playTime++;
                 minerUptime++;
                 
+                // Расчет камней в секунду
                 const currentStones = totalMined + totalAutoMined;
                 stonesPerSecond = currentStones - lastStoneCount;
                 lastStoneCount = currentStones;
@@ -1809,6 +1755,7 @@
                 updateMiningProgress();
                 updateCooldowns();
                 
+                // Авто-сохранение каждые 30 секунд
                 if (Date.now() - lastSave > 30000) {
                     saveGame();
                     lastSave = Date.now();
@@ -1819,44 +1766,14 @@
         // Обновление кулдаунов
         function updateCooldowns() {
             const now = Date.now();
-            const timeSinceLastUpgrade = now - lastUpgradeTime;
-            const cooldownRemaining = upgradeCooldown - timeSinceLastUpgrade;
+            const minerCooldownLeft = Math.max(0, upgradeCooldown - (now - lastUpgradeTime));
             
-            const cooldownElement = document.getElementById('upgradeCooldown');
-            if (cooldownElement) {
-                if (cooldownRemaining > 0) {
-                    const minutes = Math.floor(cooldownRemaining / 60000);
-                    const seconds = Math.floor((cooldownRemaining % 60000) / 1000);
-                    cooldownElement.textContent = `⏳ Доступно через: ${minutes}:${seconds.toString().padStart(2, '0')}`;
-                } else {
-                    cooldownElement.textContent = '✅ Можно улучшать!';
-                }
-            }
-            
-            const upgradeButton = document.getElementById('upgradeMinerBtn');
-            if (upgradeButton) {
-                if (cooldownRemaining > 0) {
-                    upgradeButton.disabled = true;
-                    if (!upgradeButton.querySelector('.cooldown-overlay')) {
-                        const overlay = document.createElement('div');
-                        overlay.className = 'cooldown-overlay';
-                        const minutes = Math.floor(cooldownRemaining / 60000);
-                        const seconds = Math.floor((cooldownRemaining % 60000) / 1000);
-                        overlay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                        upgradeButton.appendChild(overlay);
-                    } else {
-                        const overlay = upgradeButton.querySelector('.cooldown-overlay');
-                        const minutes = Math.floor(cooldownRemaining / 60000);
-                        const seconds = Math.floor((cooldownRemaining % 60000) / 1000);
-                        overlay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                    }
-                } else {
-                    upgradeButton.disabled = false;
-                    const overlay = upgradeButton.querySelector('.cooldown-overlay');
-                    if (overlay) {
-                        overlay.remove();
-                    }
-                }
+            if (minerCooldownLeft > 0) {
+                const minutes = Math.floor(minerCooldownLeft / 60000);
+                const seconds = Math.floor((minerCooldownLeft % 60000) / 1000);
+                document.getElementById('minerCooldown').textContent = `Кулдаун: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                document.getElementById('minerCooldown').textContent = '';
             }
         }
 
@@ -1904,7 +1821,7 @@
             const locationElement = document.querySelector(`[data-location="${mining.locationId}"]`);
             if (locationElement && settings.progressAnimation) {
                 locationElement.classList.add('mining-complete');
-                setTimeout(() => locationElement.classList.remove('mining-complete'), 600);
+                setTimeout(() => locationElement.classList.remove('mining-complete'), 800);
             }
 
             showNotification(`🎉 Шахта добыта! Получено ${finalReward} камней из ${location.name}${bonus > 1 ? ` (бонус x${bonus.toFixed(2)})` : ''}`);
@@ -1922,7 +1839,7 @@
             return bonus;
         }
 
-        // Функции удачи (39% шанс)
+        // Функции удачи (71% шанс)
         function tryLuck(betAmount) {
             if (balance < betAmount) {
                 showLuckNotification("❌ Недостаточно камней для ставки!");
@@ -1932,11 +1849,11 @@
             balance -= betAmount;
             totalBets++;
 
-            const winChance = 0.39; // 39% шанс выигрыша
+            const winChance = 0.71; // 71% шанс выигрыша
             const isWin = Math.random() < winChance;
 
             if (isWin) {
-                const winMultiplier = 1.5 + Math.random() * 1.5;
+                const winMultiplier = 1.7 + Math.random() * 1.7; // 1.7x - 3.4x
                 const winAmount = Math.floor(betAmount * winMultiplier);
                 const luckBonus = getLuckBonus();
                 const finalWin = Math.floor(winAmount * luckBonus);
@@ -2071,13 +1988,10 @@
 
         function upgradeMiner() {
             const now = Date.now();
-            const timeSinceLastUpgrade = now - lastUpgradeTime;
-            
-            if (timeSinceLastUpgrade < upgradeCooldown) {
-                const remaining = upgradeCooldown - timeSinceLastUpgrade;
-                const minutes = Math.floor(remaining / 60000);
-                const seconds = Math.floor((remaining % 60000) / 1000);
-                showNotification(`⏳ Подождите еще ${minutes}:${seconds.toString().padStart(2, '0')} до следующего улучшения!`);
+            if (now - lastUpgradeTime < upgradeCooldown) {
+                const timeLeft = upgradeCooldown - (now - lastUpgradeTime);
+                const minutes = Math.ceil(timeLeft / 60000);
+                showNotification(`⏳ Следующее улучшение через ${minutes} минут`);
                 return;
             }
 
@@ -2086,8 +2000,8 @@
             if (balance >= upgradeCost) {
                 balance -= upgradeCost;
                 autoMinerLevel++;
-                autoMinerPower = Math.floor(autoMinerPower * 1.3 + 1);
-                autoMinerInterval = Math.max(2000, autoMinerInterval - 200);
+                autoMinerPower = Math.floor(autoMinerPower * 1.4 + 2);
+                autoMinerInterval = Math.max(2000, autoMinerInterval - 150);
                 lastUpgradeTime = now;
                 
                 showNotification(`⚡ Авто-майнер улучшен до уровня ${autoMinerLevel}!`);
@@ -2099,10 +2013,10 @@
         }
 
         function getMinerUpgradeCost() {
-            return Math.floor(100 * Math.pow(1.5, autoMinerLevel - 1));
+            return Math.floor(100 * Math.pow(1.8, autoMinerLevel - 1));
         }
 
-        // Инвентарь с задержкой на улучшения
+        // Инвентарь с кулдауном на улучшения
         function loadInventory() {
             if (inventory.length === 0) {
                 inventory = JSON.parse(JSON.stringify(inventoryItems));
@@ -2138,17 +2052,19 @@
             }
 
             const now = Date.now();
-            if (item.lastUpgrade && (now - item.lastUpgrade) < 60000) { // 1 минута задержка
-                showNotification("⏳ Подождите 1 минуту перед следующим улучшением!");
+            if (lastItemUpgradeTime[itemId] && now - lastItemUpgradeTime[itemId] < upgradeCooldown) {
+                const timeLeft = upgradeCooldown - (now - lastItemUpgradeTime[itemId]);
+                const minutes = Math.ceil(timeLeft / 60000);
+                showNotification(`⏳ Следующее улучшение ${item.name} через ${minutes} минут`);
                 return;
             }
 
             if (balance >= item.upgradeCost) {
                 balance -= item.upgradeCost;
                 item.level++;
-                item.bonus *= 1.1;
-                item.upgradeCost = Math.floor(item.upgradeCost * 2.5);
-                item.lastUpgrade = now;
+                item.bonus *= 1.15;
+                item.upgradeCost = Math.floor(item.upgradeCost * 3);
+                lastItemUpgradeTime[itemId] = now;
                 
                 showNotification(`⬆️ ${item.name} улучшен до уровня ${item.level}!`);
                 updateUI();
@@ -2167,8 +2083,8 @@
                 return;
             }
 
-            const baseBonus = 100;
-            const streakBonus = Math.floor(Math.random() * 50) + 1;
+            const baseBonus = 1000;
+            const streakBonus = Math.floor(Math.random() * 500) + 1;
             const totalBonus = baseBonus + streakBonus;
 
             balance += totalBonus;
@@ -2187,7 +2103,7 @@
             rainbowModeActive = true;
             document.body.style.background = 'linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #0000ff, #8000ff)';
             document.body.style.backgroundSize = '1400% 1400%';
-            document.body.style.animation = 'rainbow 10s ease infinite';
+            document.body.style.animation = 'rainbow 8s ease infinite';
             
             const style = document.createElement('style');
             style.textContent = `
@@ -2223,8 +2139,8 @@
             egg.style.top = Math.random() * 80 + 10 + '%';
             
             egg.onclick = function() {
-                balance += 7777;
-                showNotification('🎉 Пасхалка найдена! +7777 камней!');
+                balance += 77777;
+                showNotification('🎉 Пасхалка найдена! +77777 камней!');
                 egg.remove();
                 updateUI();
                 saveGame();
@@ -2235,7 +2151,7 @@
                 if (egg.parentNode) {
                     egg.remove();
                 }
-            }, 10000);
+            }, 15000);
         }
 
         function doubleProfit() {
@@ -2290,7 +2206,7 @@
             const buttons = document.querySelectorAll('button');
             buttons.forEach(button => {
                 if (settings.buttonsAnimation) {
-                    button.style.animation = 'gradientShift 4s ease infinite, buttonPulse 2s ease-in-out infinite';
+                    button.style.animation = 'gradientShift 6s ease infinite, buttonPulse 3s ease-in-out infinite';
                 } else {
                     button.style.animation = 'none';
                 }
@@ -2324,13 +2240,14 @@
                 doubleProfitUsed,
                 lastDoubleProfitDate,
                 rainbowModeActive,
-                lastUpgradeTime
+                lastUpgradeTime,
+                lastItemUpgradeTime
             };
             
             const dataStr = JSON.stringify(gameData);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
             
-            const exportFileDefaultName = 'dh_shahta_save.json';
+            const exportFileDefaultName = 'dh_shahta_pro_save.json';
             
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
@@ -2399,6 +2316,7 @@
             lastDoubleProfitDate = gameData.lastDoubleProfitDate || null;
             rainbowModeActive = gameData.rainbowModeActive || false;
             lastUpgradeTime = gameData.lastUpgradeTime || 0;
+            lastItemUpgradeTime = gameData.lastItemUpgradeTime || {};
             
             if (rainbowModeActive) {
                 activateRainbowMode();
@@ -2433,7 +2351,7 @@
             notification.style.display = 'block';
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 4000);
+            }, 5000);
         }
 
         function showLuckNotification(message, type = "info") {
@@ -2446,16 +2364,16 @@
             if (type === "win") {
                 notification.style.background = "var(--gradient-4)";
                 notification.style.borderColor = "var(--accent-green)";
-                notification.style.boxShadow = "0 0 35px rgba(105, 240, 174, 0.6)";
+                notification.style.boxShadow = "0 20px 40px rgba(105, 240, 174, 0.5)";
             } else if (type === "lose") {
-                notification.style.background = "linear-gradient(135deg, rgba(255,82,82,0.2), rgba(255,171,64,0.2))";
+                notification.style.background = "var(--gradient-5)";
                 notification.style.borderColor = "var(--accent-red)";
-                notification.style.boxShadow = "0 0 35px rgba(255, 82, 82, 0.5)";
+                notification.style.boxShadow = "0 20px 40px rgba(255, 82, 82, 0.5)";
             }
             
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 4000);
+            }, 5000);
         }
 
         function showBonusNotification(message) {
@@ -2466,7 +2384,7 @@
             notification.style.display = 'block';
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 4000);
+            }, 5000);
         }
 
         function showCreditNotification(message) {
@@ -2477,7 +2395,7 @@
             notification.style.display = 'block';
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 4000);
+            }, 5000);
         }
 
         // Рендер интерфейса
@@ -2491,7 +2409,7 @@
                 locationElement.setAttribute('data-location', location.id);
                 locationElement.innerHTML = `
                     <h3>${location.emoji} ${location.name}</h3>
-                    <p style="font-weight: 600;">💰 Стоимость: ${formatNumber(location.cost)} | ⏱️ Время: ${location.time}м | 🎁 Награда: ${formatNumber(location.rewardMin)}-${formatNumber(location.rewardMax)}</p>
+                    <p style="font-size: 1.1rem;">💰 Стоимость: ${formatNumber(location.cost)} | ⏱️ Время: ${location.time}м | 🎁 Награда: ${formatNumber(location.rewardMin)}-${formatNumber(location.rewardMax)}</p>
                     <div class="progress-container">
                         <div class="progress-bar">
                             <div class="progress-fill" id="progress-${location.id}" style="width: 0%"></div>
@@ -2584,15 +2502,40 @@
 
             inventoryGrid.innerHTML = '';
             inventory.forEach(item => {
+                const now = Date.now();
+                const lastUpgrade = lastItemUpgradeTime[item.id] || 0;
+                const cooldownLeft = Math.max(0, upgradeCooldown - (now - lastUpgrade));
+                const canUpgrade = cooldownLeft === 0;
+                
                 const itemElement = document.createElement('div');
-                let rarityClass = '';
-                if (item.rarity === 'legendary') rarityClass = 'legendary-item';
-                else if (item.rarity === 'epic') rarityClass = 'epic-item';
-                else if (item.rarity === 'rare') rarityClass = 'rare-item';
+                itemElement.className = `inventory-item upgradeable-item ${item.owned ? 'owned' : ''}`;
                 
-                itemElement.className = `inventory-item upgradeable-item ${item.owned ? 'owned' : ''} ${rarityClass}`;
-                
-                const canUpgrade = item.owned && (!item.lastUpgrade || (Date.now() - item.lastUpgrade) >= 60000);
+                let upgradeButton = '';
+                if (!item.owned) {
+                    upgradeButton = `
+                        <button onclick="buyItem(${item.id})" style="margin-top: 15px; width: 100%;">
+                            Купить за<br>${formatCompactNumber(item.price)} 💎
+                        </button>
+                    `;
+                } else {
+                    if (canUpgrade) {
+                        upgradeButton = `
+                            <button onclick="upgradeItem(${item.id})" class="item-upgrade-btn" ${balance < item.upgradeCost ? 'disabled' : ''}>
+                                Улучшить за<br>${formatCompactNumber(item.upgradeCost)} 💎
+                            </button>
+                        `;
+                    } else {
+                        const minutes = Math.ceil(cooldownLeft / 60000);
+                        upgradeButton = `
+                            <button class="item-upgrade-btn" disabled style="position: relative; overflow: hidden;">
+                                <div class="cooldown-overlay">
+                                    ${minutes} мин
+                                </div>
+                                Улучшить за<br>${formatCompactNumber(item.upgradeCost)} 💎
+                            </button>
+                        `;
+                    }
+                }
                 
                 itemElement.innerHTML = `
                     <div class="item-level">${item.level}</div>
@@ -2601,15 +2544,10 @@
                     <div class="item-description">${item.description}</div>
                     <div class="item-bonus">Бонус: +${((item.bonus - 1) * 100).toFixed(0)}%</div>
                     ${!item.owned ? `
-                        <button onclick="buyItem(${item.id})" style="margin-top: 15px; width: 100%;">
-                            Купить за<br>${formatCompactNumber(item.price)} 💎
-                        </button>
+                        ${upgradeButton}
                     ` : `
-                        <div style="color: var(--accent-green); margin-top: 15px; font-weight: 800;">✓ ПРИОБРЕТЕНО</div>
-                        <button onclick="upgradeItem(${item.id})" class="item-upgrade-btn" ${!canUpgrade || balance < item.upgradeCost ? 'disabled' : ''}>
-                            Улучшить за<br>${formatCompactNumber(item.upgradeCost)} 💎
-                            ${!canUpgrade ? '<div style="font-size: 0.7rem; color: var(--accent-red);">⏳ 1мин</div>' : ''}
-                        </button>
+                        <div style="color: var(--accent-green); margin-top: 15px; font-weight: bold; font-size: 1.1rem;">✓ ПРИОБРЕТЕНО</div>
+                        ${upgradeButton}
                     `}
                 `;
                 inventoryGrid.appendChild(itemElement);
@@ -2635,12 +2573,12 @@
                 creditElement.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                         <div>
-                            <strong>${formatNumber(credit.amount)} 💎 → ${formatNumber(credit.totalToPay)} 💎</strong>
-                            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px; font-weight: 600;">
+                            <strong style="font-size: 1.2rem;">${formatNumber(credit.amount)} 💎 → ${formatNumber(credit.totalToPay)} 💎</strong>
+                            <div style="font-size: 1rem; color: var(--text-muted); margin-top: 8px;">
                                 📅 Осталось: ${daysLeft} дней | 📈 +33%
                             </div>
                         </div>
-                        <button onclick="payCredit(${credit.id})" style="margin: 0; min-width: 130px;">
+                        <button onclick="payCredit(${credit.id})" style="margin: 0; min-width: 140px; font-size: 1.1rem;">
                             Погасить
                         </button>
                     </div>
@@ -2649,7 +2587,7 @@
             });
 
             if (activeCredits.length === 0) {
-                creditList.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 30px; font-weight: 600;">🎯 Нет активных кредитов</p>';
+                creditList.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 40px; font-size: 1.2rem;">🎯 Нет активных кредитов</p>';
             }
         }
 
@@ -2661,10 +2599,10 @@
 
             const today = new Date().toDateString();
             if (lastClaimDate === today) {
-                bonusInfo.innerHTML = '<p style="font-weight: 600;">⏳ Бонус на сегодня уже получен</p>';
+                bonusInfo.innerHTML = '<p style="font-size: 1.2rem;">⏳ Бонус на сегодня уже получен</p>';
                 bonusButton.disabled = true;
             } else {
-                bonusInfo.innerHTML = '<p style="font-weight: 600;">✨ Бонус доступен для получения!</p>';
+                bonusInfo.innerHTML = '<p style="font-size: 1.2rem;">✨ Бонус доступен для получения!</p>';
                 bonusButton.disabled = false;
             }
         }
@@ -2695,7 +2633,7 @@
                 totalClicks++;
                 totalMined += mined;
                 
-                clickSpeed = Math.max(80, clickSpeed * 0.98);
+                clickSpeed = Math.max(50, clickSpeed * 0.95);
                 updateUI();
                 
                 setTimeout(startClickMining, clickSpeed);
@@ -2750,6 +2688,7 @@
                 lastDoubleProfitDate,
                 rainbowModeActive,
                 lastUpgradeTime,
+                lastItemUpgradeTime,
                 lastSave: Date.now()
             };
             localStorage.setItem('dhShahtaUltraSave', JSON.stringify(gameData));
