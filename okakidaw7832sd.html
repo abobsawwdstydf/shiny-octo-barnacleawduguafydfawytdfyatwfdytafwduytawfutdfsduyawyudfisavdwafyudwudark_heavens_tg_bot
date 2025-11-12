@@ -1,1 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGAME MUSIC STUDIO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
 
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff2d75;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(106, 17, 203, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .studio-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 50px rgba(106, 17, 203, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .sequencer-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        .sequencer {
+            display: grid;
+            grid-template-columns: 120px repeat(16, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .track-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--light);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .track-label:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .step {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .step.active {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 15px rgba(106, 17, 203, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .step.playing {
+            background: linear-gradient(45deg, var(--accent), #ff6b9d);
+            box-shadow: 0 0 20px rgba(255, 45, 117, 0.7);
+            animation: glow 0.5s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(106, 17, 203, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(106, 17, 203, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-play {
+            background: linear-gradient(45deg, #00c853, #00e676);
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.3);
+        }
+
+        .btn-stop {
+            background: linear-gradient(45deg, #ff5252, #ff7676);
+            box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
+        }
+
+        .btn-record {
+            background: linear-gradient(45deg, var(--accent), #ff6b9d);
+            box-shadow: 0 0 20px rgba(255, 45, 117, 0.3);
+        }
+
+        .bpm-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 10px;
+            flex: 1;
+        }
+
+        .bpm-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .bpm-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 45, 117, 0.5);
+        }
+
+        .sound-pads {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .sound-pad {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sound-pad::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .sound-pad:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3);
+        }
+
+        .sound-pad:active {
+            transform: translateY(0);
+        }
+
+        .sound-pad.playing {
+            animation: padGlow 0.3s ease;
+        }
+
+        .pad-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .pad-name {
+            font-weight: bold;
+            color: var(--light);
+            margin-bottom: 5px;
+        }
+
+        .pad-key {
+            font-size: 0.8rem;
+            color: var(--gray);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .visualizer {
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .visualizer-bar {
+            position: absolute;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 3px 3px 0 0;
+            transition: height 0.1s ease;
+        }
+
+        .patterns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .pattern-btn {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .pattern-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .pattern-btn.active {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 45, 117, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 45, 117, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 45, 117, 0.5); }
+        }
+
+        @keyframes padGlow {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 45, 117, 0); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 45, 117, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 45, 117, 0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 968px) {
+            .studio-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sequencer {
+                grid-template-columns: 100px repeat(12, 1fr);
+                overflow-x: auto;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sequencer {
+                grid-template-columns: 80px repeat(8, 1fr);
+            }
+            
+            .sound-pads {
+                grid-template-columns: 1fr;
+            }
+            
+            .patterns {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .bpm-control {
+                width: 100%;
+            }
+        }
+
+        .recording-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 45, 117, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recording-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: recordingPulse 1s infinite;
+        }
+
+        @keyframes recordingPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .volume-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--secondary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(37, 117, 252, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-music logo-icon floating"></i>
+                <h1 class="title">DIGAME BEAT STUDIO</h1>
+            </div>
+            <p class="subtitle">Создавайте биты профессионального уровня прямо в браузере</p>
+        </div>
+
+        <div class="recording-indicator" id="recordingIndicator">
+            <div class="recording-dot"></div>
+            <span>Идет запись...</span>
+        </div>
+
+        <div class="studio-container">
+            <div class="main-content">
+                <div class="sequencer-section">
+                    <h2 class="section-title"><i class="fas fa-sliders-h"></i> Секвенсор</h2>
+                    
+                    <div class="controls">
+                        <button class="btn btn-play" id="playBtn">
+                            <i class="fas fa-play"></i> ВОСПРОИЗВЕСТИ
+                        </button>
+                        <button class="btn btn-stop" id="stopBtn">
+                            <i class="fas fa-stop"></i> СТОП
+                        </button>
+                        <button class="btn btn-record" id="recordBtn">
+                            <i class="fas fa-record-vinyl"></i> ЗАПИСЬ
+                        </button>
+                        
+                        <div class="bpm-control">
+                            <span>ТЕМП:</span>
+                            <input type="range" class="bpm-slider" id="bpmSlider" min="60" max="180" value="120">
+                            <span id="bpmValue">120</span>
+                        </div>
+                    </div>
+
+                    <div class="sequencer" id="sequencer">
+                        <!-- Sequencer will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="visualizer" id="visualizer">
+                    <!-- Visualizer bars will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h2 class="section-title"><i class="fas fa-drum"></i> Звуковые пады</h2>
+                
+                <div class="sound-pads">
+                    <div class="sound-pad" data-sound="kick">
+                        <div class="pad-icon"><i class="fas fa-drum"></i></div>
+                        <div class="pad-name">БАС-БАРАБАН</div>
+                        <div class="pad-key">Q</div>
+                    </div>
+                    <div class="sound-pad" data-sound="snare">
+                        <div class="pad-icon"><i class="fas fa-drumstick-bite"></i></div>
+                        <div class="pad-name">МАЛЫЙ БАРАБАН</div>
+                        <div class="pad-key">W</div>
+                    </div>
+                    <div class="sound-pad" data-sound="hihat">
+                        <div class="pad-icon"><i class="fas fa-times"></i></div>
+                        <div class="pad-name">ХАЙ-ХЭТ</div>
+                        <div class="pad-key">E</div>
+                    </div>
+                    <div class="sound-pad" data-sound="clap">
+                        <div class="pad-icon"><i class="fas fa-hands-clapping"></i></div>
+                        <div class="pad-name">ХЛОПОК</div>
+                        <div class="pad-key">R</div>
+                    </div>
+                    <div class="sound-pad" data-sound="cymbal">
+                        <div class="pad-icon"><i class="fas fa-record-vinyl"></i></div>
+                        <div class="pad-name">ТАРЕЛКА</div>
+                        <div class="pad-key">A</div>
+                    </div>
+                    <div class="sound-pad" data-sound="bass">
+                        <div class="pad-icon"><i class="fas fa-guitar"></i></div>
+                        <div class="pad-name">БАС</div>
+                        <div class="pad-key">S</div>
+                    </div>
+                    <div class="sound-pad" data-sound="tom">
+                        <div class="pad-icon"><i class="fas fa-drum-steelpan"></i></div>
+                        <div class="pad-name">ТОМ</div>
+                        <div class="pad-key">D</div>
+                    </div>
+                    <div class="sound-pad" data-sound="fx">
+                        <div class="pad-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="pad-name">ЭФФЕКТ</div>
+                        <div class="pad-key">F</div>
+                    </div>
+                </div>
+
+                <div class="volume-control">
+                    <i class="fas fa-volume-up"></i>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80">
+                    <span id="volumeValue">80%</span>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 30px;">
+                    <i class="fas fa-th-large"></i> Готовые паттерны
+                </h2>
+                
+                <div class="patterns">
+                    <div class="pattern-btn" data-pattern="hiphop">Хип-Хоп</div>
+                    <div class="pattern-btn" data-pattern="house">Хаус</div>
+                    <div class="pattern-btn" data-pattern="techno">Техно</div>
+                    <div class="pattern-btn" data-pattern="trap">Трэп</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-links">
+            <a href="#" class="social-link">
+                <i class="fas fa-hashtag"></i> #DIGAME
+            </a>
+            <a href="#" class="social-link">
+                <i class="fas fa-hashtag"></i> #DH
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>DIGAME</p>
+        </div>
+    </div>
+
+    <script>
+        class BeatStudio {
+            constructor() {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                this.isPlaying = false;
+                this.isRecording = false;
+                this.currentStep = 0;
+                this.bpm = 120;
+                this.volume = 0.8;
+                this.sequence = {};
+                this.sounds = {};
+                this.recordedSequence = [];
+                this.intervalId = null;
+                
+                this.initializeSequencer();
+                this.createSounds();
+                this.setupEventListeners();
+                this.createVisualizer();
+                this.setupPatterns();
+            }
+
+            initializeSequencer() {
+                const sequencer = document.getElementById('sequencer');
+                const tracks = ['kick', 'snare', 'hihat', 'clap', 'cymbal', 'bass', 'tom', 'fx'];
+                
+                // Create track labels
+                tracks.forEach(track => {
+                    const label = document.createElement('div');
+                    label.className = 'track-label';
+                    label.textContent = this.getTrackName(track);
+                    sequencer.appendChild(label);
+                    
+                    this.sequence[track] = Array(16).fill(false);
+                    
+                    // Create steps for this track
+                    for (let i = 0; i < 16; i++) {
+                        const step = document.createElement('div');
+                        step.className = 'step';
+                        step.dataset.track = track;
+                        step.dataset.step = i;
+                        step.addEventListener('click', () => this.toggleStep(track, i));
+                        sequencer.appendChild(step);
+                    }
+                });
+            }
+
+            getTrackName(track) {
+                const names = {
+                    'kick': 'БАС',
+                    'snare': 'СНЭР',
+                    'hihat': 'ХЭТ',
+                    'clap': 'ХЛОП',
+                    'cymbal': 'ТАРЕЛ',
+                    'bass': 'БАС',
+                    'tom': 'ТОМ',
+                    'fx': 'ЭФФЕКТ'
+                };
+                return names[track] || track;
+            }
+
+            createSounds() {
+                // Create basic synth sounds using Web Audio API
+                this.sounds = {
+                    kick: this.createKick(),
+                    snare: this.createSnare(),
+                    hihat: this.createHihat(),
+                    clap: this.createClap(),
+                    cymbal: this.createCymbal(),
+                    bass: this.createBass(),
+                    tom: this.createTom(),
+                    fx: this.createFx()
+                };
+
+                // Setup sound pad listeners
+                document.querySelectorAll('.sound-pad').forEach(pad => {
+                    pad.addEventListener('click', () => {
+                        const sound = pad.dataset.sound;
+                        this.playSound(sound);
+                        this.animatePad(pad);
+                    });
+                });
+            }
+
+            createKick() {
+                return () => {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.frequency.setValueAtTime(150, this.audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.5);
+                    
+                    gain.gain.setValueAtTime(this.volume, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(this.audioContext.currentTime + 0.5);
+                };
+            }
+
+            createSnare() {
+                return () => {
+                    const noise = this.audioContext.createOscillator();
+                    const noiseGain = this.audioContext.createGain();
+                    const tone = this.audioContext.createOscillator();
+                    const toneGain = this.audioContext.createGain();
+                    
+                    noise.type = 'triangle';
+                    noise.frequency.setValueAtTime(100, this.audioContext.currentTime);
+                    
+                    tone.type = 'sine';
+                    tone.frequency.setValueAtTime(150, this.audioContext.currentTime);
+                    
+                    noiseGain.gain.setValueAtTime(this.volume * 0.5, this.audioContext.currentTime);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+                    
+                    toneGain.gain.setValueAtTime(this.volume * 0.3, this.audioContext.currentTime);
+                    toneGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+                    
+                    noise.connect(noiseGain);
+                    tone.connect(toneGain);
+                    noiseGain.connect(this.audioContext.destination);
+                    toneGain.connect(this.audioContext.destination);
+                    
+                    noise.start();
+                    tone.start();
+                    noise.stop(this.audioContext.currentTime + 0.2);
+                    tone.stop(this.audioContext.currentTime + 0.1);
+                };
+            }
+
+            createHihat() {
+                return () => {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(1000, this.audioContext.currentTime);
+                    
+                    gain.gain.setValueAtTime(this.volume * 0.3, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(this.audioContext.currentTime + 0.1);
+                };
+            }
+
+            createClap() {
+                return () => {
+                    const osc1 = this.audioContext.createOscillator();
+                    const osc2 = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc1.type = 'sine';
+                    osc2.type = 'sine';
+                    osc1.frequency.setValueAtTime(500, this.audioContext.currentTime);
+                    osc2.frequency.setValueAtTime(600, this.audioContext.currentTime);
+                    
+                    gain.gain.setValueAtTime(this.volume * 0.4, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+                    
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc1.start();
+                    osc2.start();
+                    osc1.stop(this.audioContext.currentTime + 0.3);
+                    osc2.stop(this.audioContext.currentTime + 0.3);
+                };
+            }
+
+            createCymbal() {
+                return () => {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(800, this.audioContext.currentTime);
+                    
+                    gain.gain.setValueAtTime(this.volume * 0.2, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(this.audioContext.currentTime + 0.5);
+                };
+            }
+
+            createBass() {
+                return () => {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(80, this.audioContext.currentTime);
+                    
+                    gain.gain.setValueAtTime(this.volume * 0.4, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.4);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(this.audioContext.currentTime + 0.4);
+                };
+            }
+
+            createTom() {
+                return () => {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(200, this.audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, this.audioContext.currentTime + 0.3);
+                    
+                    gain.gain.setValueAtTime(this.volume * 0.3, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(this.audioContext.currentTime + 0.3);
+                };
+            }
+
+            createFx() {
+                return () => {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, this.audioContext.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(50, this.audioContext.currentTime + 0.5);
+                    
+                    gain.gain.setValueAtTime(this.volume * 0.2, this.audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(this.audioContext.currentTime + 0.5);
+                };
+            }
+
+            animatePad(pad) {
+                pad.classList.add('playing');
+                setTimeout(() => {
+                    pad.classList.remove('playing');
+                }, 300);
+            }
+
+            toggleStep(track, step) {
+                this.sequence[track][step] = !this.sequence[track][step];
+                const stepElement = document.querySelector(`.step[data-track="${track}"][data-step="${step}"]`);
+                stepElement.classList.toggle('active');
+                
+                // If recording, add to recorded sequence
+                if (this.isRecording) {
+                    this.recordedSequence.push({
+                        track,
+                        step,
+                        time: Date.now()
+                    });
+                }
+            }
+
+            playSound(soundName) {
+                if (this.sounds[soundName]) {
+                    this.sounds[soundName]();
+                }
+            }
+
+            startSequencer() {
+                if (this.isPlaying) return;
+                
+                this.isPlaying = true;
+                this.currentStep = 0;
+                const stepDuration = 60 / this.bpm / 4;
+                
+                this.intervalId = setInterval(() => {
+                    this.playStep();
+                    this.updateVisualizer();
+                    this.currentStep = (this.currentStep + 1) % 16;
+                }, stepDuration * 1000);
+            }
+
+            stopSequencer() {
+                this.isPlaying = false;
+                if (this.intervalId) {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                }
+                this.currentStep = 0;
+                this.updateStepDisplay();
+            }
+
+            playStep() {
+                Object.keys(this.sequence).forEach(track => {
+                    if (this.sequence[track][this.currentStep]) {
+                        this.playSound(track);
+                    }
+                });
+                this.updateStepDisplay();
+            }
+
+            updateStepDisplay() {
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('playing');
+                });
+                
+                Object.keys(this.sequence).forEach(track => {
+                    const stepElement = document.querySelector(`.step[data-track="${track}"][data-step="${this.currentStep}"]`);
+                    if (stepElement) {
+                        stepElement.classList.add('playing');
+                    }
+                });
+            }
+
+            createVisualizer() {
+                const visualizer = document.getElementById('visualizer');
+                for (let i = 0; i < 50; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = 'visualizer-bar';
+                    bar.style.left = `${i * 10}px`;
+                    bar.style.height = '0px';
+                    visualizer.appendChild(bar);
+                }
+            }
+
+            updateVisualizer() {
+                const bars = document.querySelectorAll('.visualizer-bar');
+                bars.forEach(bar => {
+                    const randomHeight = Math.random() * 100 + 10;
+                    bar.style.height = `${randomHeight}px`;
+                    bar.style.background = `linear-gradient(to top, 
+                        hsl(${Math.random() * 60 + 200}, 100%, 50%), 
+                        hsl(${Math.random() * 60 + 250}, 100%, 70%))`;
+                });
+            }
+
+            toggleRecording() {
+                this.isRecording = !this.isRecording;
+                const indicator = document.getElementById('recordingIndicator');
+                const recordBtn = document.getElementById('recordBtn');
+                
+                if (this.isRecording) {
+                    indicator.style.display = 'flex';
+                    recordBtn.innerHTML = '<i class="fas fa-square"></i> СТОП ЗАПИСИ';
+                    recordBtn.style.background = 'linear-gradient(45deg, #ff5252, #ff7676)';
+                    this.recordedSequence = [];
+                } else {
+                    indicator.style.display = 'none';
+                    recordBtn.innerHTML = '<i class="fas fa-record-vinyl"></i> ЗАПИСЬ';
+                    recordBtn.style.background = 'linear-gradient(45deg, var(--accent), #ff6b9d)';
+                    
+                    // Save recorded sequence
+                    if (this.recordedSequence.length > 0) {
+                        localStorage.setItem('digameRecordedSequence', JSON.stringify(this.recordedSequence));
+                    }
+                }
+            }
+
+            setupPatterns() {
+                const patterns = {
+                    hiphop: {
+                        kick: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0],
+                        snare: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        hihat: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+                        clap: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        cymbal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        bass: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        tom: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        fx: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    house: {
+                        kick: [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        snare: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        hihat: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                        clap: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        cymbal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        bass: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        tom: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        fx: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    techno: {
+                        kick: [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        snare: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        hihat: [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
+                        clap: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        cymbal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        bass: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        tom: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        fx: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    trap: {
+                        kick: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+                        snare: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                        hihat: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                        clap: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                        cymbal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        bass: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        tom: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        fx: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    }
+                };
+
+                document.querySelectorAll('.pattern-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const pattern = btn.dataset.pattern;
+                        this.loadPattern(patterns[pattern]);
+                        
+                        // Update active state
+                        document.querySelectorAll('.pattern-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    });
+                });
+            }
+
+            loadPattern(pattern) {
+                Object.keys(pattern).forEach(track => {
+                    this.sequence[track] = [...pattern[track]];
+                    
+                    // Update UI
+                    for (let i = 0; i < 16; i++) {
+                        const stepElement = document.querySelector(`.step[data-track="${track}"][data-step="${i}"]`);
+                        if (pattern[track][i]) {
+                            stepElement.classList.add('active');
+                        } else {
+                            stepElement.classList.remove('active');
+                        }
+                    }
+                });
+            }
+
+            setupEventListeners() {
+                document.getElementById('playBtn').addEventListener('click', () => {
+                    this.startSequencer();
+                });
+
+                document.getElementById('stopBtn').addEventListener('click', () => {
+                    this.stopSequencer();
+                });
+
+                document.getElementById('recordBtn').addEventListener('click', () => {
+                    this.toggleRecording();
+                });
+
+                document.getElementById('bpmSlider').addEventListener('input', (e) => {
+                    this.bpm = parseInt(e.target.value);
+                    document.getElementById('bpmValue').textContent = this.bpm;
+                    if (this.isPlaying) {
+                        this.stopSequencer();
+                        this.startSequencer();
+                    }
+                });
+
+                document.getElementById('volumeSlider').addEventListener('input', (e) => {
+                    this.volume = parseInt(e.target.value) / 100;
+                    document.getElementById('volumeValue').textContent = `${e.target.value}%`;
+                });
+
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        if (this.isPlaying) {
+                            this.stopSequencer();
+                        } else {
+                            this.startSequencer();
+                        }
+                    }
+                    
+                    // Sound pad triggers
+                    const keyMap = {
+                        'KeyQ': 'kick',
+                        'KeyW': 'snare',
+                        'KeyE': 'hihat',
+                        'KeyR': 'clap',
+                        'KeyA': 'cymbal',
+                        'KeyS': 'bass',
+                        'KeyD': 'tom',
+                        'KeyF': 'fx'
+                    };
+                    
+                    if (keyMap[e.code]) {
+                        this.playSound(keyMap[e.code]);
+                        const pad = document.querySelector(`.sound-pad[data-sound="${keyMap[e.code]}"]`);
+                        this.animatePad(pad);
+                    }
+                });
+
+                // Load any saved sequence
+                const savedSequence = localStorage.getItem('digameRecordedSequence');
+                if (savedSequence) {
+                    try {
+                        this.recordedSequence = JSON.parse(savedSequence);
+                    } catch (e) {
+                        console.error('Error loading saved sequence:', e);
+                    }
+                }
+            }
+        }
+
+        // Initialize the beat studio when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new BeatStudio();
+        });
+    </script>
+</body>
+</html>
