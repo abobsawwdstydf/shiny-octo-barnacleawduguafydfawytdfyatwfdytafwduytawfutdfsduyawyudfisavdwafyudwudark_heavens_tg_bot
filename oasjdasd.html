@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleCat - Социальная сеть для котов</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        :root {
+            --primary: #ffb6c1;
+            --secondary: #87cefa;
+            --background: #f9f7f7;
+            --card-bg: white;
+            --text: #333;
+            --text-light: #666;
+            --border: #f0f0f0;
+            --shadow: rgba(0,0,0,0.05);
+        }
+
+        .theme-space {
+            --primary: #9d4edd;
+            --secondary: #5a189a;
+            --background: #10002b;
+            --card-bg: #240046;
+            --text: #e0aaff;
+            --text-light: #c77dff;
+            --border: #3c096c;
+            --shadow: rgba(0,0,0,0.3);
+        }
+
+        .theme-dark {
+            --primary: #bb86fc;
+            --secondary: #03dac6;
+            --background: #121212;
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --text-light: #a0a0a0;
+            --border: #333;
+            --shadow: rgba(0,0,0,0.5);
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            min-height: 100vh;
+            box-shadow: 0 0 10px var(--shadow);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 15px;
+            text-align: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .theme-light {
+            background: linear-gradient(135deg, #ffb6c1, #87cefa);
+        }
+
+        .theme-space {
+            background: linear-gradient(135deg, #9d4edd, #5a189a);
+        }
+
+        .theme-dark {
+            background: linear-gradient(135deg, #bb86fc, #03dac6);
+        }
+
+        .profile-section {
+            padding: 20px;
+            background-color: var(--card-bg);
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+            border: 3px solid var(--secondary);
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .post {
+            background-color: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+
+        .post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-user {
+            font-weight: 500;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .post-content {
+            padding: 0 15px 10px;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 300px;
+            background-color: var(--border);
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+        }
+
+        .action-btn.liked {
+            color: #ff4d6d;
+        }
+
+        .action-btn i {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+
+        .comments {
+            padding: 0 15px 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .comments.show {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .comment {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .comment-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-content {
+            background-color: var(--border);
+            padding: 8px 12px;
+            border-radius: 18px;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .comment-user {
+            font-weight: 500;
+            margin-right: 5px;
+        }
+
+        .top-cats {
+            padding: 15px;
+            background-color: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .top-cats h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .cat-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cat-item:last-child {
+            border-bottom: none;
+        }
+
+        .cat-rank {
+            font-weight: 700;
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .challenges {
+            padding: 15px;
+            background-color: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .challenges h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .challenge-item {
+            background-color: var(--border);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .stories {
+            display: flex;
+            padding: 15px;
+            overflow-x: auto;
+            background-color: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .story {
+            width: 70px;
+            margin-right: 10px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .story-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            font-size: 20px;
+            color: white;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .story-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-user {
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px var(--shadow);
+            color: var(--text);
+        }
+
+        .modal h2 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group select, .form-group textarea, .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff4d6d;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes heartAnimation {
+            0% { transform: scale(0); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        .history-section {
+            padding: 15px;
+            background-color: var(--card-bg);
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .history-section h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .cat-images {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+        }
+
+        .load-more {
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body class="theme-light">
+    <!-- Hidden container for cat images -->
+    <div class="cat-images">
+        <img id="cat1" src="https://avatars.mds.yandex.net/i?id=bc5f0f0d4a75da18b3bd9ca4545bf4d5626de535-4534215-images-thumbs&n=13" alt="Кот 1">
+        <img id="cat2" src="https://avatars.mds.yandex.net/i?id=757aae8988a59876218f50b3efbe48523e00328b-9181372-images-thumbs&n=13" alt="Кот 2">
+        <img id="cat3" src="https://avatars.mds.yandex.net/i?id=803c39ecb7c7c85a0f0e6b9a419f01b6bc8d8d31-3966851-images-thumbs&n=13" alt="Кот 3">
+        <img id="cat4" src="https://avatars.mds.yandex.net/i?id=7940284835c27dab2d634b002bf7f5aa9bfc917f-10702343-images-thumbs&n=13" alt="Кот 4">
+        <img id="cat5" src="https://avatars.mds.yandex.net/i?id=c85f093ab0395664f9a25aaf0c511705dd63254b-9182046-images-thumbs&n=13" alt="Кот 5">
+        <img id="cat6" src="https://avatars.mds.yandex.net/i?id=95acf414617f9e3d8f5e2cc95508103052457676-8259800-images-thumbs&n=13" alt="Кот 6">
+        <img id="cat7" src="https://avatars.mds.yandex.net/i?id=07c41aab65cc90165942801a3accd793e7575d22-17016445-images-thumbs&n=13" alt="Кот 7">
+        <img id="cat8" src="https://avatars.mds.yandex.net/i?id=7940284835c27dab2d634b002bf7f5aa9bfc917f-10702343-images-thumbs&n=13" alt="Кот 8">
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>TeleCat</h1>
+            <div class="theme-selector">
+                <div class="theme-btn theme-light active" data-theme="light"></div>
+                <div class="theme-btn theme-space" data-theme="space"></div>
+                <div class="theme-btn theme-dark" data-theme="dark"></div>
+            </div>
+        </header>
+
+        <div class="profile-section">
+            <div class="profile-header">
+                <div class="avatar" id="cat-avatar">
+                    <img src="https://avatars.mds.yandex.net/i?id=bc5f0f0d4a75da18b3bd9ca4545bf4d5626de535-4534215-images-thumbs&n=13" alt="Аватар кота">
+                </div>
+                <div class="profile-info">
+                    <h2 id="cat-name">Мурзик</h2>
+                    <p id="cat-bio">Ленивый дворовый кот, который обожает спать на подоконнике</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="post-count">12</div>
+                    <div class="stat-label">постов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="follower-count">245</div>
+                    <div class="stat-label">подписчиков</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="following-count">156</div>
+                    <div class="stat-label">подписок</div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn" id="edit-profile-btn">Редактировать профиль</button>
+                <button class="btn btn-outline" id="share-profile-btn">Поделиться</button>
+            </div>
+        </div>
+
+        <div class="stories">
+            <!-- Stories will be generated here -->
+        </div>
+
+        <div class="top-cats">
+            <h2>Топ котов дня</h2>
+            <!-- Top cats will be generated here -->
+        </div>
+
+        <div class="challenges">
+            <h2>Кото-челленджи</h2>
+            <!-- Challenges will be generated here -->
+        </div>
+
+        <div class="history-section">
+            <h2>История кота</h2>
+            <!-- History items will be generated here -->
+        </div>
+
+        <div id="posts-container">
+            <!-- Posts will be generated here -->
+        </div>
+
+        <div class="load-more">
+            <button class="btn" id="load-more-btn">Загрузить еще котиков</button>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <h2>Создание профиля кота</h2>
+            <div class="form-group">
+                <label for="cat-name-input">Имя кота:</label>
+                <div style="display: flex;">
+                    <input type="text" id="cat-name-input" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border); border-radius: 5px; font-size: 14px;" value="Мурзик">
+                    <button class="btn" id="generate-name-btn" style="margin-left: 5px;">Сгенерировать</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cat-breed">Порода:</label>
+                <select id="cat-breed">
+                    <option value="Дворовый">Дворовый</option>
+                    <option value="Сиамский">Сиамский</option>
+                    <option value="Сфинкс">Сфинкс</option>
+                    <option value="Мейн-кун">Мейн-кун</option>
+                    <option value="Британский">Британский</option>
+                    <option value="Персидский">Персидский</option>
+                    <option value="Бенгальский">Бенгальский</option>
+                    <option value="Рэгдолл">Рэгдолл</option>
+                    <option value="Шотландский">Шотландский</option>
+                    <option value="Ориентальный">Ориентальный</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cat-character">Характер:</label>
+                <select id="cat-character">
+                    <option value="Ленивый">Ленивый</option>
+                    <option value="Шкодливый">Шкодливый</option>
+                    <option value="Голодный">Голодный</option>
+                    <option value="Игривый">Игривый</option>
+                    <option value="Ласковый">Ласковый</option>
+                    <option value="Независимый">Независимый</option>
+                    <option value="Любопытный">Любопытный</option>
+                    <option value="Общительный">Общительный</option>
+                    <option value="Спокойный">Спокойный</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cat-bio-input">Биография:</label>
+                <textarea id="cat-bio-input">Ленивый дворовый кот, который обожает спать на подоконнике</textarea>
+            </div>
+            <div style="text-align: right;">
+                <button class="btn" id="save-profile-btn">Сохранить</button>
+                <button class="btn btn-outline" id="cancel-edit-btn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for content generation
+        const catNames = [
+            "Мурзик", "Барсик", "Васька", "Рыжик", "Пушок", "Снежок", "Кексик", "Бублик", "Зефирка", "Пончик", 
+            "Боня", "Симба", "Тигра", "Марсик", "Гарфилд", "Леопольд", "Том", "Базилио", "Матроскин", "Чешир",
+            "Луна", "Соня", "Марта", "Клеопатра", "Изи", "Оскар", "Феликс", "Сэм", "Макс", "Чарли",
+            "Локи", "Оливер", "Джек", "Лео", "Мило", "Джаспер", "Симон", "Тедди", "Уинстон", "Зевс",
+            "Луна", "Белла", "Люси", "Лилу", "Хлоя", "Софи", "Лилли", "Грейси", "Молли", "Дафна"
+        ];
+        
+        const catBreeds = [
+            "Дворовый", "Сиамский", "Сфинкс", "Мейн-кун", "Британский", "Персидский", "Бенгальский", 
+            "Рэгдолл", "Шотландский", "Ориентальный", "Абиссинский", "Бирманский", "Норвежский лесной",
+            "Турецкий ван", "Египетский мау", "Русская голубая", "Канадский сфинкс", "Донской сфинкс"
+        ];
+        
+        const catCharacters = [
+            "Ленивый", "Шкодливый", "Голодный", "Игривый", "Ласковый", "Независимый", "Любопытный", 
+            "Общительный", "Спокойный", "Энергичный", "Упрямый", "Дружелюбный", "Осторожный", "Наглый"
+        ];
+        
+        const catEmojis = ["😺", "😸", "😹", "😻", "🙀", "😿", "😾", "🐱"];
+        
+        const catImages = [
+            "https://avatars.mds.yandex.net/i?id=bc5f0f0d4a75da18b3bd9ca4545bf4d5626de535-4534215-images-thumbs&n=13",
+            "https://avatars.mds.yandex.net/i?id=757aae8988a59876218f50b3efbe48523e00328b-9181372-images-thumbs&n=13",
+            "https://avatars.mds.yandex.net/i?id=803c39ecb7c7c85a0f0e6b9a419f01b6bc8d8d31-3966851-images-thumbs&n=13",
+            "https://avatars.mds.yandex.net/i?id=7940284835c27dab2d634b002bf7f5aa9bfc917f-10702343-images-thumbs&n=13",
+            "https://avatars.mds.yandex.net/i?id=c85f093ab0395664f9a25aaf0c511705dd63254b-9182046-images-thumbs&n=13",
+            "https://avatars.mds.yandex.net/i?id=95acf414617f9e3d8f5e2cc95508103052457676-8259800-images-thumbs&n=13",
+            "https://avatars.mds.yandex.net/i?id=07c41aab65cc90165942801a3accd793e7575d22-17016445-images-thumbs&n=13",
+            "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1511044568932-338cba0ad803?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1543852786-1cf6624b9987?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1574145112594-66e63cbb8e8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1592194996308-7b43878c84c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        ];
+        
+        const postTemplates = [
+            "Поймал солнечного зайчика, AMA",
+            "Опять этот человек пытается меня погладить",
+            "Обзор на новый корм: 3/10, рыбы мало",
+            "Сегодня поймал 5 мух и одну бабочку. День удался!",
+            "Почему люди не понимают, что 5 утра - идеальное время для завтрака?",
+            "Мой человек купил новую когтеточку, но коробка была лучше",
+            "Научно доказано: сон на ноутбуке повышает его производительность",
+            "Сегодня решил не будить человека в 5 утра. За что он на меня обиделся?",
+            "Обнаружил, что если долго смотреть на холодильник, он иногда открывается",
+            "Мой рекорд: 20 часов сна в сутки. Кто больше?",
+            "Почему ветеринар пахнет странно? Это меня настораживает...",
+            "Нашёл идеальное место для сна - на только что постиранном белье",
+            "Мой человек говорит, что я слишком много сплю. А разве это возможно?",
+            "Сегодня украл кусочек сыра со стола. Жизнь удалась!",
+            "Зачем людям эти штуки - 'телефоны'? Они даже не греются, когда на них лежишь",
+            "Обожаю, когда приходят гости! Новые люди = новые возможности выпросить еду",
+            "Сегодня научился открывать шкафы. Мир никогда не будет прежним!",
+            "Почему птицы за окном такие шумные? Мешают спать...",
+            "Мой человек принёс какого-то щенка. Надеюсь, это временно",
+            "Обожаю рвать обои! Это так медитативно...",
+            "Почему нельзя есть из собачьей миски? Это же тоже еда!",
+            "Сегодня спрятал пульт от телевизора. Интересно, сколько времени займет его поиск?",
+            "Обожаю смотреть в окно. Сегодня видел три птицы, белку и почтальона",
+            "Почему люди смеются, когда я падаю? Это же больно!",
+            "Сегодня попробовал спать в раковине. Неудобно, но стильно",
+            "Мой человек купил мне дорогую лежанку. Я сплю на упаковке",
+            "Почему нельзя трогать лапкой аквариум? Рыбки такие интересные!",
+            "Сегодня устроил гонки по квартире в 3 часа ночи. Все проснулись, странно...",
+            "Обожаю, когда на меня обращают внимание. Но только когда я этого хочу!",
+            "Почему еда в миске соседа всегда вкуснее?",
+            "Сегодня поймал свой хвост. Оказалось, он мой!",
+            "Мой человек пытается дрессировать меня. Я дрессирую его уже года три",
+            "Почему нельзя спать на клавиатуре? Это же самое тёплое место!",
+            "Сегодня разбудил человека в 4 утра. Он был не в восторге, а я голоден!",
+            "Обожаю коробки! Чем меньше коробка, тем больше хочется в неё залезть",
+            "Почему ветеринары всегда такие добрые перед уколом?",
+            "Сегодня уронил вазу. Выглядело эффектно!",
+            "Мой человек говорит, что у меня 'синдром бога'. А разве коты не боги?",
+            "Почему нельзя пить воду из-под крана? Она же свежее!",
+            "Сегодня спрятал носки под диваном. Интересно, когда их найдут?",
+            "Обожаю, когда чешут за ушком. Но только левой рукой!",
+            "Почему люди не понимают, что мяуканье - это полноценный разговор?",
+            "Сегодня залез на шкаф. Оттуда весь мир виден как на ладони!",
+            "Мой человек купил мне игрушку за 2000 рублей. Я играю с бумажкой",
+            "Почему нельзя спать на freshly постиранном белье? Оно же такое мягкое!",
+            "Сегодня поймал лазерную точку. Кажется, я победил технологию!",
+            "Обожаю, когда гости пытаются меня погладить, а я ухожу. Это так весело!"
+        ];
+        
+        const commentTemplates = [
+            "У меня тоже такое было!",
+            "Мой человек тоже странный",
+            "Попробуй поспать на клавиатуре, это работает!",
+            "А у тебя есть корм с тунцом?",
+            "Мур-мур-мур 😻",
+            "Ты такой милый!",
+            "Хочу тоже так сделать!",
+            "Мой человек смеётся над твоим постом",
+            "Приходи в гости, у меня есть кошачья мята!",
+            "Ты вдохновил меня на новые подвиги!",
+            "Это так мило! Мой человек тоже постоянно пытается меня погладить",
+            "Я тоже обожаю коробки! Особенно из-под пиццы",
+            "Попробуй разбудить человека в 4 утра, это веселее!",
+            "Мой рекорд - 22 часа сна!",
+            "Ты самый крутой кот в этой соцсети!",
+            "У меня такая же порода! Мы похожи?",
+            "Мой человек прочитал твой пост и теперь смотрит на меня подозрительно",
+            "Я тоже не понимаю людей...",
+            "Приходи в гости, у нас есть большой подоконник!",
+            "Ты такой смешной!",
+            "У меня тоже есть такая игрушка!",
+            "Мой человек купил такой же корм, и мне не понравился",
+            "Я тоже люблю спать на ноутбуке!",
+            "Ты прав, коробки лучше любых лежанок",
+            "Мой человек говорит, что я тоже слишком много сплю",
+            "Я тоже умею открывать шкафы!",
+            "У меня такая же проблема с птицами за окном!",
+            "Ты такой храбрый!",
+            "Я тоже не люблю ветеринаров...",
+            "Мой человек тоже пытается меня дрессировать!",
+            "Ты такой умный!",
+            "Я тоже обожаю бумажки!",
+            "У меня тоже есть собака в доме... Сочувствую",
+            "Ты такой красивый!",
+            "Я тоже прячу вещи!",
+            "Мой человек тоже не понимает мое мяуканье",
+            "Ты такой забавный!",
+            "Я тоже люблю воду из-под крана!",
+            "У меня тоже есть любимая коробка!",
+            "Ты такой остроумный!",
+            "Я тоже разбудил человека сегодня рано!",
+            "Мой человек тоже купил дорогую лежанку, а я сплю на коробке",
+            "Ты такой интересный!",
+            "Я тоже поймал солнечного зайчика сегодня!",
+            "У меня тоже есть свой диван!",
+            "Ты такой обаятельный!",
+            "Я тоже смотрю в окно целыми днями!",
+            "Мой человек тоже смеётся, когда я падаю!",
+            "Ты такой необычный!",
+            "Я тоже люблю рвать обои!"
+        ];
+        
+        const userNames = [
+            "Котофей", "Мурка", "Рыжик", "Снежок", "Барсик", "Васька", "Пушок", "Зефирка", "Кексик", "Боня", 
+            "Симба", "Тигра", "Марсик", "Гарфилд", "Леопольд", "Том", "Базилио", "Матроскин", "Чешир", "Луна",
+            "Соня", "Марта", "Клеопатра", "Изи", "Оскар", "Феликс", "Сэм", "Макс", "Чарли", "Локи", "Оливер",
+            "Джек", "Лео", "Мило", "Джаспер", "Симон", "Тедди", "Уинстон", "Зевс", "Белла", "Люси", "Лилу",
+            "Хлоя", "Софи", "Лилли", "Грейси", "Молли", "Дафна", "Нора", "Пикси"
+        ];
+        
+        const challenges = [
+            "Спать 20 часов подряд",
+            "Поймать 10 мух за день",
+            "Разбудить человека в 5 утра",
+            "Сломать что-нибудь ценное",
+            "Устроить беготню в 3 часа ночи",
+            "Съесть весь корм за 5 минут",
+            "Найти самое тёплое место в доме",
+            "Игнорировать новую игрушку",
+            "Залезть в запретное место",
+            "Украсть еду со стола",
+            "Поймать свой хвост",
+            "Разбудить всех в доме мурлыканьем",
+            "Спрятать носки под диваном",
+            "Открыть шкаф без помощи человека",
+            "Уронить что-нибудь со стола",
+            "Поймать лазерную точку",
+            "Устроиться спать на клавиатуре",
+            "Попросить еду у гостей",
+            "Поймать солнечного зайчика",
+            "Спрятаться в коробке"
+        ];
+        
+        const historyItems = [
+            { title: "Первый пост: сплю 20 часов в сутки", date: "2 месяца назад" },
+            { title: "Самое популярное: фото с разбитой вазой", date: "1 месяц назад" },
+            { title: "Достижения: 1000 подписчиков", date: "3 недели назад" },
+            { title: "Первый виральный пост: 500 лайков", date: "2 недели назад" },
+            { title: "Участие в кото-челлендже", date: "1 неделя назад" },
+            { title: "Попал в топ котов дня", date: "5 дней назад" },
+            { title: "Получил награду 'Самый милый кот'", date: "3 дня назад" }
+        ];
+
+        // DOM Elements
+        const postsContainer = document.getElementById('posts-container');
+        const storiesContainer = document.querySelector('.stories');
+        const topCatsContainer = document.querySelector('.top-cats');
+        const challengesContainer = document.querySelector('.challenges');
+        const historyContainer = document.querySelector('.history-section');
+        const editProfileModal = document.getElementById('edit-profile-modal');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const saveProfileBtn = document.getElementById('save-profile-btn');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const generateNameBtn = document.getElementById('generate-name-btn');
+        const shareProfileBtn = document.getElementById('share-profile-btn');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+
+        // Current user profile
+        let currentUser = {
+            name: "Мурзик",
+            breed: "Дворовый",
+            character: "Ленивый",
+            bio: "Ленивый дворовый кот, который обожает спать на подоконнике",
+            posts: 12,
+            followers: 245,
+            following: 156,
+            avatar: catImages[0]
+        };
+
+        // Generate random content
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generateRandomName() {
+            return getRandomItem(catNames);
+        }
+
+        function generateRandomPost() {
+            return getRandomItem(postTemplates);
+        }
+
+        function generateRandomComment() {
+            return getRandomItem(commentTemplates);
+        }
+
+        function generateRandomUserName() {
+            return getRandomItem(userNames);
+        }
+
+        function generateRandomAvatar() {
+            return getRandomItem(catImages);
+        }
+
+        // Generate stories
+        function generateStories() {
+            storiesContainer.innerHTML = '';
+            for (let i = 0; i < 15; i++) {
+                const story = document.createElement('div');
+                story.className = 'story';
+                
+                const storyAvatar = document.createElement('div');
+                storyAvatar.className = 'story-avatar';
+                
+                const storyImg = document.createElement('img');
+                storyImg.src = generateRandomAvatar();
+                storyImg.alt = 'Кот';
+                
+                storyAvatar.appendChild(storyImg);
+                
+                const storyUser = document.createElement('div');
+                storyUser.className = 'story-user';
+                storyUser.textContent = generateRandomUserName();
+                
+                story.appendChild(storyAvatar);
+                story.appendChild(storyUser);
+                storiesContainer.appendChild(story);
+            }
+        }
+
+        // Generate top cats
+        function generateTopCats() {
+            // Clear existing content but keep the header
+            while (topCatsContainer.children.length > 1) {
+                topCatsContainer.removeChild(topCatsContainer.lastChild);
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                const catItem = document.createElement('div');
+                catItem.className = 'cat-item';
+                
+                const catRank = document.createElement('div');
+                catRank.className = 'cat-rank';
+                catRank.textContent = `#${i + 1}`;
+                
+                const catAvatar = document.createElement('div');
+                catAvatar.className = 'post-avatar';
+                
+                const catImg = document.createElement('img');
+                catImg.src = generateRandomAvatar();
+                catImg.alt = 'Кот';
+                
+                catAvatar.appendChild(catImg);
+                catAvatar.style.marginRight = '10px';
+                
+                const catName = document.createElement('div');
+                catName.className = 'post-user';
+                catName.textContent = generateRandomUserName();
+                
+                catItem.appendChild(catRank);
+                catItem.appendChild(catAvatar);
+                catItem.appendChild(catName);
+                topCatsContainer.appendChild(catItem);
+            }
+        }
+
+        // Generate challenges
+        function generateChallenges() {
+            // Clear existing content but keep the header
+            while (challengesContainer.children.length > 1) {
+                challengesContainer.removeChild(challengesContainer.lastChild);
+            }
+            
+            for (let i = 0; i < 5; i++) {
+                const challengeItem = document.createElement('div');
+                challengeItem.className = 'challenge-item';
+                challengeItem.textContent = getRandomItem(challenges);
+                challengesContainer.appendChild(challengeItem);
+            }
+        }
+
+        // Generate history
+        function generateHistory() {
+            // Clear existing content but keep the header
+            while (historyContainer.children.length > 1) {
+                historyContainer.removeChild(historyContainer.lastChild);
+            }
+            
+            historyItems.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                const historyTitle = document.createElement('div');
+                historyTitle.className = 'history-title';
+                historyTitle.textContent = item.title;
+                
+                const historyDate = document.createElement('div');
+                historyDate.className = 'history-date';
+                historyDate.textContent = item.date;
+                
+                historyItem.appendChild(historyTitle);
+                historyItem.appendChild(historyDate);
+                historyContainer.appendChild(historyItem);
+            });
+        }
+
+        // Generate posts
+        function generatePosts(count = 10) {
+            for (let i = 0; i < count; i++) {
+                const post = document.createElement('div');
+                post.className = 'post';
+                
+                const postHeader = document.createElement('div');
+                postHeader.className = 'post-header';
+                
+                const postAvatar = document.createElement('div');
+                postAvatar.className = 'post-avatar';
+                
+                const avatarImg = document.createElement('img');
+                avatarImg.src = generateRandomAvatar();
+                avatarImg.alt = 'Кот';
+                
+                postAvatar.appendChild(avatarImg);
+                
+                const postUserInfo = document.createElement('div');
+                
+                const postUser = document.createElement('div');
+                postUser.className = 'post-user';
+                postUser.textContent = generateRandomUserName();
+                
+                const postTime = document.createElement('div');
+                postTime.className = 'post-time';
+                postTime.textContent = `${Math.floor(Math.random() * 23) + 1} ч. назад`;
+                
+                postUserInfo.appendChild(postUser);
+                postUserInfo.appendChild(postTime);
+                
+                postHeader.appendChild(postAvatar);
+                postHeader.appendChild(postUserInfo);
+                
+                const postContent = document.createElement('div');
+                postContent.className = 'post-content';
+                
+                const postText = document.createElement('p');
+                postText.textContent = generateRandomPost();
+                
+                const postImage = document.createElement('div');
+                postImage.className = 'post-image';
+                
+                const postImg = document.createElement('img');
+                postImg.src = generateRandomAvatar();
+                postImg.alt = 'Фото кота';
+                
+                postImage.appendChild(postImg);
+                
+                postContent.appendChild(postText);
+                postContent.appendChild(postImage);
+                
+                const postActions = document.createElement('div');
+                postActions.className = 'post-actions';
+                
+                const likeBtn = document.createElement('button');
+                likeBtn.className = 'action-btn';
+                likeBtn.innerHTML = '<i>❤️</i> ' + (Math.floor(Math.random() * 100) + 1);
+                likeBtn.addEventListener('click', function() {
+                    handleLike(likeBtn, postImage);
+                });
+                
+                const commentBtn = document.createElement('button');
+                commentBtn.className = 'action-btn';
+                commentBtn.innerHTML = '<i>💬</i> ' + (Math.floor(Math.random() * 50) + 1);
+                commentBtn.addEventListener('click', function() {
+                    toggleComments(comments);
+                });
+                
+                const shareBtn = document.createElement('button');
+                shareBtn.className = 'action-btn';
+                shareBtn.innerHTML = '<i>🔄</i> ' + (Math.floor(Math.random() * 20) + 1);
+                
+                postActions.appendChild(likeBtn);
+                postActions.appendChild(commentBtn);
+                postActions.appendChild(shareBtn);
+                
+                const comments = document.createElement('div');
+                comments.className = 'comments';
+                
+                // Generate 3-8 random comments
+                const commentCount = Math.floor(Math.random() * 6) + 3;
+                for (let j = 0; j < commentCount; j++) {
+                    const comment = document.createElement('div');
+                    comment.className = 'comment';
+                    
+                    const commentAvatar = document.createElement('div');
+                    commentAvatar.className = 'comment-avatar';
+                    
+                    const commentImg = document.createElement('img');
+                    commentImg.src = generateRandomAvatar();
+                    commentImg.alt = 'Кот';
+                    
+                    commentAvatar.appendChild(commentImg);
+                    
+                    const commentContent = document.createElement('div');
+                    commentContent.className = 'comment-content';
+                    
+                    const commentUser = document.createElement('span');
+                    commentUser.className = 'comment-user';
+                    commentUser.textContent = generateRandomUserName();
+                    
+                    const commentText = document.createElement('span');
+                    commentText.textContent = generateRandomComment();
+                    
+                    commentContent.appendChild(commentUser);
+                    commentContent.appendChild(commentText);
+                    
+                    comment.appendChild(commentAvatar);
+                    comment.appendChild(commentContent);
+                    
+                    comments.appendChild(comment);
+                }
+                
+                post.appendChild(postHeader);
+                post.appendChild(postContent);
+                post.appendChild(postActions);
+                post.appendChild(comments);
+                
+                postsContainer.appendChild(post);
+            }
+        }
+
+        // Like functionality with animation
+        function handleLike(likeBtn, postImage) {
+            const isLiked = likeBtn.classList.contains('liked');
+            const likeCount = parseInt(likeBtn.textContent.split(' ')[1]);
+            
+            if (isLiked) {
+                likeBtn.classList.remove('liked');
+                likeBtn.innerHTML = '<i>❤️</i> ' + (likeCount - 1);
+            } else {
+                likeBtn.classList.add('liked');
+                likeBtn.innerHTML = '<i>❤️</i> ' + (likeCount + 1);
+                
+                // Create heart animation
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = (postImage.offsetLeft + postImage.offsetWidth / 2) + 'px';
+                heart.style.top = (postImage.offsetTop + postImage.offsetHeight / 2) + 'px';
+                
+                document.body.appendChild(heart);
+                
+                heart.style.animation = 'heartAnimation 1s forwards';
+                
+                setTimeout(() => {
+                    document.body.removeChild(heart);
+                }, 1000);
+            }
+        }
+
+        // Toggle comments visibility
+        function toggleComments(comments) {
+            comments.classList.toggle('show');
+        }
+
+        // Update profile display
+        function updateProfileDisplay() {
+            document.getElementById('cat-name').textContent = currentUser.name;
+            document.getElementById('cat-bio').textContent = currentUser.bio;
+            document.getElementById('cat-avatar').innerHTML = `<img src="${currentUser.avatar}" alt="Аватар кота">`;
+            document.getElementById('post-count').textContent = currentUser.posts;
+            document.getElementById('follower-count').textContent = currentUser.followers;
+            document.getElementById('following-count').textContent = currentUser.following;
+            
+            // Update modal fields
+            document.getElementById('cat-name-input').value = currentUser.name;
+            document.getElementById('cat-breed').value = currentUser.breed;
+            document.getElementById('cat-character').value = currentUser.character;
+            document.getElementById('cat-bio-input').value = currentUser.bio;
+        }
+
+        // Theme switching
+        function switchTheme(theme) {
+            document.body.className = `theme-${theme}`;
+            
+            // Update active theme button
+            themeButtons.forEach(btn => {
+                if (btn.dataset.theme === theme) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Event Listeners
+        editProfileBtn.addEventListener('click', function() {
+            editProfileModal.style.display = 'flex';
+        });
+
+        cancelEditBtn.addEventListener('click', function() {
+            editProfileModal.style.display = 'none';
+        });
+
+        saveProfileBtn.addEventListener('click', function() {
+            currentUser.name = document.getElementById('cat-name-input').value;
+            currentUser.breed = document.getElementById('cat-breed').value;
+            currentUser.character = document.getElementById('cat-character').value;
+            currentUser.bio = document.getElementById('cat-bio-input').value;
+            
+            updateProfileDisplay();
+            editProfileModal.style.display = 'none';
+        });
+
+        generateNameBtn.addEventListener('click', function() {
+            document.getElementById('cat-name-input').value = generateRandomName();
+        });
+
+        shareProfileBtn.addEventListener('click', function() {
+            alert('Поделиться профилем кота: ' + currentUser.name);
+        });
+
+        // Theme buttons
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                switchTheme(this.dataset.theme);
+            });
+        });
+
+        // Load more button
+        loadMoreBtn.addEventListener('click', function() {
+            generatePosts(10);
+        });
+
+        // Initialize the app
+        function init() {
+            generateStories();
+            generateTopCats();
+            generateChallenges();
+            generateHistory();
+            generatePosts(30); // Generate 30 posts initially
+            updateProfileDisplay();
+        }
+
+        // Run initialization when page loads
+        window.onload = init;
+    </script>
+</body>
+</html>
