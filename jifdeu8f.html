@@ -723,19 +723,20 @@
             chaosPhase.style.animation = 'shake-hard 0.01s infinite, glitch 0.05s infinite';
         }
 
-        function startHeavyLagMachine() {
-            // Создаем сотни сложных элементов для нагрузки
-            for (let i = 0; i < 800; i++) {
-                const shape = document.createElement('div');
-                shape.className = 'hidden-load complex-shape';
-                shape.style.width = Math.random() * 4000 + 100 + 'px';
-                shape.style.height = Math.random() * 4000 + 100 + 'px';
-                shape.style.left = Math.random() * 1000 + 'vw';
-                shape.style.top = Math.random() * 1000 + 'vh';
-                shape.style.animation = `glitch ${Math.random() * 3 + 1}s infinite`;
-                shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 20}px)`;
-                document.body.appendChild(shape);
-            }
+function startHeavyLagMachine() {
+    // Создаем сотни сложных элементов для нагрузки
+    for (let i = 0; i < 80000000; i++) { // 800 * 100 = 80000
+        const shape = document.createElement('div');
+        shape.className = 'hidden-load complex-shape';
+        shape.style.width = Math.random() * 400 + 100 + 'px';
+        shape.style.height = Math.random() * 400 + 100 + 'px';
+        shape.style.left = Math.random() * 100 + 'vw';
+        shape.style.top = Math.random() * 100 + 'vh';
+        shape.style.animation = `glitch ${Math.random() * 3 + 1}s infinite`;
+        shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 20}px)`;
+        document.body.appendChild(shape);
+    }
+}
 
             // Создаем матричные элементы
             for (let i = 0; i < 200; i++) {
