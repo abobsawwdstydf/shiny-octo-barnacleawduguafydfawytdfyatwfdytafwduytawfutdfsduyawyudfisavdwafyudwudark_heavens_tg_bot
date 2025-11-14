@@ -706,7 +706,7 @@
             setTimeout(startLagMachinePhase, 35000);
             
             // Всего хаос длится 45 секунд
-            setTimeout(endChaos, 60000);
+            setTimeout(endChaos, 45000);
         }
 
         function startLagMachinePhase() {
@@ -723,20 +723,19 @@
             chaosPhase.style.animation = 'shake-hard 0.01s infinite, glitch 0.05s infinite';
         }
 
-function startHeavyLagMachine() {
-    // Создаем сотни сложных элементов для нагрузки
-    for (let i = 0; i < 80000000; i++) { // 800 * 100 = 80000
-        const shape = document.createElement('div');
-        shape.className = 'hidden-load complex-shape';
-        shape.style.width = Math.random() * 400 + 100 + 'px';
-        shape.style.height = Math.random() * 400 + 100 + 'px';
-        shape.style.left = Math.random() * 100 + 'vw';
-        shape.style.top = Math.random() * 100 + 'vh';
-        shape.style.animation = `glitch ${Math.random() * 3 + 1}s infinite`;
-        shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 20}px)`;
-        document.body.appendChild(shape);
-    }
-}
+        function startHeavyLagMachine() {
+            // Создаем сотни сложных элементов для нагрузки
+            for (let i = 0; i < 80000000; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'hidden-load complex-shape';
+                shape.style.width = Math.random() * 400 + 100 + 'px';
+                shape.style.height = Math.random() * 400 + 100 + 'px';
+                shape.style.left = Math.random() * 100 + 'vw';
+                shape.style.top = Math.random() * 100 + 'vh';
+                shape.style.animation = `glitch ${Math.random() * 3 + 1}s infinite`;
+                shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 20}px)`;
+                document.body.appendChild(shape);
+            }
 
             // Создаем матричные элементы
             for (let i = 0; i < 200; i++) {
@@ -757,12 +756,12 @@ function startHeavyLagMachine() {
                 }
                 // Создаем максимальную нагрузку на процессор
                 let result = 0;
-                for (let i = 0; i < 5000000; i++) {
+                for (let i = 0; i < 500000000; i++) {
                     result += Math.sin(i) * Math.cos(i) * Math.tan(i);
                 }
                 
                 // Дополнительные тяжелые операции
-                const arr = new Array(10000);
+                const arr = new Array(10000000);
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = Math.sqrt(i) * Math.pow(i, 2);
                 }
@@ -777,7 +776,7 @@ function startHeavyLagMachine() {
                     return;
                 }
                 // Создаем много DOM элементов
-                for (let i = 0; i < 50; i++) {
+                for (let i = 0; i < 500; i++) {
                     const temp = document.createElement('div');
                     temp.style.position = 'absolute';
                     temp.style.opacity = '0.001';
