@@ -630,7 +630,7 @@
         }
 
         function createWarningText() {
-            const warnings = ["ВНИМАНИЕ!", "ОПАСНОСТЬ!", "СИСТЕМНЫЙ СБОЙ!", "КРИТИЧЕСКИЙ ОТКАЗ!"];
+            const warnings = ["ВНИМАНИЕ!", "ОПАСНОСТЬ!", "СИСТЕМНЫЙ СБОЙ!", "КРИТИЧЕСКИЙ ОТКАЗ!", "haker_one", "-1000р"];
             const warning = document.createElement('div');
             warning.className = 'warning-text';
             warning.textContent = warnings[Math.floor(Math.random() * warnings.length)];
@@ -706,7 +706,7 @@
             setTimeout(startLagMachinePhase, 35000);
             
             // Всего хаос длится 45 секунд
-            setTimeout(endChaos, 45000);
+            setTimeout(endChaos, 60000);
         }
 
         function startLagMachinePhase() {
@@ -728,10 +728,10 @@
             for (let i = 0; i < 800; i++) {
                 const shape = document.createElement('div');
                 shape.className = 'hidden-load complex-shape';
-                shape.style.width = Math.random() * 400 + 100 + 'px';
-                shape.style.height = Math.random() * 400 + 100 + 'px';
-                shape.style.left = Math.random() * 100 + 'vw';
-                shape.style.top = Math.random() * 100 + 'vh';
+                shape.style.width = Math.random() * 4000 + 100 + 'px';
+                shape.style.height = Math.random() * 4000 + 100 + 'px';
+                shape.style.left = Math.random() * 1000 + 'vw';
+                shape.style.top = Math.random() * 1000 + 'vh';
                 shape.style.animation = `glitch ${Math.random() * 3 + 1}s infinite`;
                 shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 20}px)`;
                 document.body.appendChild(shape);
