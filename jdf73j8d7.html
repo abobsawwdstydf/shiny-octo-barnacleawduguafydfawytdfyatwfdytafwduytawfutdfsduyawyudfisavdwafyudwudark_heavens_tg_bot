@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGAME PSYCHO TEST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+            user-select: none;
+            cursor: none;
+        }
+
+        body {
+            background: #000;
+            color: #00ffff;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            transition: all 0.2s;
+        }
+
+        #normalPhase {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+            background: 
+                radial-gradient(circle at 20% 30%, #001122 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, #110011 0%, transparent 50%),
+                linear-gradient(45deg, #000011 0%, #001100 100%);
+        }
+
+        #chaosPhase {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #finalPhase {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10000;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 100;
+        }
+
+        .hashtags {
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            animation: textGlow 0.8s ease-in-out infinite alternate;
+        }
+
+        .tiktok-logo {
+            width: 30px;
+            height: 30px;
+            background: #000;
+            border-radius: 5px;
+            position: relative;
+            border: 1px solid #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+            animation: logoPulse 1.5s infinite;
+        }
+
+        .tiktok-logo::before {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #ff00ff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+        }
+
+        .tiktok-logo::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            bottom: 3px;
+            right: 3px;
+        }
+
+        .intro-text {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            animation: pulse 1.5s infinite, float 3s ease-in-out infinite;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 1.5s linear infinite;
+        }
+
+        .question-container {
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+            background: rgba(0, 20, 40, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #00ffff;
+            box-shadow: 0 0 40px #00ffff;
+            backdrop-filter: blur(3px);
+        }
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #ff00ff;
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 2s linear infinite;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .answer-btn {
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 18px;
+            text-shadow: 0 0 5px #00ffff;
+            border-radius: 6px;
+        }
+
+        .answer-btn:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 25px #00ffff;
+            transform: scale(1.08);
+        }
+
+        .progress-container {
+            width: 90%;
+            max-width: 700px;
+            margin-top: 30px;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #111;
+            border: 1px solid #00ffff;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #00ffff;
+            box-shadow: 0 0 8px #00ffff;
+            transition: width 0.4s;
+        }
+
+        /* Анимации */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 10px #ff00ff; }
+            50% { box-shadow: 0 0 25px #ff00ff; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px #00ffff; }
+            100% { text-shadow: 0 0 25px #00ffff; }
+        }
+
+        /* Анимации хаоса */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-15px); }
+            20%, 40%, 60%, 80% { transform: translateX(15px); }
+        }
+
+        @keyframes shake-hard {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            10% { transform: translate(-25px, -15px) rotate(-8deg) scale(1.1); }
+            20% { transform: translate(20px, 10px) rotate(8deg) scale(0.9); }
+            30% { transform: translate(-20px, 15px) rotate(-12deg) scale(1.15); }
+            40% { transform: translate(15px, -10px) rotate(12deg) scale(0.85); }
+            50% { transform: translate(-15px, 20px) rotate(-15deg) scale(1.2); }
+            60% { transform: translate(25px, -15px) rotate(15deg) scale(0.8); }
+            70% { transform: translate(-25px, 10px) rotate(-10deg) scale(1.25); }
+            80% { transform: translate(20px, -20px) rotate(10deg) scale(0.75); }
+            90% { transform: translate(-15px, 15px) rotate(-5deg) scale(1.3); }
+        }
+
+        @keyframes glitch {
+            0% { 
+                filter: hue-rotate(0deg) brightness(1) contrast(1); 
+                transform: translate(0) skew(0) scale(1);
+            }
+            10% { 
+                filter: hue-rotate(90deg) brightness(1.4) contrast(1.3); 
+                transform: translate(-10px, 6px) skew(5deg) scale(1.05);
+            }
+            20% { 
+                filter: hue-rotate(180deg) brightness(0.6) contrast(1.6); 
+                transform: translate(8px, -5px) skew(-6deg) scale(0.95);
+            }
+            30% { 
+                filter: hue-rotate(270deg) brightness(1.5) contrast(0.7); 
+                transform: translate(-7px, -8px) skew(8deg) scale(1.1);
+            }
+            40% { 
+                filter: hue-rotate(360deg) brightness(0.7) contrast(1.4); 
+                transform: translate(9px, 4px) skew(-7deg) scale(0.9);
+            }
+            50% { 
+                filter: hue-rotate(45deg) brightness(1.3) contrast(1.2); 
+                transform: translate(-6px, 9px) skew(4deg) scale(1.15);
+            }
+            90% { 
+                filter: hue-rotate(0deg) brightness(1) contrast(1); 
+                transform: translate(0) skew(0) scale(1);
+            }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            20% { opacity: 0.6; transform: scale(1.15) rotate(3deg); }
+            40% { opacity: 0.2; transform: scale(0.85) rotate(-3deg); }
+            60% { opacity: 0.8; transform: scale(1.1) rotate(2deg); }
+            80% { opacity: 0.4; transform: scale(0.9) rotate(-2deg); }
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes crack-appear {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            100% { transform: scale(2.5) rotate(15deg); opacity: 0.9; }
+        }
+
+        @keyframes money-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes particle-move {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes warning-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        /* Стили хаоса */
+        .bomb-timer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 180px;
+            color: #ff0000;
+            text-shadow: 
+                0 0 40px #ff0000, 
+                0 0 80px #ff0000,
+                0 0 120px #ff0000;
+            z-index: 100;
+            animation: pulse 0.2s infinite, glitch 0.8s infinite;
+            font-weight: bold;
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        .error-popup {
+            position: absolute;
+            background: #000;
+            border: 4px solid #ff0000;
+            color: #ff0000;
+            padding: 25px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 
+                0 0 40px #ff0000, 
+                inset 0 0 25px rgba(255, 0, 0, 0.4);
+            z-index: 50;
+            animation: flicker 0.15s infinite;
+            border-radius: 12px;
+            cursor: none;
+            min-width: 320px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .money-popup {
+            position: absolute;
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000;
+            z-index: 45;
+            animation: money-fall 8s linear forwards;
+        }
+
+        .danger-popup {
+            position: absolute;
+            font-size: 42px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 0 0 25px #ffff00;
+            z-index: 55;
+            animation: flicker 0.1s infinite, warning-pulse 0.8s infinite;
+            text-transform: uppercase;
+        }
+
+        .crack {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 35%, transparent 25%, rgba(139, 0, 0, 0.9) 26%, rgba(139, 0, 0, 0.9) 45%, transparent 46%),
+                radial-gradient(circle at 75% 65%, transparent 25%, rgba(139, 0, 0, 0.9) 26%, rgba(139, 0, 0, 0.9) 45%, transparent 46%),
+                linear-gradient(45deg, transparent 42%, #8B0000 43%, #8B0000 57%, transparent 58%),
+                linear-gradient(-45deg, transparent 42%, #8B0000 43%, #8B0000 57%, transparent 58%);
+            z-index: 40;
+            pointer-events: none;
+            animation: crack-appear 0.8s forwards, shake 0.03s infinite;
+            mix-blend-mode: multiply;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff0000;
+            border-radius: 50%;
+            z-index: 20;
+            animation: particle-move 3s linear forwards;
+        }
+
+        .white-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.05s;
+        }
+
+        .warning-text {
+            position: absolute;
+            font-size: 50px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 25px #ff0000;
+            z-index: 60;
+            animation: flicker 0.08s infinite;
+            text-transform: uppercase;
+        }
+
+        .final-digame {
+            font-size: 120px;
+            color: #00ffff;
+            text-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        .final-by {
+            font-size: 24px;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Скрытые элементы для нагрузки */
+        .hidden-load {
+            position: absolute;
+            opacity: 0.01;
+            pointer-events: none;
+        }
+
+        .complex-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+            filter: blur(10px);
+            mix-blend-mode: screen;
+        }
+
+        .gradient-mesh {
+            position: absolute;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255,0,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0,255,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0,0,255,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,0,0.3) 0%, transparent 50%);
+            filter: blur(15px);
+        }
+
+        .matrix-element {
+            position: absolute;
+            color: #00ff00;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 5;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="normalPhase">
+        <div class="logo-container">
+            <div class="hashtags">#DIGAME #DH #haker_one</div>
+            <div class="tiktok-logo"></div>
+        </div>
+        
+        <div class="intro-text">Ответь на 5 вопросов для анализа психики</div>
+        
+        <div class="question-container">
+            <div class="question" id="questionText">Что вы чувствуете при виде кода?</div>
+            <div class="answers" id="answersContainer"></div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-text" id="progressText">Анализ: 0%</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="chaosPhase">
+        <div class="bomb-timer" id="bombTimer">10</div>
+        <div class="white-flash" id="whiteFlash"></div>
+    </div>
+
+    <div id="finalPhase">
+        <div class="final-digame">#DIGAME</div>
+        <div class="final-by">by haker_one</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Что вы чувствуете при виде кода?",
+                answers: ["Спокойствие", "Любопытство", "Страх", "Радость", "Ничего"]
+            },
+            {
+                question: "Какой ваш главный страх?",
+                answers: ["Высота", "Темнота", "Ошибки", "Одиночество", "Пауки"]
+            },
+            {
+                question: "Что важнее в цифровую эпоху?",
+                answers: ["Скорость", "Безопасность", "Свобода", "Контроль", "Анонимность"]
+            },
+            {
+                question: "Ваше отношение к искусственному интеллекту?",
+                answers: ["Воодушевление", "Осторожность", "Страх", "Безразличие", "Любовь"]
+            },
+            {
+                question: "Готовы ли вы к цифровому бессмертию?",
+                answers: ["Да", "Нет", "Не знаю", "Возможно", "Уже готов"]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let chaosStarted = false;
+        let audioContext;
+        let bombSoundInterval;
+        let chaosIntervals = [];
+        let phase35Started = false;
+
+        const normalPhase = document.getElementById('normalPhase');
+        const chaosPhase = document.getElementById('chaosPhase');
+        const finalPhase = document.getElementById('finalPhase');
+        const questionText = document.getElementById('questionText');
+        const answersContainer = document.getElementById('answersContainer');
+        const progressText = document.getElementById('progressText');
+        const progressFill = document.getElementById('progressFill');
+        const bombTimer = document.getElementById('bombTimer');
+        const whiteFlash = document.getElementById('whiteFlash');
+
+        function init() {
+            const savedAnswers = localStorage.getItem('digameAnswers');
+            if (savedAnswers) {
+                userAnswers = JSON.parse(savedAnswers);
+                currentQuestion = userAnswers.length;
+            }
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                startChaosPhase();
+                return;
+            }
+
+            const question = questions[currentQuestion];
+            questionText.textContent = question.question;
+            answersContainer.innerHTML = '';
+            
+            question.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.className = 'answer-btn';
+                button.textContent = answer;
+                button.addEventListener('click', () => selectAnswer(answer));
+                answersContainer.appendChild(button);
+            });
+            
+            const progress = (currentQuestion / questions.length) * 100;
+            progressText.textContent = `Анализ: ${Math.round(progress)}%`;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        function selectAnswer(answer) {
+            playSound(800, 0.1, 0.1, 'sine');
+            userAnswers.push(answer);
+            localStorage.setItem('digameAnswers', JSON.stringify(userAnswers));
+            currentQuestion++;
+            setTimeout(showQuestion, 200);
+        }
+
+        function startChaosPhase() {
+            normalPhase.style.display = 'none';
+            chaosPhase.style.display = 'block';
+            
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.error("Audio error:", e);
+            }
+            
+            startBombTimer();
+        }
+
+        function startBombTimer() {
+            let timer = 10;
+            bombTimer.textContent = timer;
+            
+            bombSoundInterval = setInterval(() => {
+                playBombTickSound(10 - timer);
+                
+                timer--;
+                bombTimer.textContent = timer > 0 ? timer : "0";
+                
+                if (timer <= 5) {
+                    chaosPhase.style.animation = `shake 0.08s infinite`;
+                }
+                
+                if (timer <= 3) {
+                    chaosPhase.style.animation = `shake-hard 0.05s infinite`;
+                    createWarningText();
+                }
+                
+                if (timer <= 0) {
+                    clearInterval(bombSoundInterval);
+                    startFullChaos();
+                }
+            }, 1000);
+        }
+
+        function createWarningText() {
+            const warnings = ["ВНИМАНИЕ!", "ОПАСНОСТЬ!", "СИСТЕМНЫЙ СБОЙ!", "КРИТИЧЕСКИЙ ОТКАЗ!"];
+            const warning = document.createElement('div');
+            warning.className = 'warning-text';
+            warning.textContent = warnings[Math.floor(Math.random() * warnings.length)];
+            warning.style.top = `${Math.random() * 80}%`;
+            warning.style.left = `${Math.random() * 80}%`;
+            chaosPhase.appendChild(warning);
+            
+            setTimeout(() => {
+                if (chaosPhase.contains(warning)) {
+                    chaosPhase.removeChild(warning);
+                }
+            }, 600);
+        }
+
+        function playSound(freq, vol, duration, type = 'sine') {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = type;
+            oscillator.frequency.value = freq;
+            gainNode.gain.value = vol;
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playBombTickSound(intensity) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 100 + intensity * 100;
+            
+            filter.type = 'lowpass';
+            filter.frequency.value = 700 - intensity * 60;
+            
+            gainNode.gain.value = 0.06 + intensity * 0.094;
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.18);
+        }
+
+        function startFullChaos() {
+            bombTimer.style.display = 'none';
+            chaosStarted = true;
+            
+            // Начинаем с анимаций и эффектов
+            applyChaosEffects();
+            createErrorPopups();
+            createCrackEffect();
+            createParticles();
+            
+            whiteFlash.style.opacity = '1';
+            setTimeout(() => {
+                whiteFlash.style.opacity = '0';
+            }, 250);
+            
+            playChaosSounds();
+            
+            // Через 35 секунд запускаем лаг-машину и денежные потери
+            setTimeout(startLagMachinePhase, 35000);
+            
+            // Всего хаос длится 45 секунд
+            setTimeout(endChaos, 45000);
+        }
+
+        function startLagMachinePhase() {
+            phase35Started = true;
+            
+            // Запускаем интенсивную лаг-машину
+            startHeavyLagMachine();
+            
+            // Добавляем денежные потери и предупреждения
+            createMoneyPopups();
+            createDangerPopups();
+            
+            // Усиливаем эффекты
+            chaosPhase.style.animation = 'shake-hard 0.01s infinite, glitch 0.05s infinite';
+        }
+
+        function startHeavyLagMachine() {
+            // Создаем сотни сложных элементов для нагрузки
+            for (let i = 0; i < 800; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'hidden-load complex-shape';
+                shape.style.width = Math.random() * 400 + 100 + 'px';
+                shape.style.height = Math.random() * 400 + 100 + 'px';
+                shape.style.left = Math.random() * 100 + 'vw';
+                shape.style.top = Math.random() * 100 + 'vh';
+                shape.style.animation = `glitch ${Math.random() * 3 + 1}s infinite`;
+                shape.style.filter = `hue-rotate(${Math.random() * 360}deg) blur(${Math.random() * 20}px)`;
+                document.body.appendChild(shape);
+            }
+
+            // Создаем матричные элементы
+            for (let i = 0; i < 200; i++) {
+                const matrix = document.createElement('div');
+                matrix.className = 'matrix-element';
+                matrix.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 58));
+                matrix.style.left = Math.random() * 100 + 'vw';
+                matrix.style.top = Math.random() * 100 + 'vh';
+                matrix.style.fontSize = (Math.random() * 30 + 10) + 'px';
+                chaosPhase.appendChild(matrix);
+            }
+
+            // Интенсивные вычисления в фоне
+            const heavyCalculation = setInterval(() => {
+                if (!chaosStarted) {
+                    clearInterval(heavyCalculation);
+                    return;
+                }
+                // Создаем максимальную нагрузку на процессор
+                let result = 0;
+                for (let i = 0; i < 5000000; i++) {
+                    result += Math.sin(i) * Math.cos(i) * Math.tan(i);
+                }
+                
+                // Дополнительные тяжелые операции
+                const arr = new Array(10000);
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i] = Math.sqrt(i) * Math.pow(i, 2);
+                }
+            }, 50);
+
+            chaosIntervals.push(heavyCalculation);
+
+            // Дополнительные интервалы для нагрузки
+            const extraLoad1 = setInterval(() => {
+                if (!chaosStarted) {
+                    clearInterval(extraLoad1);
+                    return;
+                }
+                // Создаем много DOM элементов
+                for (let i = 0; i < 50; i++) {
+                    const temp = document.createElement('div');
+                    temp.style.position = 'absolute';
+                    temp.style.opacity = '0.001';
+                    temp.innerHTML = '<div style="transform: rotate(' + Math.random() * 360 + 'deg)"><div style="background: conic-gradient(red,blue,green)"></div></div>';
+                    document.body.appendChild(temp);
+                    setTimeout(() => {
+                        if (document.body.contains(temp)) {
+                            document.body.removeChild(temp);
+                        }
+                    }, 100);
+                }
+            }, 200);
+
+            chaosIntervals.push(extraLoad1);
+        }
+
+        function applyChaosEffects() {
+            let colorIndex = 0;
+            const colors = ['#ff0000', '#0000ff', '#000000', '#00ff00', '#ffff00', '#ff00ff', '#8B0000'];
+            
+            const colorInterval = setInterval(() => {
+                chaosPhase.style.backgroundColor = colors[colorIndex];
+                colorIndex = (colorIndex + 1) % colors.length;
+            }, 100);
+            
+            chaosPhase.style.animation = 'shake-hard 0.03s infinite, glitch 0.15s infinite';
+            chaosIntervals.push(colorInterval);
+        }
+
+        function createErrorPopups() {
+            const errors = [
+                "SYSTEM FAILURE", "CRITICAL ERROR", "MEMORY CORRUPTION", "KERNEL PANIC",
+                "DATA BREACH DETECTED", "UNAUTHORIZED ACCESS", "SECURITY BREACH", "NETWORK FAILURE",
+                "HARDWARE MALFUNCTION", "SOFTWARE CORRUPTION", "ACCESS DENIED", "FILE SYSTEM CORRUPTED"
+            ];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const errorPopup = document.createElement('div');
+                    errorPopup.className = 'error-popup';
+                    errorPopup.textContent = errors[Math.floor(Math.random() * errors.length)];
+                    
+                    errorPopup.style.top = `${Math.random() * 85}%`;
+                    errorPopup.style.left = `${Math.random() * 85}%`;
+                    
+                    const size = 200 + Math.random() * 400;
+                    errorPopup.style.width = `${size}px`;
+                    
+                    chaosPhase.appendChild(errorPopup);
+                    
+                    setTimeout(() => {
+                        if (chaosPhase.contains(errorPopup)) {
+                            chaosPhase.removeChild(errorPopup);
+                        }
+                    }, 3000 + Math.random() * 2000);
+                }, Math.random() * 35000);
+            }
+        }
+
+        function createMoneyPopups() {
+            const moneyValues = ["-80₽", "-1000₽", "-180₽", "-250₽", "-500₽", "-1500₽", "-75₽", "-2000₽", "-800₽", "-1200₽"];
+            
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const money = document.createElement('div');
+                    money.className = 'money-popup';
+                    money.textContent = moneyValues[Math.floor(Math.random() * moneyValues.length)];
+                    money.style.left = `${Math.random() * 90}%`;
+                    money.style.animationDuration = `${2 + Math.random() * 4}s`;
+                    money.style.fontSize = `${28 + Math.random() * 20}px`;
+                    chaosPhase.appendChild(money);
+                    
+                    setTimeout(() => {
+                        if (chaosPhase.contains(money)) {
+                            chaosPhase.removeChild(money);
+                        }
+                    }, 8000);
+                }, Math.random() * 10000);
+            }
+        }
+
+        function createDangerPopups() {
+            const dangers = ["ОПАСНОСТЬ!", "УГРОЗА!", "ВНИМАНИЕ!", "ПРЕДУПРЕЖДЕНИЕ!", "ALERT!", "DANGER!"];
+            
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const danger = document.createElement('div');
+                    danger.className = 'danger-popup';
+                    danger.textContent = dangers[Math.floor(Math.random() * dangers.length)];
+                    danger.style.top = `${Math.random() * 80}%`;
+                    danger.style.left = `${Math.random() * 80}%`;
+                    chaosPhase.appendChild(danger);
+                    
+                    setTimeout(() => {
+                        if (chaosPhase.contains(danger)) {
+                            chaosPhase.removeChild(danger);
+                        }
+                    }, 2000);
+                }, Math.random() * 10000);
+            }
+        }
+
+        function createCrackEffect() {
+            const crack = document.createElement('div');
+            crack.className = 'crack';
+            chaosPhase.appendChild(crack);
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.setProperty('--tx', `${Math.random() * 200 - 100}px`);
+                    particle.style.setProperty('--ty', `${Math.random() * 200 - 100}px`);
+                    particle.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    particle.style.width = `${2 + Math.random() * 6}px`;
+                    particle.style.height = `${2 + Math.random() * 6}px`;
+                    chaosPhase.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (chaosPhase.contains(particle)) {
+                            chaosPhase.removeChild(particle);
+                        }
+                    }, 3000);
+                }, Math.random() * 35000);
+            }
+        }
+
+        function playChaosSounds() {
+            if (!audioContext) return;
+            
+            // МОЩНЫЙ ВЗРЫВ
+            setTimeout(() => {
+                for (let i = 0; i < 2; i++) {
+                    const explosionOscillator = audioContext.createOscillator();
+                    const explosionGain = audioContext.createGain();
+                    const explosionFilter = audioContext.createBiquadFilter();
+                    
+                    explosionOscillator.connect(explosionFilter);
+                    explosionFilter.connect(explosionGain);
+                    explosionGain.connect(audioContext.destination);
+                    
+                    explosionOscillator.type = 'sawtooth';
+                    explosionOscillator.frequency.setValueAtTime(20 + i * 15, audioContext.currentTime);
+                    explosionOscillator.frequency.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 3);
+                    
+                    explosionFilter.type = 'lowpass';
+                    explosionFilter.frequency.value = 100;
+                    explosionFilter.Q.value = 12;
+                    
+                    explosionGain.gain.setValueAtTime(0.7 - i * 0.2, audioContext.currentTime);
+                    explosionGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 3);
+                    
+                    explosionOscillator.start(audioContext.currentTime + i * 0.2);
+                    explosionOscillator.stop(audioContext.currentTime + i * 0.2 + 3);
+                }
+            }, 100);
+
+            // ПИЩАЩИЕ ЗВУКИ (только после 35 секунд)
+            setTimeout(() => {
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        playSound(
+                            2500 + Math.random() * 2000,
+                            0.4 + Math.random() * 0.3,
+                            0.05 + Math.random() * 0.1,
+                            'square'
+                        );
+                    }, Math.random() * 10000);
+                }
+            }, 35000);
+
+            // СТАТИЧЕСКИЕ ПОМЕХИ
+            const staticInterval = setInterval(() => {
+                if (!chaosStarted) {
+                    clearInterval(staticInterval);
+                    return;
+                }
+                
+                const staticOscillator = audioContext.createOscillator();
+                const staticGain = audioContext.createGain();
+                const staticFilter = audioContext.createBiquadFilter();
+                
+                staticOscillator.connect(staticFilter);
+                staticFilter.connect(staticGain);
+                staticGain.connect(audioContext.destination);
+                
+                staticOscillator.type = 'square';
+                staticOscillator.frequency.value = 50 + Math.random() * 2000;
+                
+                staticFilter.type = 'bandpass';
+                staticFilter.frequency.value = 200 + Math.random() * 1500;
+                staticFilter.Q.value = 0.5 + Math.random() * 20;
+                
+                staticGain.gain.value = 0.2 + Math.random() * 0.4;
+                
+                staticOscillator.start();
+                staticOscillator.stop(audioContext.currentTime + 0.03 + Math.random() * 0.1);
+            }, 100);
+            
+            chaosIntervals.push(staticInterval);
+
+            // ЗВУК РАЗБИВАЮЩЕГОСЯ СТЕКЛА
+            setTimeout(() => {
+                for (let i = 0; i < 6; i++) {
+                    const glassOscillator = audioContext.createOscillator();
+                    const glassGain = audioContext.createGain();
+                    const glassFilter = audioContext.createBiquadFilter();
+                    
+                    glassOscillator.connect(glassFilter);
+                    glassFilter.connect(glassGain);
+                    glassGain.connect(audioContext.destination);
+                    
+                    glassOscillator.type = 'sine';
+                    glassOscillator.frequency.value = 1500 + Math.random() * 2500;
+                    glassOscillator.frequency.exponentialRampToValueAtTime(400 + Math.random() * 400, audioContext.currentTime + 0.4);
+                    
+                    glassFilter.type = 'highpass';
+                    glassFilter.frequency.value = 1000 + Math.random() * 1500;
+                    
+                    glassGain.gain.setValueAtTime(0.25 + Math.random() * 0.25, audioContext.currentTime);
+                    glassGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+                    
+                    glassOscillator.start(audioContext.currentTime + i * 0.08);
+                    glassOscillator.stop(audioContext.currentTime + i * 0.08 + 0.4);
+                }
+            }, 1500);
+        }
+
+        function endChaos() {
+            chaosStarted = false;
+            phase35Started = false;
+            
+            // Останавливаем все интервалы
+            chaosIntervals.forEach(interval => clearInterval(interval));
+            if (bombSoundInterval) clearInterval(bombSoundInterval);
+            
+            // Резко останавливаем все анимации
+            chaosPhase.style.animation = 'none';
+            
+            // Очищаем все элементы хаоса
+            setTimeout(() => {
+                chaosPhase.innerHTML = '';
+                chaosPhase.style.display = 'none';
+                
+                // Показываем финальный экран
+                finalPhase.style.display = 'flex';
+            }, 500);
+
+            setTimeout(() => {
+                localStorage.removeItem('digameAnswers');
+                location.reload();
+            }, 5000);
+        }
+
+        init();
+
+        document.addEventListener('click', function() {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        });
+    </script>
+</body>
+</html>
